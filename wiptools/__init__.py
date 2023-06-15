@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 """
-# Package wetppr
+# Python package wiptools
 
-This contains a series of unrelated python projects, e.g. with case studies and examples
-
+Common tools between the CLIs
 """
 
 __version__ = "0.0.0"

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Command line interface wip.
+# Command line interface wip.
+
+Create projects, add components, documentation, ...
 """
 from pathlib import Path
 import sys
