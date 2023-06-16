@@ -13,4 +13,3 @@ def in_directory(path):
         yield Path.cwd()
     finally:
         os.chdir(previous_dir)
-

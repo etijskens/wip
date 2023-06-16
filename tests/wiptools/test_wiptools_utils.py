@@ -1,37 +1,34 @@
 # -*- coding: utf-8 -*-
 
+"""Tests of wiptools.utils"""
+
 from pathlib import Path
 import shutil
 import sys
 
 path = Path(__file__).parent.parent.parent
-print(path)
+# print(path)
 sys.path.insert(0, str(path))
-
+from tempfile import TemporaryDirectory
 # import pytest
 import wiptools
 import wiptools.utils as utils
 
-def empty_test_workspace():
-    """return the path to an empty test workspace."""
-    test_ws = (Path(wiptools.__file__).parent.parent / '.test-workspace').resolve()
-    if test_ws.exists():
-        shutil.rmtree(test_ws)
-
-    test_ws.mkdir(exist_ok=True)
-
-    return test_ws
 
 def test_in_directory():
-    
-    with utils.in_directory(empty_test_workspace()):
-        assert Path.cwd().name == '.test-workspace'
-        foo_path = Path('foo')
-        with open(foo_path, 'w') as f:
-            f.write("blablabla")
+    with TemporaryDirectory(dir=Path.cwd()) as tmp:
+        with utils.in_directory(tmp):
+            assert Path.cwd().name == Path(tmp).name
+            foo_path = Path('foo')
+            with open(foo_path, 'w') as f:
+                f.write("blablabla")
+            assert foo_path.is_file()
+            foo_path = foo_path.resolve()
         assert foo_path.is_file()
-        foo_path = foo_path.resolve()
-    assert foo_path.is_file()
+
+    # print(f"{tmp=}")
+    assert Path(tmp).is_dir() == False
+
 
 # ==============================================================================
 # The code below is for debugging a particular test in eclipse/pydev.

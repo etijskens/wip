@@ -13,31 +13,23 @@ import wiptools
 from wiptools.cli.wip import main as wip_main
 
 
-def test_workspace(clear = True):
-    """return the path to the test workspace, if clear==True, the folder is emptied.
+def test_workspace(clear: bool = False):
+    """Return the path to the test workspace 'wiptools/.test-workspace` in the project directory.
 
-    Params:
-        clear: if equal to True the contents of the test workspace are removed. If clear is a str
-            it is assumed to refer to the folder to be cleared.
+    Args:
+        clear: make sure that the test workspace is empty
+
+    Returns:
+        the path to the test workspace.
     """
-    test_ws = (Path(wiptools.__file__).parent.parent / '.test-workspace').resolve()
+    test_workspace_path = (Path(wiptools.__file__).parent.parent / '.test-workspace').resolve()
 
-    if clear:
-        # if 'VSC_HOME' in os.environ:
-        #     # see https://stackoverflow.com/questions/58943374/shutil-rmtree-error-when-trying-to-remove-nfs-mounted-directory
-        #     messages.logging.shutdown()
+    if clear and test_workspace_path.exists():
+        shutil.rmtree(test_workspace_path)
 
-        if isinstance(clear, str):
-            p = test_ws / clear
-            if p.is_dir():
-                shutil.rmtree(p)
-        else:
-            if test_ws.exists():
-                shutil.rmtree(test_ws)
+    test_workspace_path.mkdir(exist_ok=True)
 
-        test_ws.mkdir(exist_ok=True)
-
-    return test_ws
+    return test_workspace_path
 
 
 @contextlib.contextmanager

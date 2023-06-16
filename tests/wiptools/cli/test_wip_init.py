@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-"""Tests for `wetppr.wip ` CLI."""
+"""Tests for `wip init`."""
+
 from pathlib import Path
 import sys
 
@@ -12,16 +13,6 @@ import pytest
 from helpers import run_wip, test_workspace
 import wiptools.utils as utils
 
-
-def test_in_directory():
-    with utils.in_directory(test_workspace()):
-        assert Path.cwd().name == '.test-workspace'
-        foo_path = Path('foo')
-        with open(foo_path, 'w') as f:
-            f.write("blablabla")
-        assert foo_path.is_file()
-        foo_path = foo_path.resolve()
-    assert foo_path.is_file()
 
 def test_init_name_exists():
     with utils.in_directory(test_workspace(clear=True)):
@@ -51,7 +42,7 @@ def test_init_name_does_not_exist():
 # (normally all tests are run with pytest)
 # ==============================================================================
 if __name__ == "__main__":
-    the_test_you_want_to_debug = test_init_name_exists
+    the_test_you_want_to_debug = test_init_name_does_not_exist
 
     print(f"__main__ running {the_test_you_want_to_debug}")
     the_test_you_want_to_debug()

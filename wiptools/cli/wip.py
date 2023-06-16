@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 """
 # Command line interface wip.
 
@@ -44,7 +45,7 @@ def init( ctx
     if project_path.is_dir():
         raise FileExistsError(f"A directory with name '{project_name}' exists already.")
 
-    project_path.mkdir(exist_ok=False)
+    # project_path.mkdir(exist_ok=False)
 
     return 0
 
