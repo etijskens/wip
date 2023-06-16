@@ -20,12 +20,12 @@ def test_init_name_exists():
         with open(foo_path, 'w') as f:
             f.write("blablabla")
 
-        result = run_wip(['-vv', 'init', 'foo'], assert_exit_code=False)
+        result = run_wip(['init', 'foo'], assert_exit_code=False)
         pytest.raises(FileExistsError)
 
         foo2_path = Path('foo2')
         foo2_path.mkdir()
-        result = run_wip(['-vv', 'init', 'foo2'], assert_exit_code=False)
+        result = run_wip(['init', 'foo2'], assert_exit_code=False)
         pytest.raises(FileExistsError)
 
 
@@ -42,7 +42,7 @@ def test_init_name_does_not_exist():
 # (normally all tests are run with pytest)
 # ==============================================================================
 if __name__ == "__main__":
-    the_test_you_want_to_debug = test_init_name_does_not_exist
+    the_test_you_want_to_debug = test_init_name_exists
 
     print(f"__main__ running {the_test_you_want_to_debug}")
     the_test_you_want_to_debug()

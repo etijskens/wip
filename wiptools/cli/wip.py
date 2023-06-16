@@ -11,20 +11,33 @@ from types import SimpleNamespace
 
 import click
 
+import wiptools
+import wiptools.messages as messages
 
-@click.group()
+def wip_version():
+    return f"wip CLI v{wiptools.__version__}"
+
+@click.group(invoke_without_command=True)
 @click.option('-v', '--verbosity', count=True
              , help="The verbosity of the program output."
-             , default=1
+             )
+@click.option('--version'
+             , help="print wiptools version."
+             , is_flag=True
              )
 @click.pass_context
-def main(ctx, verbosity):
+def main(ctx, verbosity, version):
     """Command line interface wip.
     """
+    if not ctx.invoked_subcommand:
+        if version:
+            print(wip_version())
+
+    if verbosity:
+        print(wip_version())
+
     # store global options in ctx.obj
     ctx.obj = SimpleNamespace(verbosity=verbosity)
-
-    click.echo(f"running wip")
 
 
 @main.command()
@@ -38,12 +51,14 @@ def init( ctx
     Args:
         project_name: name of the project to create.
     """
-    click.echo("running wip init")
+    if ctx.obj.verbosity:
+        click.echo(F"wip init {project_name}")
+
     project_path = Path(project_name)
     if project_path.is_file():
-        raise FileExistsError(f"A file with name '{project_name}' exists already.")
+        messages.error_message(f"A file with name '{project_name}' exists already.")
     if project_path.is_dir():
-        raise FileExistsError(f"A directory with name '{project_name}' exists already.")
+        messages.error_message(f"A directory with name '{project_name}' exists already.")
 
     # project_path.mkdir(exist_ok=False)
 

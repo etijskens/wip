@@ -39,12 +39,20 @@ def test_test_workspace():
     assert path_to_test_workspace.exists() == False
 
 
+def test_run_wip():
+    run_wip(['--version'])
+    print('-*##*-')
+
+    run_wip(['--help'])
+    print('-*##*-')
+
+
 # ==============================================================================
 # The code below is for debugging a particular test in eclipse/pydev.
 # (normally all tests are run with pytest)
 # ==============================================================================
 if __name__ == "__main__":
-    the_test_you_want_to_debug = test_test_workspace
+    the_test_you_want_to_debug = test_run_wip
 
     print(f"__main__ running {the_test_you_want_to_debug}")
     the_test_you_want_to_debug()
