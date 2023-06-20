@@ -38,19 +38,32 @@ def verify_project_name(project_name: str) -> bool:
 def pep8_module_name(module_name: str)->str:
     """Convert a module name to a PEP8 compliant module name.
 
-    * lowercase
+    Conversion implies:
+
+    * -> lowercase
     * dash -> underscore
+
+    If the conversion is not possible, the function exits with a non-zero exit code.
+
+    This function is typically called to convert a project name to a PE8 compliant module name.
+
+    Args:
+        module_name to be converted
+
+    Returns:
+        PEP8 compliant version of module_name.
     """
 
-    p = re.compile(r"\A[a-zA-Z][a-zA-Z0-9_]*\Z")
-    if not bool(p.match(module_name)):
-        messages.error_message(f"Module name '{module_name}' is not compatible with PEP8.")
-
-    valid_module_name = module_name\
+    pep8_name = module_name\
         .lower()\
         .replace('-', '_')
 
-    return valid_module_name
+    p = re.compile(r"\A[a-z][a-z0-9_]*\Z")
+    if not bool(p.match(pep8_name)):
+        messages.error_message(f"Module name '{module_name}' could not be made PEP8 compliant.")
+
+    return pep8_name
+
 
 def get_config(config_path: Path, needed: dict = {}) -> dict:
     """Get cookiecutter parameters from a config file and prompt for missing parameters.

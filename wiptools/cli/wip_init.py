@@ -9,9 +9,11 @@ import wiptools.messages as messages
 import wiptools.utils as utils
 
 
-def wip_init(ctx):
-    """
+def wip_init(ctx: click.Context) -> int:
+    """Function called by `wip init ...`.
 
+    Returns:
+        0 if successful, non-zero otherwise
     """
     return_code = 0
     if ctx.parent.params['verbosity']:
