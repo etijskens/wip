@@ -1,7 +1,7 @@
 **unreleased**
 **v0.0.1-dev**
-**v0.0.0-gamma**
-**v0.0.0-gamma**
+
+- added `wip env`
 
 **v0.0.0**
 

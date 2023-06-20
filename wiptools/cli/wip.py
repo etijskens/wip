@@ -13,6 +13,7 @@ import click
 import wiptools
 import wiptools.messages as messages
 from wiptools.cli.wip_init import wip_init
+from wiptools.cli.wip_env  import wip_env
 
 def wip_version():
     return f"wip CLI v{wiptools.__version__}"
@@ -52,6 +53,10 @@ def main(ctx, verbosity, version, config):
 @click.option('--description', '-d', default=''
              , help='short description of project'
              )
+@click.option('--remote'
+    , help="Create a remote GitHub repo. Choose from 'public'(=default), 'private', or 'none'."
+    , default='public'
+)
 @click.pass_context
 def init( ctx
         , project_name: str
@@ -67,6 +72,11 @@ def init( ctx
     return wip_init(ctx)
 
 
+@main.command()
+@click.pass_context
+def env(ctx):
+    """Check the environment for needed components."""
+    return wip_env(ctx)
+
 if __name__ == "__main__":
     sys.exit(main())  # pragma: no cover
-#eodf
