@@ -7,12 +7,12 @@ Create projects, add components, documentation, ...
 """
 from pathlib import Path
 import sys
-from types import SimpleNamespace
 
 import click
 
 import wiptools
 import wiptools.messages as messages
+from wiptools.cli.wip_init import wip_init
 
 def wip_version():
     return f"wip CLI v{wiptools.__version__}"
@@ -25,10 +25,18 @@ def wip_version():
              , help="print wiptools version."
              , is_flag=True
              )
+@click.option('--config', default=Path.home() / '.wip' / 'config.json', type=Path
+             , help='location of config.file. If it does not exist, the config file is '
+                    'created, otherwise it is kept without modification (i.e. missing '
+                    'parameters are not stored).'
+             )
 @click.pass_context
-def main(ctx, verbosity, version):
+def main(ctx, verbosity, version, config):
     """Command line interface wip.
     """
+    # wip.main arguments are retrieved from ctx.parent.params
+    # wip.some.subcommand arguments are retrieved from ctx.params
+
     if not ctx.invoked_subcommand:
         if version:
             print(wip_version())
@@ -36,33 +44,28 @@ def main(ctx, verbosity, version):
     if verbosity:
         print(wip_version())
 
-    # store global options in ctx.obj
-    ctx.obj = SimpleNamespace(verbosity=verbosity)
-
-
 @main.command()
 @click.argument('project_name')
+@click.option('--python-version', default=''
+             , help='minimal Python version'
+             )
+@click.option('--description', '-d', default=''
+             , help='short description of project'
+             )
 @click.pass_context
 def init( ctx
         , project_name: str
+        , python_version: str
+        , description: str
         ):
     """Initialize a new project.
 
     Args:
         project_name: name of the project to create.
     """
-    if ctx.obj.verbosity:
-        click.echo(F"wip init {project_name}")
 
-    project_path = Path(project_name)
-    if project_path.is_file():
-        messages.error_message(f"A file with name '{project_name}' exists already.")
-    if project_path.is_dir():
-        messages.error_message(f"A directory with name '{project_name}' exists already.")
+    return wip_init(ctx)
 
-    # project_path.mkdir(exist_ok=False)
-
-    return 0
 
 if __name__ == "__main__":
     sys.exit(main())  # pragma: no cover

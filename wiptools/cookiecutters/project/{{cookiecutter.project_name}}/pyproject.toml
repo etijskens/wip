@@ -2,10 +2,10 @@
 name = "{{cookiecutter.project_name}}"
 version = "0.0.0"
 description = "{{cookiecutter.project_short_description}}"
-authors = ["{{cookiecutter.full_name}} <{{cookiecutter.email}}>"]
+authors = ["{{cookiecutter.full_name}} <{{cookiecutter.email_address}}>"]
 license = "MIT"
 
-readme = 'README.rst'
+readme = 'README.md'
 
 repository = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}"
 homepage = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}"

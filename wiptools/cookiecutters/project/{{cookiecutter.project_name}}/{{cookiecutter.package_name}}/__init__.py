@@ -4,7 +4,7 @@
 Python package {{cookiecutter.package_name}}
 """
 
-__version__ = 0.0.0
+__version__ = '0.0.0'
 
 # example code
 def hello(who: str = 'world'):

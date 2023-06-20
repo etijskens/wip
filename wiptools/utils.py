@@ -1,6 +1,12 @@
 from contextlib import contextmanager
+import json
 import os
 from pathlib import Path
+import re
+
+import click
+
+import wiptools.messages as messages
 
 @contextmanager
 def in_directory(path):
@@ -13,3 +19,63 @@ def in_directory(path):
         yield Path.cwd()
     finally:
         os.chdir(previous_dir)
+
+def cookiecutters():
+    """Return the path to the cookiecutter templates"""
+    return Path(__file__).parent / 'cookiecutters'
+
+
+def verify_project_name(project_name: str) -> bool:
+    """Project names must start with a char, and contain only chars, digits, underscores and dashes.
+
+    Args:
+        project_name: name of the current project
+    """
+    p = re.compile(r"\A[a-zA-Z][a-zA-Z0-9_-]*\Z")
+    return bool(p.match(project_name))
+
+
+def pep8_module_name(module_name: str)->str:
+    """Convert a module name to a PEP8 compliant module name.
+
+    * lowercase
+    * dash -> underscore
+    """
+
+    p = re.compile(r"\A[a-zA-Z][a-zA-Z0-9_]*\Z")
+    if not bool(p.match(module_name)):
+        messages.error_message(f"Module name '{module_name}' is not compatible with PEP8.")
+
+    valid_module_name = module_name\
+        .lower()\
+        .replace('-', '_')
+
+    return valid_module_name
+
+def get_config(config_path: Path, need={}) -> dict:
+    """"""
+
+    save = False
+    if config_path.is_file():
+        with open(config_path) as f:
+            config = json.load(f)
+    else:
+        config = {}
+        if config_path:
+            save = True
+
+    header = False
+    for cookiecutter_parameter, kwargs in need.items():
+        if not cookiecutter_parameter in config:
+            if not header:
+                click.secho("\nDeveloper info needed:")
+                header = True
+            config[cookiecutter_parameter] = messages.ask(**kwargs)
+
+    if save:
+        config_path.parent.mkdir(parents=True)
+        with open(config_path, mode='w') as f:
+            json.dump(config, f, indent=2)
+
+    return config
+
