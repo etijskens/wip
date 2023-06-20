@@ -16,6 +16,7 @@ keywords = []
 python = "^{{cookiecutter.minimal_python_version}}"
 
 [tool.poetry.dev-dependencies]
+bump2version = "^1.0.1"
 
 [tool.poetry.scripts]
 

@@ -89,7 +89,7 @@ def get_config(config_path: Path, needed: dict = {}) -> dict:
             save = True
 
     header = False
-    for cookiecutter_parameter, kwargs in need.items():
+    for cookiecutter_parameter, kwargs in needed.items():
         if not cookiecutter_parameter in config:
             if not header:
                 click.secho("\nDeveloper info needed:")

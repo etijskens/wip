@@ -30,11 +30,11 @@ def wip_init(ctx: click.Context) -> int:
 
     cookiecutter_params = utils.get_config(
         ctx.parent.params['config']
-      , need={ 'full_name'      : { 'question': 'Enter your full name'}
-             , 'email_address'  : { 'question': 'Enter your email address'}
-             , 'github_username': { 'question': 'Enter your GitHub username (leave empty if no remote repos needed)'
-                                  , 'default' : ''}
-             }
+      , needed={ 'full_name'      : { 'question': 'Enter your full name'}
+               , 'email_address'  : { 'question': 'Enter your email address'}
+               , 'github_username': { 'question': 'Enter your GitHub username (leave empty if no remote repos needed)'
+                                    , 'default' : ''}
+               }
     )
     click.secho("\nProject info needed:", fg='green')
     project_short_description = ctx.params['description'] if ctx.params['description'] else messages.ask(
