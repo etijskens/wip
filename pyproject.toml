@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "wiptools"
-version = "0.0.0-gamma"
+version = "0.0.1-dev"
 description = "Python project management"
 authors = ["Bert Tijskens <engelbert.tijskens@uantwerpen.be>"]
 license = "MIT"
