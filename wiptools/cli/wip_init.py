@@ -15,7 +15,7 @@ def wip_init(ctx: click.Context) -> int:
     """Actual body of wip subcommand `wip init ...`.
 
     Returns:
-        0 if successful, non-zero otherwise
+        0 if successful, exits with non-zero return code otherwise.
     """
     if ctx.parent.params['verbosity']:
         click.echo(f"wip init {ctx.params['project_name']}")
@@ -101,7 +101,7 @@ def wip_init(ctx: click.Context) -> int:
 
         # Verify necessary conditions for creating a remote GitHub repo :
         remote_visibility = ctx.params['remote'].lower()
-        if not remote_visibility in ['public','private', 'none', 'None']:
+        if not remote_visibility in ['public', 'private', 'none']:
             messages.error_message(
                 f"ERROR: --remote={remote_visibility} is not a valid option. Valid options are:\n"
                 f"       --remote=public\n"
@@ -116,23 +116,22 @@ def wip_init(ctx: click.Context) -> int:
             pat_file = utils.pat(github_username)
             if not pat_file.is_file():
                 messages.error_message(f"No personal access token (PAT) for `github.com/{github_username}` found at \n"
-                                       f"`{pat_location}`. (A PAT is needed to access your GitHub account).\n"
+                                       f"`{pat_file}`. (A PAT is needed to access your GitHub account).\n"
                                        f"The remote GitHub repo `github.com/{github_username}/{project_name}` cannot be created."
                                       )
 
             # Create remote GitHub repo:
             with messages.TaskInfo('Creating a remote GitHub repo'):
-                with open(pat_file) as f:
-                    completed_process = \
-                        subprocess.run(['gh', 'auth', 'login', '--with-token'], stdin=f, text=True)
+                with open(pat_file) as fd_pat:
+                    cmd = ['gh', 'auth', 'login', '--with-token']
+                    completed_process = subprocess.run(cmd, stdin=fd_pat, text=True)
                     if completed_process.returncode:
                         messages.error_message('gh: authentication failed.')
 
-                    cmd = ['gh', 'repo', 'create'
-                        , '--source', str(project_path)
-                        , f'--{remote}'  # --private or --public
-                        , '--push'  # push the contents
-                           ]
-                    utils.execute(cmd, project.logger.debug, stop_on_error=True)
+                    cmd = ['gh', 'repo', 'create', '--source', '.', f'--{remote_visibility}', '--push']
+                    completed_process = subprocess.run(cmd)
+                    if completed_process.returncode:
+                        messages.error_message(f'gh: Creating remote repo `https://github.com/{github_username}/{project_name}` failed.')
+
 
     return 0

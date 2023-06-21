@@ -53,8 +53,9 @@ def main(ctx, verbosity, version, config):
 @click.option('--description', '-d', default=''
              , help='short description of project'
              )
-@click.option('--remote'
-    , help="Create a remote GitHub repo. Choose from 'public'(=default), 'private', or 'none'."
+@click.option('--remote-visibility'
+    , help="Option for creating a remote GitHub repo with visibility `public` (default) or `private`. "
+           "If `none` is specified no remote is created. The option is case-insensitive."
     , default='public'
 )
 @click.pass_context
@@ -65,6 +66,9 @@ def init( ctx
         , remote: str
         ):
     """Initialize a new project.
+
+    The creation of a remote GitHub repo requires a GitHub username and
+    a personal access token with `repo` and `read:org` permissions.
 
     Args:
         project_name: name of the project to create.
