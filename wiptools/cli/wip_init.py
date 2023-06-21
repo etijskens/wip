@@ -99,20 +99,40 @@ def wip_init(ctx: click.Context) -> int:
             if completed_process.returncode:
                 messages.error_message('Failing git command.')
 
-        # Create remote GitHub repo:
-        with messages.TaskInfo('Creating a remote GitHub repo'):
-            remote = ctx.params['remote'].lower()
-            if not remote in ['public','private', 'none', 'None']:
-                messages.error_message(
-                    f"ERROR: --remote={remote} is not a valid option. Valid options are:\n"
-                    f"       --remote=public\n"
-                    f"       --remote=private\n"
-                    f"       --remote=none\n"
-                )
-            if remote.lower() != 'none':
-                if not github_username:
-                    messages.error_message("A GitHub username must be supplied to create remote GitHub repositories.")
-                # Find .pat file (personal access token)
-                pat_location = utils.pat(github_username)
+        # Verify necessary conditions for creating a remote GitHub repo :
+        remote_visibility = ctx.params['remote'].lower()
+        if not remote_visibility in ['public','private', 'none', 'None']:
+            messages.error_message(
+                f"ERROR: --remote={remote_visibility} is not a valid option. Valid options are:\n"
+                f"       --remote=public\n"
+                f"       --remote=private\n"
+                f"       --remote=none\n"
+            )
+        if remote_visibility.lower() != 'none':
+            if not github_username:
+                messages.error_message("A GitHub username must be supplied to create remote GitHub repositories.")
+
+            # Find .pat file (personal access token)
+            pat_file = utils.pat(github_username)
+            if not pat_file.is_file():
+                messages.error_message(f"No personal access token (PAT) for `github.com/{github_username}` found at \n"
+                                       f"`{pat_location}`. (A PAT is needed to access your GitHub account).\n"
+                                       f"The remote GitHub repo `github.com/{github_username}/{project_name}` cannot be created."
+                                      )
+
+            # Create remote GitHub repo:
+            with messages.TaskInfo('Creating a remote GitHub repo'):
+                with open(pat_file) as f:
+                    completed_process = \
+                        subprocess.run(['gh', 'auth', 'login', '--with-token'], stdin=f, text=True)
+                    if completed_process.returncode:
+                        messages.error_message('gh: authentication failed.')
+
+                    cmd = ['gh', 'repo', 'create'
+                        , '--source', str(project_path)
+                        , f'--{remote}'  # --private or --public
+                        , '--push'  # push the contents
+                           ]
+                    utils.execute(cmd, project.logger.debug, stop_on_error=True)
 
     return 0
