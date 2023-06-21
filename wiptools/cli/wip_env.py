@@ -22,7 +22,7 @@ def wip_env(ctx: click.Context) -> int:
     cmd = 'bumpversion'
     completed_process = subprocess.run([cmd, '-h'], capture_output=True)
     if not completed_process.returncode:
-        lines = completed_process.stdout.decode('utf-8')
+        lines = completed_process.stdout.decode('utf-8').split('\n')
         for line in lines:
             if 'bumpversion:' in line:
                 print(line)

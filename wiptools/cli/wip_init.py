@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from pathlib import Path
+import shutil
 import subprocess
 
 import click
@@ -17,7 +18,7 @@ def wip_init(ctx: click.Context) -> int:
         0 if successful, non-zero otherwise
     """
     if ctx.parent.params['verbosity']:
-        click.echo(F"wip init {ctx.params['project_name']}")
+        click.echo(f"wip init {ctx.params['project_name']}")
 
     project_name = ctx.params['project_name']
     project_path = Path(project_name)
@@ -35,7 +36,25 @@ def wip_init(ctx: click.Context) -> int:
                }
     )
 
-    no_github_username = not bool(cookiecutter_params['github_username'])
+    github_username = cookiecutter_params['github_username']
+    if github_username:
+        pat_standard_location = Path.home() / '.wiptools' / f'{github_username}.pat'
+        if not pat_standard_location.is_file():
+            while True:
+                pat_location = messages.ask(question=f'Enter location of personal access token for github.com/{github_username}\n'
+                                                     f'(i.e. a directory containing file `{github_username}.pat`)'
+                                           )
+                if not pat_location.strip():
+                    messages.error_message('Interrupted.', return_code=0)
+                    break
+                pat_location = Path(pat_location).expanduser()
+                if pat_location.is_dir():
+                    pat_location = pat_location / f'{github_username}.pat'
+                    if pat_location.is_file():
+                        shutil.copy(pat_location, pat_standard_location)
+                        break
+                    else:
+                        continue
 
     click.secho("\nProject info needed:", fg='green')
     project_short_description = ctx.params['description'] if ctx.params['description'] else messages.ask(
@@ -52,30 +71,48 @@ def wip_init(ctx: click.Context) -> int:
       , 'minimal_python_version': minimal_python_version
       }
     )
+    with messages.TaskInfo("Expanding cookiecutters"):
+        template = str(utils.cookiecutters() / 'project')
+        print(f'Expanding template: {template}')
+        cookiecutter( template=template
+                    , extra_context=cookiecutter_params
+                    , output_dir=Path.cwd()
+                    , no_input=True
+                    )
 
-    cookiecutter( template=str(utils.cookiecutters() / 'project')
-                , extra_context=cookiecutter_params
-                , output_dir=Path.cwd()
-                , no_input=True
+    with utils.in_directory(project_path):
+        # Create local git repo:
+        with messages.TaskInfo('Creating a local git repo'):
+            completed_process = subprocess.run(['git', 'init', '--initial-branch=main'])
+            if completed_process.returncode:
+                messages.error_message('Failing git command.')
+
+            completed_process = subprocess.run(['git', 'add', '*'])
+            if completed_process.returncode:
+                messages.error_message('Failing git command.')
+
+            completed_process = subprocess.run(['git', 'add', '.gitignore'])
+            if completed_process.returncode:
+                messages.error_message('Failing git command.')
+
+            completed_process = subprocess.run(['git', 'commit', '-m', f'"Initial commit from `wip init {project_name}`"'])
+            if completed_process.returncode:
+                messages.error_message('Failing git command.')
+
+        # Create remote GitHub repo:
+        with messages.TaskInfo('Creating a remote GitHub repo'):
+            remote = ctx.params['remote'].lower()
+            if not remote in ['public','private', 'none', 'None']:
+                messages.error_message(
+                    f"ERROR: --remote={remote} is not a valid option. Valid options are:\n"
+                    f"       --remote=public\n"
+                    f"       --remote=private\n"
+                    f"       --remote=none\n"
                 )
+            if remote.lower() != 'none':
+                if not github_username:
+                    messages.error_message("A GitHub username must be supplied to create remote GitHub repositories.")
+                # Find .pat file (personal access token)
+                pat_location = utils.pat(github_username)
 
-    # Perform initial git commit:
-    completed_process = subprocess.run(['git', 'commit', '-a', '-m', '"Initial commit"'])
-    if completed_process.returncode:
-        messages.error_message('Failing git command.')
-
-    # Create remote GitHub repo if requested:
-    remote = ctx.params['remote'].lower()
-    if not remote in ['public','private', 'none', 'None']:
-        messages.error_message(
-            f"ERROR: --remote={remote} is not a valid option. Valid options are:\n"
-            f"       --remote=public\n"
-            f"       --remote=private\n"
-            f"       --remote=none\n"
-        )
-    if remote.lower() != 'none':
-        if no_github_username:
-            messages.error_message("A GitHub username must be supplied to create remote GitHub repositories.")
-
-
-    return return_code
+    return 0

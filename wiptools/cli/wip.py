@@ -62,6 +62,7 @@ def init( ctx
         , project_name: str
         , python_version: str
         , description: str
+        , remote: str
         ):
     """Initialize a new project.
 

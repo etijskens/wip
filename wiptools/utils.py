@@ -20,10 +20,16 @@ def in_directory(path):
     finally:
         os.chdir(previous_dir)
 
+
 def cookiecutters():
     """Return the path to the cookiecutter templates"""
     return Path(__file__).parent / 'cookiecutters'
 
+def pat(github_username):
+    """Return the personal access token for github.com/{github_username} from the standard location."""
+    pat_location = Path.home() / '.wiptools' / f'{github_username}.pat'
+    if not pat_location.is_file():
+        messages.error_message(f"No personal access token (PAT) found at `{pat_location}`.")
 
 def verify_project_name(project_name: str) -> bool:
     """Project names must start with a char, and contain only chars, digits, underscores and dashes.
