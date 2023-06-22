@@ -128,7 +128,8 @@ def subprocess_run_cmds(
                    , List[Union[str,Tuple[str,dict]]]  # a list of the above
                    ]
     ):
-    """"""
+    """Run a series of commands using subprocess.run, optionally with kwargs, and exit on failure."""
+    
     if isinstance(cmds, (str, tuple)):
         cmds = [cmds]
 
