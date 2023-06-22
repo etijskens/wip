@@ -2,7 +2,7 @@ import sys
 
 import click
 
-def error_message(message, return_code = 1):
+def error_message(message: str, return_code:int = 1):
     """Print an error message and exit if return_code is non-zero."""
     click.secho(f"\nERROR: {message}", fg='red')
     if return_code:
@@ -11,15 +11,19 @@ def error_message(message, return_code = 1):
 
 class TaskInfo:
     """Context manager class for printing a message before and after a task """
-    def __init__(self,message: str):
+    def __init__(self, message: str, fg='green'):
         self.message = message
+        self.fg = fg
     def __enter__(self):
-        click.secho(f"\n[[{self.message}...", fg='cyan')
+        click.secho(f"\n[[{self.message}...", fg=self.fg)
     def __exit__(self, exc_type, exc_value, exc_tb):
-        click.secho(f"]] (done {self.message})", fg='cyan')
+        if exc_value:
+            click.secho(f"]] (FAILED {self.message})", fg='red')
+        else:
+            click.secho(f"]] (done {self.message})", fg=self.fg)
 
 
-def ask(question, type=str, default=None):
+def ask(question: str, type=str, default=None):
     """Ask a question and return the answer as `type`."""
 
     if default is None:

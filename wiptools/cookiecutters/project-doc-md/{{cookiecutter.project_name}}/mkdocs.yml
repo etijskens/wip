@@ -1,0 +1,21 @@
+site_name: {{cookiecutter.project_name}}
+
+theme:
+  name: "material"
+
+nav:
+  - index.md
+
+markdown_extensions:
+    - markdown.extensions.admonition
+    - mdx_math:
+        enable_dollar_delimiter: True #for use of inline $..$
+
+extra_javascript:
+    - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML
+
+plugins:
+  - search
+  - autorefs
+  - mkdocstrings
+  - mkdocs-video

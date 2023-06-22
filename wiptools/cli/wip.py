@@ -54,16 +54,23 @@ def main(ctx, verbosity, version, config):
              , help='short description of project'
              )
 @click.option('--remote-visibility'
-    , help="Option for creating a remote GitHub repo with visibility `public` (default) or `private`. "
-           "If `none` is specified no remote is created. The option is case-insensitive."
-    , default='public'
-)
+             , help="Option for creating a remote GitHub repo with visibility `public` (default) or `private`. "
+                    "If `none` is specified no remote is created. The option is case-insensitive."
+             , default='public'
+             )
+@click.option('--docs', default='md'
+             , help='Add documentation template. '
+                    '`md` prepares for markdown documentation using mkdocs, '
+                    '`rst` prepares for restructuredText using sphinx. '
+                    '`none` suppresses adding documentation templates.'
+             )
 @click.pass_context
 def init( ctx
         , project_name: str
         , python_version: str
         , description: str
-        , remote: str
+        , remote_visibility: str
+        , docs: str
         ):
     """Initialize a new project.
 
