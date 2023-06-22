@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
 from pathlib import Path
 import shutil
 import subprocess
@@ -7,9 +6,9 @@ import subprocess
 import click
 from cookiecutter.main import cookiecutter
 
+from wiptools.cli.wip_add_project_doc import wip_add_project_doc
 import wiptools.messages as messages
 import wiptools.utils as utils
-
 
 def wip_init(ctx: click.Context) -> int:
     """Actual body of wip subcommand `wip init ...`.
@@ -100,7 +99,7 @@ def wip_init(ctx: click.Context) -> int:
                 messages.error_message('Failing git command.')
 
         # Verify necessary conditions for creating a remote GitHub repo :
-        remote_visibility = ctx.params['remote'].lower()
+        remote_visibility = ctx.params['remote_visibility'].lower()
         if not remote_visibility in ['public', 'private', 'none']:
             messages.error_message(
                 f"ERROR: --remote={remote_visibility} is not a valid option. Valid options are:\n"
@@ -133,5 +132,7 @@ def wip_init(ctx: click.Context) -> int:
                     if completed_process.returncode:
                         messages.error_message(f'gh: Creating remote repo `https://github.com/{github_username}/{project_name}` failed.')
 
+    if ctx.params['doc_md']:
+        wip_add_project_doc(ctx)
 
     return 0
