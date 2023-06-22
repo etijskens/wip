@@ -89,6 +89,7 @@ def wip_init(ctx: click.Context) -> int:
                               "  [enter] for no,\n"
                               "  [m] for markdown format,\n"
                               "  [r] for restructuredText format"
+                             , default=''
                              )
         if answer:
             if answer == 'm':
@@ -123,7 +124,8 @@ def wip_init(ctx: click.Context) -> int:
             )
         if remote_visibility.lower() != 'none':
             if not github_username:
-                messages.error_message("A GitHub username must be supplied to create remote GitHub repositories.")
+                messages.warning_message("A GitHub username must be supplied to create remote GitHub repositories.")
+                return
 
             # Find .pat file (personal access token)
             pat_file = utils.pat(github_username)

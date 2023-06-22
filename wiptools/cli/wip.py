@@ -11,9 +11,11 @@ import sys
 import click
 
 import wiptools
-import wiptools.messages as messages
-from wiptools.cli.wip_init import wip_init
+from wiptools.cli.wip_add  import wip_add
+from wiptools.cli.wip_doc  import wip_doc
 from wiptools.cli.wip_env  import wip_env
+from wiptools.cli.wip_init import wip_init
+import wiptools.messages as messages
 
 def wip_version():
     return f"wip CLI v{wiptools.__version__}"
@@ -109,7 +111,23 @@ def env(ctx):
 @click.pass_context
 def docs(ctx):
     """Add documentation to the project."""
+    wip_doc(ctx)
 
+
+@main.command()
+@click.argument('submodule_path')
+@click.option('--py', is_flag=True
+             , help='Add a Python submodule to the project'
+             )
+@click.pass_context
+def add(ctx, submodule_path, py):
+    """Add submodules and CLIs to the project.
+
+    Args:
+        submodule_path: path to (relative to the package) and name of the submodule. For a CLI the path is fixed and
+            autmatically supplied.
+    """
+    wip_add(ctx)
 
 
 if __name__ == "__main__":

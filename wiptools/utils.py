@@ -129,7 +129,7 @@ def subprocess_run_cmds(
                    ]
     ):
     """Run a series of commands using subprocess.run, optionally with kwargs, and exit on failure."""
-    
+
     if isinstance(cmds, (str, tuple)):
         cmds = [cmds]
 

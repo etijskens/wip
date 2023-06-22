@@ -1,0 +1,31 @@
+# configuration for documentation generation with mkdocs
+# see the help text at the end of the file
+site_name: foo
+
+theme:
+  name: "material"
+
+nav:
+  - index.md
+  - overview.md
+  - api-reference.md
+
+markdown_extensions:
+    - markdown.extensions.admonition
+    - mdx_math:
+        enable_dollar_delimiter: True #for use of inline $..$
+
+extra_javascript:
+    - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML
+
+plugins:
+  - search
+  - autorefs
+  - mkdocstrings
+  - mkdocs-video
+
+# ------------------------------------
+# Generating documentation with mkdocs
+# ------------------------------------
+# In the project folder, generally (but not necessarily) using the project's virtual environment:
+# (.venv) > mkdocs serve

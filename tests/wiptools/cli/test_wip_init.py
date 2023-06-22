@@ -40,7 +40,8 @@ def test_init_project_name_does_not_exist():
                                 '\n'                        # default github_username
                                 'foo description\n'         #
                                 '\n'
-                        , assert_exit_code=False)
+                                '\n'
+                          , assert_exit_code=False)
         project_path = Path(project)
         assert project_path.is_dir()
 
@@ -51,6 +52,7 @@ def test_init_project_name_does_not_exist():
 
         project = 'bar'
         result = run_wip( ['-vv', '--config', '.wip/config.json', 'init', project]
+                        , stdin='\n'
                         , assert_exit_code=False)
         project_path = Path(project)
         assert project_path.is_dir()
@@ -60,6 +62,7 @@ def test_init_project_name_does_not_exist():
             completed_process = subprocess.run(['pytest', 'tests'])
             assert completed_process.returncode == 0
 
+            run_wip(['add', 'foo', '--py'], assert_exit_code=False)
 
 
 # ==============================================================================
