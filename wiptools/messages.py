@@ -9,6 +9,13 @@ def error_message(message: str, return_code:int = 1):
         click.secho(f"ERROR: exiting ({return_code=})", fg='red')
         sys.exit(return_code)
 
+def warning_message(message:str, return_code:int = 0):
+    """Print a warning message."""
+    click.secho(f"\nWARNING: {message}", fg='cyan')
+    if return_code:
+        click.secho(f"WARNING: exiting ({return_code=})", fg='red')
+        sys.exit(return_code)
+
 class TaskInfo:
     """Context manager class for printing a message before and after a task """
     def __init__(self, message: str, fg='green'):

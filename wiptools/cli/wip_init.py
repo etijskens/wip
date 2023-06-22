@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from pathlib import Path
 import shutil
 import subprocess
@@ -6,16 +7,13 @@ import subprocess
 import click
 from cookiecutter.main import cookiecutter
 
-from wiptools.cli.wip_add_project_doc import wip_add_project_doc
+from wiptools.cli.wip_doc import wip_doc
 import wiptools.messages as messages
 import wiptools.utils as utils
 
 def wip_init(ctx: click.Context) -> int:
-    """Actual body of wip subcommand `wip init ...`.
+    """Initialise a wip project."""
 
-    Returns:
-        0 if successful, exits with non-zero return code otherwise.
-    """
     if ctx.parent.params['verbosity']:
         click.echo(f"wip init {ctx.params['project_name']}")
 
@@ -70,15 +68,40 @@ def wip_init(ctx: click.Context) -> int:
       , 'minimal_python_version': minimal_python_version
       }
     )
-    with messages.TaskInfo("Expanding cookiecutters"):
-        template = str(utils.cookiecutters() / 'project')
-        print(f'Expanding template: {template}')
+
+    template = str(utils.cookiecutters() / 'project')
+    with messages.TaskInfo(f"Expanding cookiecutter template `{template}`"):
         cookiecutter( template=template
                     , extra_context=cookiecutter_params
                     , output_dir=Path.cwd()
                     , no_input=True
                     )
 
+    # write cookiecutter parameters to cookiecutter.json in project folder for use by subsequent wip commands:
+    with open(project_path / 'wip-cookiecutter.json', mode='w') as fp:
+        json.dump(cookiecutter_params, fp, indent=2)
+
+    # add documentation files if requested
+    add_docs = ctx.params['md'] or ctx.params['rst']
+    if not add_docs:
+        # ask the user if we must configure the project for documentation generation:
+        answer = messages.ask("Add documentation templates? press \n"
+                              "  [enter] for no,\n"
+                              "  [m] for markdown format,\n"
+                              "  [r] for restructuredText format"
+                             )
+        if answer:
+            if answer == 'm':
+                ctx.params['md'] = True
+            if answer == 'r':
+                ctx.params['rst'] = True
+            add_docs = ctx.params['md'] or ctx.params['rst']
+
+    if add_docs:
+        with utils.in_directory(project_path):
+            wip_doc(ctx)
+
+    # Take care of git version control
     with utils.in_directory(project_path):
         # Create local git repo:
         with messages.TaskInfo('Creating a local git repo'):
@@ -131,8 +154,3 @@ def wip_init(ctx: click.Context) -> int:
                     completed_process = subprocess.run(cmd)
                     if completed_process.returncode:
                         messages.error_message(f'gh: Creating remote repo `https://github.com/{github_username}/{project_name}` failed.')
-
-    if ctx.params['doc_md']:
-        wip_add_project_doc(ctx)
-
-    return 0

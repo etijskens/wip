@@ -1,3 +1,5 @@
+# configuration for documentation generation with mkdocs
+# see the help text at the end of the file
 site_name: {{cookiecutter.project_name}}
 
 theme:
@@ -5,6 +7,8 @@ theme:
 
 nav:
   - index.md
+  - overview.md
+  - api-reference.md
 
 markdown_extensions:
     - markdown.extensions.admonition
@@ -19,3 +23,9 @@ plugins:
   - autorefs
   - mkdocstrings
   - mkdocs-video
+
+# ------------------------------------
+# Generating documentation with mkdocs
+# ------------------------------------
+# In the project folder, generally (but not necessarily) using the project's virtual environment:
+# (.venv) > mkdocs serve

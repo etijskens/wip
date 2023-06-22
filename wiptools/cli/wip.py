@@ -58,11 +58,11 @@ def main(ctx, verbosity, version, config):
                     "If `none` is specified no remote is created. The option is case-insensitive."
              , default='public'
              )
-@click.option('--docs', default='md'
-             , help='Add documentation template. '
-                    '`md` prepares for markdown documentation using mkdocs, '
-                    '`rst` prepares for restructuredText using sphinx. '
-                    '`none` suppresses adding documentation templates.'
+@click.option('--md', is_flag=True
+             , help='Add documentation templates (markdown format) to this project. (This is the default case).'
+             )
+@click.option('--rst', is_flag=True
+             , help='Add documentation templates (restructuredText format) to this project.'
              )
 @click.pass_context
 def init( ctx
@@ -70,7 +70,8 @@ def init( ctx
         , python_version: str
         , description: str
         , remote_visibility: str
-        , docs: str
+        , md: bool
+        , rst: bool
         ):
     """Initialize a new project.
 
@@ -80,15 +81,36 @@ def init( ctx
     Args:
         project_name: name of the project to create.
     """
+    # allow only one documentation format
+    if md:
+        rst = False
+    if rst:
+        md = False
 
-    return wip_init(ctx)
+    assert ctx.params['md'] == md
+    assert ctx.params['rst'] == rst
+
+    wip_init(ctx)
 
 
 @main.command()
 @click.pass_context
 def env(ctx):
     """Check the environment for needed components."""
-    return wip_env(ctx)
+    wip_env(ctx)
+
+@main.command()
+@click.option('--md', is_flag=True
+             , help='Add documentation templates (markdown format) to this project. (This is the default case).'
+             )
+@click.option('--rst', is_flag=True
+             , help='Add documentation templates (restructuredText format) to this project.'
+             )
+@click.pass_context
+def docs(ctx):
+    """Add documentation to the project."""
+
+
 
 if __name__ == "__main__":
     sys.exit(main())  # pragma: no cover

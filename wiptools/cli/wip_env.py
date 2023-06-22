@@ -9,11 +9,8 @@ import wiptools.messages as messages
 
 
 def wip_env(ctx: click.Context) -> int:
-    """Actual body of wip subcommand `wip env ...`.
+    """Check the current environment for necessary components."""
 
-    Returns:
-        0 if successful, non-zero otherwise
-    """
     for cmd in ['python', 'git', 'gh']:
         completed_process = subprocess.run([cmd, '--version'])
         if completed_process.returncode:
@@ -27,5 +24,3 @@ def wip_env(ctx: click.Context) -> int:
             if 'bumpversion:' in line:
                 print(line)
                 break
-
-    return 0

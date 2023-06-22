@@ -3,6 +3,7 @@ import json
 import os
 from pathlib import Path
 import re
+from typing import Union
 
 import click
 
@@ -107,3 +108,14 @@ def get_config(config_path: Path, needed: dict = {}) -> dict:
 
     return config
 
+def read_wip_cookiecutter_json() -> dict:
+    """Read the `wip-cookiecutter.json` file. Exits if missing.
+
+    This function also serves as a test that the current working directory is a wip project directory.
+    """
+    try:
+        with open(Path.cwd() / 'wip-cookiecutter.json') as fp:
+            return json.load(fp)
+    except FileNotFoundError:
+        messages.error_message(f"Current working directory does not contain a `wip-cookiecutter.json` file.\n"
+                               f"Not a wip project?")
