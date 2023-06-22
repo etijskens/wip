@@ -3,7 +3,8 @@ import json
 import os
 from pathlib import Path
 import re
-from typing import Union
+import subprocess
+from typing import List, Union, Tuple
 
 import click
 
@@ -118,4 +119,29 @@ def read_wip_cookiecutter_json() -> dict:
             return json.load(fp)
     except FileNotFoundError:
         messages.error_message(f"Current working directory does not contain a `wip-cookiecutter.json` file.\n"
-                               f"Not a wip project?")
+                               f"Not a wip project?"
+                              )
+
+def subprocess_run_cmds(
+        cmds: Union[ str                    # a command string
+                   , Tuple[str,dict]        # a (command string, kwargs) pair
+                   , List[Union[str,Tuple[str,dict]]]  # a list of the above
+                   ]
+    ):
+    """"""
+    if isinstance(cmds, (str, tuple)):
+        cmds = [cmds]
+
+    for cmd in cmds:
+        if isinstance(cmd, str):
+            # a command without kwargs
+            command = cmd
+            completed_process = subprocess.run(command, shell=True)
+        else:
+            # a command with kwargs
+            command = cmd[0]
+            kwargs  = cmd[1]
+            completed_process = subprocess.run(command, shell=True, **kwargs)
+
+        if completed_process.returncode:
+            messages.error_message(f'Command `{command}` failed')

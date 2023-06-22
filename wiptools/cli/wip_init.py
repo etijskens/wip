@@ -105,21 +105,12 @@ def wip_init(ctx: click.Context) -> int:
     with utils.in_directory(project_path):
         # Create local git repo:
         with messages.TaskInfo('Creating a local git repo'):
-            completed_process = subprocess.run(['git', 'init', '--initial-branch=main'])
-            if completed_process.returncode:
-                messages.error_message('Failing git command.')
-
-            completed_process = subprocess.run(['git', 'add', '*'])
-            if completed_process.returncode:
-                messages.error_message('Failing git command.')
-
-            completed_process = subprocess.run(['git', 'add', '.gitignore'])
-            if completed_process.returncode:
-                messages.error_message('Failing git command.')
-
-            completed_process = subprocess.run(['git', 'commit', '-m', f'"Initial commit from `wip init {project_name}`"'])
-            if completed_process.returncode:
-                messages.error_message('Failing git command.')
+            cmds = [ 'git init --initial-branch=main'
+                   , 'git add *'
+                   , 'git add .gitignore'
+                   ,f'git commit -m "Initial commit from `wip init {project_name}`"'
+                   ]
+            utils.subprocess_run_cmds(cmds)
 
         # Verify necessary conditions for creating a remote GitHub repo :
         remote_visibility = ctx.params['remote_visibility'].lower()
@@ -145,12 +136,9 @@ def wip_init(ctx: click.Context) -> int:
             # Create remote GitHub repo:
             with messages.TaskInfo('Creating a remote GitHub repo'):
                 with open(pat_file) as fd_pat:
-                    cmd = ['gh', 'auth', 'login', '--with-token']
-                    completed_process = subprocess.run(cmd, stdin=fd_pat, text=True)
-                    if completed_process.returncode:
-                        messages.error_message('gh: authentication failed.')
+                    cmds = [
+                        ('gh auth login --with-token', {'stdin': fd_pat, 'text': True}),
+                        f'gh repo create --source . --{remote_visibility} --push'
+                    ]
+                    utils.subprocess_run_cmds(cmds)
 
-                    cmd = ['gh', 'repo', 'create', '--source', '.', f'--{remote_visibility}', '--push']
-                    completed_process = subprocess.run(cmd)
-                    if completed_process.returncode:
-                        messages.error_message(f'gh: Creating remote repo `https://github.com/{github_username}/{project_name}` failed.')
