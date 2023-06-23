@@ -10,7 +10,7 @@ import wiptools.messages as messages
 import wiptools.utils as utils
 
 
-def wip_doc(ctx: click.Context):
+def wip_docs(ctx: click.Context):
     """Add project documentation"""
 
     cookiecutter_params = utils.read_wip_cookiecutter_json()
@@ -25,18 +25,22 @@ def wip_doc(ctx: click.Context):
                                 )
         return
 
+    if ctx.params['md'] and ctx.params['rst']:
+        messages.warning_message(f"Both '--md' and '--rst' specified: ignoring '--rst'.")
+
     docs_format = 'md'  if ctx.params['md' ] else \
-                  'rst' if ctx.params['rst'] else ''
+                  'rst' if ctx.params['rst'] else \
+                  None
 
     if not docs_format:
         messages.warning_message("No documentation format specified")
         return # nothing to do.
 
+    # for the time being...
     if docs_format == 'rst':
         messages.error_message("RestructuredText documentation generation is not yet implemented")
 
-    # top level documentation template
-
+    # top level documentation template -----------------------------------------------------------
     template = 'project-doc-md'  if docs_format == 'md'  else \
                'project-doc-rst' if docs_format == 'rst' else None
     if template:

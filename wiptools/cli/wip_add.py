@@ -38,13 +38,13 @@ def wip_add(ctx: click.Context):
     with messages.TaskInfo(f"Expanding cookiecutter template `{template}`"):
         cookiecutter( template=template
                     , extra_context=cookiecutter_params
-                    , output_dir=submodule_path.parent.parent
+                    , output_dir=submodule_path.parent
                     , no_input=True
                     , overwrite_if_exists=True
                     )
 
     template = str(utils.cookiecutters() / 'submodule-py-tests')
-    output_dir = (project_path / 'tests' / submodule_path.parent.relative_to(project_path / package_name))
+    output_dir = (project_path / 'tests' / submodule_path.relative_to(project_path / package_name))
     with messages.TaskInfo(f"Expanding cookiecutter template `{template}`"):
         cookiecutter( template=template
                     , extra_context=cookiecutter_params

@@ -7,11 +7,11 @@ import subprocess
 import click
 from cookiecutter.main import cookiecutter
 
-from wiptools.cli.wip_doc import wip_doc
+from wiptools.cli.wip_docs import wip_docs
 import wiptools.messages as messages
 import wiptools.utils as utils
 
-def wip_init(ctx: click.Context) -> int:
+def wip_init(ctx: click.Context):
     """Initialise a wip project."""
 
     if ctx.parent.params['verbosity']:

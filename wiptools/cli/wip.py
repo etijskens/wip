@@ -12,8 +12,9 @@ import click
 
 import wiptools
 from wiptools.cli.wip_add  import wip_add
-from wiptools.cli.wip_doc  import wip_doc
+from wiptools.cli.wip_docs  import wip_docs
 from wiptools.cli.wip_env  import wip_env
+from wiptools.cli.wip_info import wip_info
 from wiptools.cli.wip_init import wip_init
 import wiptools.messages as messages
 
@@ -109,9 +110,9 @@ def env(ctx):
              , help='Add documentation templates (restructuredText format) to this project.'
              )
 @click.pass_context
-def docs(ctx):
+def docs(ctx, md, rst):
     """Add documentation to the project."""
-    wip_doc(ctx)
+    wip_docs(ctx)
 
 
 @main.command()
@@ -128,6 +129,14 @@ def add(ctx, submodule_path, py):
             autmatically supplied.
     """
     wip_add(ctx)
+
+
+@main.command()
+@click.pass_context
+def info(ctx):
+    """Provide info about the project's structure."""
+
+    wip_info(ctx)
 
 
 if __name__ == "__main__":

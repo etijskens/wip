@@ -59,10 +59,15 @@ def test_init_project_name_does_not_exist():
 
         # run the tests for the project
         with utils.in_directory(project_path):
+            run_wip(['add', 'foo', '--py'], assert_exit_code=False)
+            run_wip(['add', 'foo2', '--py'], assert_exit_code=False)
+            run_wip(['add', 'foo/foobar', '--py'], assert_exit_code=False)
+
             completed_process = subprocess.run(['pytest', 'tests'])
             assert completed_process.returncode == 0
 
-            run_wip(['add', 'foo', '--py'], assert_exit_code=False)
+            run_wip(['docs', '--md'], assert_exit_code=False)
+
 
 
 # ==============================================================================

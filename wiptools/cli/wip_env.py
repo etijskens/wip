@@ -8,7 +8,7 @@ import click
 import wiptools.messages as messages
 
 
-def wip_env(ctx: click.Context) -> int:
+def wip_env(ctx: click.Context):
     """Check the current environment for necessary components."""
 
     for cmd in ['python', 'git', 'gh']:

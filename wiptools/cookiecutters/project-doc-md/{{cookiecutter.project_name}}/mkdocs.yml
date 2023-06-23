@@ -27,5 +27,14 @@ plugins:
 # ------------------------------------
 # Generating documentation with mkdocs
 # ------------------------------------
+# For details check out https://realpython.com/python-project-documentation-with-mkdocs/
 # In the project folder, generally (but not necessarily) using the project's virtual environment:
-# (.venv) > mkdocs serve
+#   (.venv) > mkdocs serve
+# This command builds a development version of your documentation and makes it available locally
+# in your browser at http://127.0.0.1:8000.
+# To build a static `site/` documentation:
+#   (.venv) > mkdocs build
+# To deploy your documenation on GitHub
+#   (.venv) > mkdocs gh-deploy
+#   INFO - Your documentation should shortly be available at:
+#          https://{{cookiecutter.github_username}}.github.io/{{cookiecutter.project_name}}/
