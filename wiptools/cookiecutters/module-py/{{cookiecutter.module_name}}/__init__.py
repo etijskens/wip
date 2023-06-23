@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-## Python (sub)module {{cookiecutter.submodule_name}}
-
-The parent module is {{cookiecutter.parent_module}}
+## Python (sub)module {{cookiecutter.module_name}}
 """
 
 # example code

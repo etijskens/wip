@@ -59,9 +59,16 @@ def test_init_project_name_does_not_exist():
 
         # run the tests for the project
         with utils.in_directory(project_path):
-            run_wip(['add', 'foo', '--py'], assert_exit_code=False)
-            run_wip(['add', 'foo2', '--py'], assert_exit_code=False)
-            run_wip(['add', 'foo/foobar', '--py'], assert_exit_code=False)
+            run_wip(['add', 'foo_py', '--py'], assert_exit_code=False)
+            run_wip(['add', 'foo2_py', '--py'], assert_exit_code=False)
+            run_wip(['add', 'foo_py/foobar_py', '--py'], assert_exit_code=False)
+            for component_flag in ['--cpp', '--f90']:
+                run_wip(['add', f'foo_{component_flag[2:]}', component_flag], assert_exit_code=False)
+                run_wip(['add', f'foo2_{component_flag[2:]}', component_flag], assert_exit_code=False)
+                run_wip(['add', f'foo_py/foobar_{component_flag[2:]}', component_flag], assert_exit_code=False)
+
+            for component_flag in ['--cli', '--clisub']:
+                run_wip(['add', f'app_{component_flag[2:]}', component_flag], assert_exit_code=False)
 
             completed_process = subprocess.run(['pytest', 'tests'])
             assert completed_process.returncode == 0

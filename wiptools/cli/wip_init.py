@@ -108,7 +108,6 @@ def wip_init(ctx: click.Context):
                 pyproject.toml['tool']['poetry']['repository'] = r""
                 pyproject.toml['tool']['poetry']['homepage']   = r""
 
-
     # Take care of git version control
     with utils.in_directory(project_path):
         # Create local git repo:

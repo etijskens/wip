@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 
-"""Tests for (sub)module {{cookiecutter.parent_pypath}}{{cookiecutter.submodule_name}}."""
+"""Tests for (sub)module {{cookiecutter.parent_pypath}}{{cookiecutter.module_name}}."""
 
 import sys
 sys.path.insert(0,'.')
 
-import {{cookiecutter.parent_pypath}}{{cookiecutter.submodule_name}} as {{cookiecutter.submodule_name}}
+import {{cookiecutter.parent_pypath}}{{cookiecutter.module_name}} as {{cookiecutter.module_name}}
 
 
 def test_hello_default_arg():
-    result = {{cookiecutter.submodule_name}}.hello()
+    result = {{cookiecutter.module_name}}.hello()
     assert result == "Hello world!"
 
 
 def test_hello_me():
-    result = {{cookiecutter.submodule_name}}.hello('me')
+    result = {{cookiecutter.module_name}}.hello('me')
     assert result == "Hello me!"
 
 

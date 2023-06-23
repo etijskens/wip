@@ -21,8 +21,14 @@ def wip_info(ctx: click.Context):
     # project version
     toml = utils.read_pyproject_toml()
     print(f"{project_path.name} v{toml['tool']['poetry']['version']} at `{project_path}`")
-    print(f"GitHub repo: {toml['tool']['poetry']['repository']}")
-    print(f"Home page  : {toml['tool']['poetry']['homepage']}")
+    repository = toml['tool']['poetry']['repository']
+    if not repository:
+        repository = '--'
+    print(f"GitHub repo: {repository}")
+    homepage = toml['tool']['poetry']['homepage']
+    if not homepage:
+        homepage = '--'
+    print(f"Home page  : {homepage}")
 
     # Package structure
     style_kwargs = {'fg': 'cyan'}

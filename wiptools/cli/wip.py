@@ -116,17 +116,29 @@ def docs(ctx, md, rst):
 
 
 @main.command()
-@click.argument('submodule_path')
+@click.argument('component')
 @click.option('--py', is_flag=True
-             , help='Add a Python submodule to the project'
+             , help='Add a Python submodule to the project.'
+             )
+@click.option('--cli', is_flag=True
+             , help='Add a Python CLI to the project.'
+             )
+@click.option('--clisub', is_flag=True
+             , help='Add a Python CLI with subcommands to the project.'
+             )
+@click.option('--cpp', is_flag=True
+             , help='Add a C++ binary extension module to the project (using nanobind).'
+             )
+@click.option('--f90', is_flag=True
+             , help='Add a Modern Fortran binary extension module to the project (using numpy.f2py).'
              )
 @click.pass_context
-def add(ctx, submodule_path, py):
-    """Add submodules and CLIs to the project.
+def add(ctx, component, py, cpp, f90, cli, clisub):
+    """Add components, such as submodules and CLIs, to the project.
 
     Args:
-        submodule_path: path to (relative to the package) and name of the submodule. For a CLI the path is fixed and
-            autmatically supplied.
+        component: If the component is a submodule, a submodule name preceeded with a path relative to the package, must
+            be supplied. For CLIs only the name must be supplied, as the path is fixed and autmatically supplied.
     """
     wip_add(ctx)
 

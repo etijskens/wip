@@ -13,7 +13,7 @@ homepage = "https://github.com/etijskens/wiptools"
 keywords = []
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 click = "^8.1.0"
 cookiecutter = "^2.1.1"
 bump2version = "^1.0.1"
