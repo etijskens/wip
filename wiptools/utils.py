@@ -4,6 +4,13 @@ import os
 from pathlib import Path
 import re
 import subprocess
+
+# try:
+#     import tomllib
+# except ModuleNotFoundError:
+#     import tomli as tomllib
+# import tomli_w as tomli_w
+import tomlkit
 from typing import List, Union, Tuple
 
 import click
@@ -146,3 +153,26 @@ def subprocess_run_cmds(
 
         if completed_process.returncode:
             messages.error_message(f'Command `{command}` failed')
+
+
+def read_pyproject_toml():
+    """"""
+    with open('pyproject.toml', mode='r') as fp:
+        toml = tomlkit.load(fp=fp)
+        return toml
+def write_pyproject_toml(toml: dict):
+    """"""
+    with open('pyproject.toml', mode='w') as fp:
+        tomlkit.dump(toml, fp=fp)
+
+class PyProjectTOML:
+    """Context manager class for  """
+    def __init__(self, mode="r"):
+        self.mode = mode
+    def __enter__(self):
+        if 'r' in self.mode:
+            self.toml = read_pyproject_toml()
+        return self
+    def __exit__(self, exc_type, exc_value, exc_tb):
+        if 'w' in self.mode:
+            write_pyproject_toml(self.toml)

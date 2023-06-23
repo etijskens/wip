@@ -100,7 +100,14 @@ def wip_init(ctx: click.Context):
 
     if add_docs:
         with utils.in_directory(project_path):
-            wip_doc(ctx)
+            wip_docs(ctx)
+
+    if not cookiecutter_params['github_username'] or ctx.params['remote_visibility']:
+        with utils.in_directory(project_path):
+            with utils.PyProjectTOML("rw") as pyproject:
+                pyproject.toml['tool']['poetry']['repository'] = r""
+                pyproject.toml['tool']['poetry']['homepage']   = r""
+
 
     # Take care of git version control
     with utils.in_directory(project_path):

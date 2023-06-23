@@ -8,7 +8,7 @@ license = "MIT"
 readme = 'README.md'
 
 repository = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}"
-homepage = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}"
+homepage = "https://{{cookiecutter.github_username}}.github.io/{{cookiecutter.project_name}}"
 
 keywords = []
 

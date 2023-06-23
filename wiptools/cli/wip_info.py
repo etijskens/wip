@@ -18,8 +18,15 @@ def wip_info(ctx: click.Context):
     project_path = Path.cwd()
     package_name = cookiecutter_params['package_name']
 
+    # project version
+    toml = utils.read_pyproject_toml()
+    print(f"{project_path.name} v{toml['tool']['poetry']['version']} at `{project_path}`")
+    print(f"GitHub repo: {toml['tool']['poetry']['repository']}")
+    print(f"Home page  : {toml['tool']['poetry']['homepage']}")
+
+    # Package structure
     style_kwargs = {'fg': 'cyan'}
-    click.secho(f"Structure of Python package {package_name}", **style_kwargs)
+    click.secho(f"\nStructure of Python package {package_name}", **style_kwargs)
     prefix = '  '
     package_tree = tree(project_path / package_name, prefix='  ', **style_kwargs)
 
