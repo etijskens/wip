@@ -19,7 +19,7 @@ def wip_info(ctx: click.Context):
     package_name = cookiecutter_params['package_name']
 
     style_kwargs = {'fg': 'cyan'}
-    click.secho("Package structure", **style_kwargs)
+    click.secho(f"Structure of Python package {package_name}", **style_kwargs)
     prefix = '  '
     package_tree = tree(project_path / package_name, prefix='  ', **style_kwargs)
 

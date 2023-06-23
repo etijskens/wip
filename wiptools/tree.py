@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# after https://stackoverflow.com/questions/9727673/list-directory-tree-structure-in-python
 import fnmatch
 from pathlib import Path
 from typing import List
@@ -24,9 +25,14 @@ def tree(dir_path: Path, prefix: str='', **style_kwargs):
     keep = []
     for item in contents:
         if item.is_dir() and str(item) != '__pycache__': # ignore __pycache__
-            # only if the directory contains a .py file we keep it.
-            if list(item.glob('*.py')):
-                keep.append(item)
+            #  if the directory contains a
+            #    - .py file
+            #    - .cpp file
+            #    - .f90 file
+            #    we keep it.
+            for pattern in ['*.py', '*.cpp', '*.f90']:
+                if list(item.glob(pattern)):
+                    keep.append(item)
         else:
             if str(item).endswith('.py'):
                 keep.append(item)
@@ -37,7 +43,12 @@ def tree(dir_path: Path, prefix: str='', **style_kwargs):
     for pointer, path in zip(pointers, contents):
         s = prefix + pointer + path.name
         if path.is_dir():
-            s += click.style(' [python module]', **style_kwargs)
+            if list(path.glob('*.cpp')):
+                s += click.style(' [C++ binary extension module]', **style_kwargs)
+            elif list(path.glob('*.f90')):
+                s += click.style(' [Modern Fortran binary extension module]', **style_kwargs)
+            else:
+                s += click.style(' [python module]', **style_kwargs)
         yield s
 
         if path.is_dir(): # extend the prefix and recurse:
