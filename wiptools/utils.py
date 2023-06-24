@@ -30,6 +30,10 @@ def in_directory(path):
         os.chdir(previous_dir)
 
 
+def wiptools():
+    """Return the path to the wiptools package."""
+    return cookiecutters().parent
+
 def cookiecutters():
     """Return the path to the cookiecutter templates"""
     return Path(__file__).parent / 'cookiecutters'

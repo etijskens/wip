@@ -7,6 +7,5 @@
   "github_username": "github_username",
   "minimal_python_version": "minimal_python_version",
   "module_name": "submodule_name",
-  "parent_module": "parent_module",
   "parent_pypath": "parent_pypath"
 }
