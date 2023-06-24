@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `{{cookiecutter.package_name}}.cli.{{cookiecutter.cli_name}} ` CLI."""
+"""Tests for `{{cookiecutter.package_name}}.{{cookiecutter.cli_name}} ` CLI."""
 
 import pytest
 
@@ -10,7 +10,7 @@ from click import echo
 
 from click.testing import CliRunner
 
-from {{cookiecutter.package_name}}.cli.{{cookiecutter.cli_name}} import main
+from {{cookiecutter.package_name}}.{{cookiecutter.cli_name}} import main
 
 
 def test_hello():

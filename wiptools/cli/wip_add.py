@@ -88,7 +88,7 @@ def wip_add(ctx: click.Context):
         with messages.TaskInfo(f"Expanding cookiecutter template `{template.relative_to(utils.wiptools())}`"):
             cookiecutter(template=str(template)
                          , extra_context=cookiecutter_params
-                         , output_dir=project_path / package_name 
+                         , output_dir=project_path / package_name
                          , no_input=True
                          , overwrite_if_exists=True
                          )
