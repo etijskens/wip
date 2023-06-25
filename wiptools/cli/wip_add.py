@@ -103,3 +103,9 @@ def wip_add(ctx: click.Context):
                          , no_input=True
                          , overwrite_if_exists=True
                          )
+
+        with messages.TaskInfo("Updating pyproject.toml"):
+            with utils.PyProjectTOML("rw") as pyproject:
+                script = f"{package_name}.{cli_name}:__main__"
+                pyproject.toml['tool']['poetry']['scripts'][cli_name] = script
+
