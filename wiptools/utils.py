@@ -127,7 +127,13 @@ def read_wip_cookiecutter_json() -> dict:
     """
     try:
         with open(Path.cwd() / 'wip-cookiecutter.json') as fp:
-            return json.load(fp)
+            cookiecutter_params = json.load(fp)
+            if Path.cwd().name != cookiecutter_params['project_name']:
+                messages.error_message("Path.cwd().name != cookiecutter_params['project_name']: This is unexpected.")
+            cookiecutter_params['project_path'] = str(Path.cwd())
+            return cookiecutter_params
+            # The project path is not needed by cookiecutter, but it is practical to have available.
+
     except FileNotFoundError:
         messages.error_message(f"Current working directory does not contain a `wip-cookiecutter.json` file.\n"
                                f"Not a wip project?"
@@ -223,6 +229,6 @@ def iter_components(path: Path, apply: Callable):
         if entry.is_dir():
             comp_type = component_type(entry)
             if comp_type:
-                apply(entry, comp_type)
-                iter_components(entry,apply=apply)
+                apply(entry)
+                iter_components(entry, apply=apply)
 

@@ -58,23 +58,48 @@ def wip_docs(ctx: click.Context):
                     )
 
     # iterate over all components and add them to `docs/api-reference.md`
-    utils.iter_components(Path.cwd() / cookiecutter_params['package_name'], apply=add_component_documentation(package_name=package_name))
+    with messages.TaskInfo(f"Adding documentation for components "):
+        utils.iter_components(
+            Path.cwd() / cookiecutter_params['package_name'],
+            apply=AddComponentDocumentation(cookiecutter_params)
+        )
 
-class add_component_documentation:
-    def __init__(self, package_name):
-        self.project_path = Path.cwd()
+class AddComponentDocumentation:
+    """A Functor for adding documentation generation skeleton."""
+    def __init__(self, cookiecutter_params):
+        self.cookiecutter_params = cookiecutter_params
+        self.project_path = Path(self.cookiecutter_params['project_path'])
         self.path_to_api_refence_md = self.project_path / 'docs' / 'api-reference.md'
-    def __call__(self, path_to_component: Path, component_type: str):
+
+    def __call__(self, path_to_component: Path):
+        """Add documentation generation skeleton for this component."""
+        component_type = utils.component_type(path_to_component)
         if component_type == 'py':
+            self.add_docs_py(path_to_component)
+        elif component_type == 'cli':
+            self.add_docs_cli(path_to_component)
+        elif component_type == 'cp':
+            self.add_docs_cpp(path_to_component)
+        elif component_type == 'f90':
+            self.add_docs_f90(path_to_component)
+
+    def add_docs_py(self, path_to_component):
+        """Add documentation generation skeleton for a python module."""
+        with messages.TaskInfo(f"Adding `{path_to_component.relative_to(self.project_path)}` documentation (Python module)."):
             with self.path_to_api_refence_md.open(mode='a') as fp:
                 p = str(path_to_component.relative_to(self.project_path)).replace(os.sep, '.')
                 fp.write(f'\n\n::: {p}')
 
-        # not sure what to do here
-        # elif component_type == 'py'\
-        # or component_type == 'cli':
-        #     with self.path_to_api_refence_md.open(mode='a') as fp:
-        #         p = path_to_component.relative_to(self.project_path)
-        #         fp.write(f'\n\n::: {p}')
+    def add_docs_cli(self, path_to_component):
+        """Add documentation generation skeleton for a CLI."""
+        with messages.TaskInfo(f"Adding `{path_to_component.relative_to(self.project_path)}` documentation (CLI)."):
+            messages.warning_message("to be implemented!\n")
+    def add_docs_cpp(self, path_to_component):
+        """Add documentation generation skeleton for a C++ module"""
+        with messages.TaskInfo(f"Adding `{path_to_component.relative_to(self.project_path)}` documentation (C++)."):
+            messages.warning_message("to be implemented!\n")
 
-        # also not sure what to do with CLI components
+    def add_docs_f90(self, path_to_component):
+        """Add documentation generation skeleton for a Fortran module"""
+        with messages.TaskInfo(f"Adding `{path_to_component.relative_to(self.project_path)}` documentation (Modern Fortran)."):
+            messages.warning_message("to be implemented!\n")

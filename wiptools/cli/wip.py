@@ -11,11 +11,12 @@ import sys
 import click
 
 import wiptools
-from wiptools.cli.wip_add  import wip_add
+from wiptools.cli.wip_add   import wip_add
+from wiptools.cli.wip_build import wip_build
 from wiptools.cli.wip_docs  import wip_docs
-from wiptools.cli.wip_env  import wip_env
-from wiptools.cli.wip_info import wip_info
-from wiptools.cli.wip_init import wip_init
+from wiptools.cli.wip_env   import wip_env
+from wiptools.cli.wip_info  import wip_info
+from wiptools.cli.wip_init  import wip_init
 import wiptools.messages as messages
 
 def wip_version():
@@ -149,6 +150,14 @@ def info(ctx):
     """Provide info about the project's structure."""
 
     wip_info(ctx)
+
+@main.command()
+@click.argument('component', default='')
+@click.pass_context
+def build(ctx, component):
+    """"""
+
+    wip_build(ctx)
 
 
 if __name__ == "__main__":
