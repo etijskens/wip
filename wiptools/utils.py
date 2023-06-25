@@ -11,7 +11,7 @@ import subprocess
 #     import tomli as tomllib
 # import tomli_w as tomli_w
 import tomlkit
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, Callable
 
 import click
 
@@ -180,3 +180,49 @@ class PyProjectTOML:
     def __exit__(self, exc_type, exc_value, exc_tb):
         if 'w' in self.mode:
             write_pyproject_toml(self.toml)
+
+def docs_format() -> str:
+    """Return the documentation format.
+
+    Returns:
+        `md` for markdowm (with `mkdocs`), `rst` for restructuredText (with `sphinx`). Empty string otherwise.
+    """
+    if (Path.cwd() / 'mkdocs.yml').is_file():
+        return 'md'
+    elif (Path.cwd() / 'docs' / 'conf.py').is_file():
+        return 'rst'
+    else:
+        return ''
+
+def component_type(path_to_component):
+    """return the type of a component directory."""
+    if list(path_to_component.glob('*.cpp')):
+        return 'cpp'
+    elif list(path_to_component.glob('*.f90')):
+        return 'f90'
+    elif list(path_to_component.glob('__init__.py')):
+        return 'py'
+    elif list(path_to_component.glob('__main__.py')):
+        return 'cli'
+    else:
+        return ''
+
+def component_string(component: Path, component_type: str):
+    d = {
+        'py': 'Python module'
+      , 'cli': 'CLI'
+      , 'cpp': 'C++ binary extension module'
+      , 'f90': 'Modern Fortran binary extension module'
+    }
+    s = f"{component.name} [{d.get(component_type, '???')}]"
+    print(s)
+    return s
+
+def iter_components(path: Path, apply: Callable):
+    for entry in path.iterdir():
+        if entry.is_dir():
+            comp_type = component_type(entry)
+            if comp_type:
+                apply(entry, comp_type)
+                iter_components(entry,apply=apply)
+

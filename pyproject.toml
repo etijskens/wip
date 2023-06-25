@@ -33,6 +33,8 @@ mkdocs = "^1.4.3"
 mkdocstrings = {extras = ["python"], version = "^0.22.0"}
 mkdocs-material = "^9.1.16"
 mkdocs-autorefs = "^0.4.1"
+mkdocs-video = "^1.5.0"
+python-markdown-math = "^0.8"
 
 [build-system]
 requires = ["poetry>=1.5"]

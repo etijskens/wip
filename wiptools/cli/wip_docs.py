@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -14,6 +16,7 @@ def wip_docs(ctx: click.Context):
     """Add project documentation"""
 
     cookiecutter_params = utils.read_wip_cookiecutter_json()
+    package_name = cookiecutter_params['package_name']
 
     # Verify that the project is not already configured for documentation generation:
     docs_path = Path.cwd() / 'docs'
@@ -54,3 +57,24 @@ def wip_docs(ctx: click.Context):
                     , overwrite_if_exists=True
                     )
 
+    # iterate over all components and add them to `docs/api-reference.md`
+    utils.iter_components(Path.cwd() / cookiecutter_params['package_name'], apply=add_component_documentation(package_name=package_name))
+
+class add_component_documentation:
+    def __init__(self, package_name):
+        self.project_path = Path.cwd()
+        self.path_to_api_refence_md = self.project_path / 'docs' / 'api-reference.md'
+    def __call__(self, path_to_component: Path, component_type: str):
+        if component_type == 'py':
+            with self.path_to_api_refence_md.open(mode='a') as fp:
+                p = str(path_to_component.relative_to(self.project_path)).replace(os.sep, '.')
+                fp.write(f'\n\n::: {p}')
+
+        # not sure what to do here
+        # elif component_type == 'py'\
+        # or component_type == 'cli':
+        #     with self.path_to_api_refence_md.open(mode='a') as fp:
+        #         p = path_to_component.relative_to(self.project_path)
+        #         fp.write(f'\n\n::: {p}')
+
+        # also not sure what to do with CLI components

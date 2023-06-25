@@ -109,3 +109,17 @@ def wip_add(ctx: click.Context):
                 script = f"{package_name}.{cli_name}:__main__"
                 pyproject.toml['tool']['poetry']['scripts'][cli_name] = script
 
+    # check for mkdocs documentation first
+    docs_format = utils.docs_format()
+    if docs_format == 'md':
+        with messages.TaskInfo("updating `docs/api-reference.md`"):
+            path_to_api_reference_md = project_path / 'docs' / 'api-reference.md'
+            path_to_component = project_path / package_name / component
+            if utils.component_type(path_to_component) == 'py':
+                with path_to_api_reference_md.open(mode="a") as fp:
+                    p = str(path_to_component.relative_to(project_path)).replace(os.sep, '.')
+                    fp.write(f'::: {p}')
+            # not sure what to do in the other cases
+
+    elif docs_format == 'rst':
+        messages.warning_message("RestructuredText documentation generation is not (yet) implemented.")

@@ -34,7 +34,11 @@ def tree(dir_path: Path, prefix: str='', **style_kwargs):
                 if list(item.glob(pattern)):
                     keep.append(item)
         else:
-            if str(item).endswith('.py'):
+            if str(item).endswith('.py' ) \
+            or str(item).endswith('.cpp') \
+            or str(item).endswith('.f90') \
+            or str(item).endswith('.md' ) \
+            or str(item).endswith('.rst'):
                 keep.append(item)
     contents = keep
 
@@ -47,8 +51,12 @@ def tree(dir_path: Path, prefix: str='', **style_kwargs):
                 s += click.style(' [C++ binary extension module]', **style_kwargs)
             elif list(path.glob('*.f90')):
                 s += click.style(' [Modern Fortran binary extension module]', **style_kwargs)
-            else:
+            elif list(path.glob('__init__.py')):
                 s += click.style(' [python module]', **style_kwargs)
+            elif list(path.glob('__main__.py')):
+                s += click.style(' [CLI]', **style_kwargs)
+            else:
+                s += click.style(' [???]', **style_kwargs)
         yield s
 
         if path.is_dir(): # extend the prefix and recurse:
