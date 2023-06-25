@@ -3,6 +3,12 @@
 
 """Tests for `{{cookiecutter.package_name}}.{{cookiecutter.cli_name}} ` CLI."""
 
+from pathlib import Path
+import sys
+PROJECT_PATH = Path(__file__).parent.parent.parent.parent
+print(f"{PROJECT_PATH=}")
+sys.path.insert(0, str(PROJECT_PATH))
+
 import pytest
 
 from click.testing import CliRunner
@@ -10,7 +16,7 @@ from click import echo
 
 from click.testing import CliRunner
 
-from {{cookiecutter.package_name}}.{{cookiecutter.cli_name}} import main
+from {{cookiecutter.package_name}}.{{cookiecutter.cli_name}}.__main__ import main
 
 
 def test_hello():

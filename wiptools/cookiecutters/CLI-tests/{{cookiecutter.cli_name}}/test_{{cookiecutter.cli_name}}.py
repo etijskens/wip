@@ -2,9 +2,13 @@
 # -*- coding: utf-8 -*-
 """Tests for `{{cookiecutter.package_name}}.{{cookiecutter.cli_name}} ` CLI."""
 
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
+
 from click.testing import CliRunner
 
-from {{cookiecutter.package_name}}.{{cookiecutter.cli_name}} import main
+from {{cookiecutter.package_name}}.{{cookiecutter.cli_name}}.__main__ import main
 
 
 def test_main():
