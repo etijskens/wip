@@ -213,15 +213,16 @@ def component_type(path_to_component):
     else:
         return ''
 
-def component_string(component: Path, component_type: str):
+def component_string(component: Path, type: str = ''):
+    type_ = type if type else component_type(component)
     d = {
         'py': 'Python module'
       , 'cli': 'CLI'
       , 'cpp': 'C++ binary extension module'
       , 'f90': 'Modern Fortran binary extension module'
     }
-    s = f"{component.name} [{d.get(component_type, '???')}]"
-    print(s)
+    s = f"{component.name} [{d.get(type_, '???')}]"
+    # print(s)
     return s
 
 def iter_components(path: Path, apply: Callable):
