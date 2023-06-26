@@ -79,6 +79,7 @@ class DisplayablePath:
         is_last: bool=False,
         criteria: Callable=None
     ):
+        """Create a generator that produces a tree structure of a python package."""
         root = Path(str(root))
         criteria = criteria or cls._default_criteria
 
