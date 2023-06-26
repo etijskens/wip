@@ -17,7 +17,7 @@ def wip_build(ctx: click.Context):
     cpp_flag =  ctx.params['cpp']
     f90_flag =  ctx.params['f90']
 
-    build = BuildBinaryExtension(cookiecutter_params)
+    build = BinaryExtensionBuilder(cookiecutter_params)
 
     if component:
         # ignore language flags if set.
@@ -26,24 +26,24 @@ def wip_build(ctx: click.Context):
         if f90_flag:
             messages.warning_message("ignoring '--cpp' flag")
 
-        with messages.TaskInfo(f"Building binary extension"):
-            build(component)
+        build(component)
+        
     else:
-        build.cpp_flag = cpp_flag
-        build.f90_flag = f90_flag
         if not cpp_flag and not f90_flag:
             # No language flags set, and no component selected, hence build all binary components
             build.cpp_flag = build.f90_flag = True
+        else:
+            build.cpp_flag = cpp_flag
+            build.f90_flag = f90_flag
 
-        # iterate over all components and add them to `docs/api-reference.md`
-        with messages.TaskInfo(f"building all binary extensions"):
-            utils.iter_components(
-                Path(cookiecutter_params['project_path']) / cookiecutter_params['package_name'],
-                apply=build
-            )
+        # iterate over all components and build if requested
+        utils.iter_components(
+            Path(cookiecutter_params['project_path']) / cookiecutter_params['package_name'],
+            apply=build
+        )
 
 
-class BuildBinaryExtension:
+class BinaryExtensionBuilder:
     """A functor for building binary extension modules."""
     def __init__(self, cookiecutter_params):
         self.cookiecutter_params = cookiecutter_params
