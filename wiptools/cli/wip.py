@@ -17,7 +17,6 @@ from wiptools.cli.wip_docs  import wip_docs
 from wiptools.cli.wip_env   import wip_env
 from wiptools.cli.wip_info  import wip_info
 from wiptools.cli.wip_init  import wip_init
-import wiptools.messages as messages
 
 def wip_version():
     return f"wip CLI v{wiptools.__version__}"
@@ -153,9 +152,19 @@ def info(ctx):
 
 @main.command()
 @click.argument('component', default='')
+@click.option('--cpp', is_flag=True, default=False
+             , help='Build all C++ binary extension modules.'
+             )
+@click.option('--f90', is_flag=True, default=False
+             , help='Build all Modern Fortran binary extension modules.'
+             )
 @click.pass_context
-def build(ctx, component):
-    """"""
+def build(ctx, component: str, f90: bool, cpp: bool):
+    """Build binary extension modules.
+
+    Args:
+        component: Component to build, path to component, relattive to package directory.
+    """
 
     wip_build(ctx)
 

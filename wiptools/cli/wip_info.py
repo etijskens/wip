@@ -6,7 +6,6 @@ from typing import Callable
 import click
 
 import wiptools.messages as messages
-from wiptools.tree import tree
 import wiptools.utils as utils
 
 

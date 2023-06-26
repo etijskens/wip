@@ -143,7 +143,7 @@ def subprocess_run_cmds(
         cmds: Union[ str                    # a command string
                    , Tuple[str,dict]        # a (command string, kwargs) pair
                    , List[Union[str,Tuple[str,dict]]]  # a list of the above
-                   ]
+                   ],
     ):
     """Run a series of commands using subprocess.run, optionally with kwargs, and exit on failure."""
 
@@ -154,12 +154,14 @@ def subprocess_run_cmds(
         if isinstance(cmd, str):
             # a command without kwargs
             command = cmd
-            completed_process = subprocess.run(command, shell=True)
+            with messages.TaskInfo(f"Running `{command}` in directory {Path.cwd()}"):
+                completed_process = subprocess.run(command, shell=True)
         else:
             # a command with kwargs
             command = cmd[0]
             kwargs  = cmd[1]
-            completed_process = subprocess.run(command, shell=True, **kwargs)
+            with messages.TaskInfo(f"Running `{command} {kwargs=}` in directory {Path.cwd()}"):
+                completed_process = subprocess.run(command, shell=True, **kwargs, )
 
         if completed_process.returncode:
             messages.error_message(f'Command `{command}` failed')

@@ -70,6 +70,8 @@ def test_init_project_name_does_not_exist():
             for component_flag in ['--cli', '--clisub']:
                 run_wip(['add', f'app_{component_flag[2:]}', component_flag], assert_exit_code=False)
 
+            run_wip(['build'],assert_exit_code=False)
+
             completed_process = subprocess.run(['pytest', 'tests'])
             assert completed_process.returncode == 0
 

@@ -621,6 +621,16 @@ griffe = ">=0.24"
 mkdocstrings = ">=0.20"
 
 [[package]]
+name = "nanobind"
+version = "1.4.0"
+description = "nanobind: tiny and efficient C++/Python bindings"
+optional = false
+python-versions = "*"
+files = [
+    {file = "nanobind-1.4.0-py3-none-any.whl", hash = "sha256:0eeded0d18368e2b575714dc620e85631ffe03eb719f8d629101abb2c09668d8"},
+]
+
+[[package]]
 name = "numpy"
 version = "1.25.0"
 description = "Fundamental package for array computing in Python"
@@ -1086,4 +1096,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "4663049a0a8d8c48ba6264b25d6090d37ec999e0415d72e2e6733dcaf9f6b857"
+content-hash = "66ea803d9f54a25fb1c007f29375d12d7d62baa6a039bd1d423554f253a6c665"

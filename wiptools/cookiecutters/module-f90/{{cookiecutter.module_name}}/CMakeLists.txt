@@ -1,10 +1,13 @@
 #-------------------------------------------------------------------------------
 # Build f90 binary extension module {{cookiecutter.parent_pypath}}{{cookiecutter.module_name}}
-#   > cd _cmake_build
+# in the module directory
+# > cmake -S . -B _cmake_build
+# > cmake --build _cmake_build
+# > cmake --install _cmake_build
 # For a clean build:
-#   > rm -rf *
+#   > rm -rf _cmake_build
 # Configure:
-#   > cmake ..
+#   > cmake -S . -B _cmake_build
 # build and install the .so file:
 #   > make install
 #-------------------------------------------------------------------------------
