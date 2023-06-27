@@ -11,12 +11,12 @@ import sys
 import click
 
 import wiptools
-from wiptools.cli.wip_add   import wip_add
-from wiptools.cli.wip_build import wip_build
-from wiptools.cli.wip_docs  import wip_docs
-from wiptools.cli.wip_env   import wip_env
-from wiptools.cli.wip_info  import wip_info
-from wiptools.cli.wip_init  import wip_init
+from wiptools.wip.wip_add   import wip_add
+from wiptools.wip.wip_build import wip_build
+from wiptools.wip.wip_docs  import wip_docs
+from wiptools.wip.wip_env   import wip_env
+from wiptools.wip.wip_info  import wip_info
+from wiptools.wip.wip_init  import wip_init
 
 def wip_version():
     return f"wip CLI v{wiptools.__version__}"

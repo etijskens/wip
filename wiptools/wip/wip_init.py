@@ -7,7 +7,7 @@ import subprocess
 import click
 from cookiecutter.main import cookiecutter
 
-from wiptools.cli.wip_docs import wip_docs
+from wiptools.wip.wip_docs import wip_docs
 import wiptools.messages as messages
 import wiptools.utils as utils
 
