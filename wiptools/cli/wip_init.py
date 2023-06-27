@@ -115,7 +115,7 @@ def wip_init(ctx: click.Context):
             cmds = [ 'git init --initial-branch=main'
                    , 'git add *'
                    , 'git add .gitignore'
-                   ,f'git commit -m "Initial commit from `wip init {project_name}`"'
+                   ,f'git commit -m "Initial commit from wip init {project_name}"'
                    ]
             utils.subprocess_run_cmds(cmds)
 

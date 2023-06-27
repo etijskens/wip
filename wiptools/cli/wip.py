@@ -42,8 +42,7 @@ def main(ctx, verbosity, version, config):
     # wip.some.subcommand arguments are retrieved from ctx.params
 
     if not ctx.invoked_subcommand:
-        if version:
-            print(wip_version())
+        print(wip_version())
 
     if verbosity:
         print(wip_version())

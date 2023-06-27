@@ -106,7 +106,7 @@ def wip_add(ctx: click.Context):
 
         with messages.TaskInfo("Updating pyproject.toml"):
             with utils.PyProjectTOML("rw") as pyproject:
-                script = f"{package_name}.{cli_name}:__main__"
+                script = f"{package_name}.{cli_name}.__main__:main"
                 pyproject.toml['tool']['poetry']['scripts'][cli_name] = script
 
     # check for mkdocs documentation first
