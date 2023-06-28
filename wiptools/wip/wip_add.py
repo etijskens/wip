@@ -55,12 +55,13 @@ def wip_add(ctx: click.Context):
                    str(utils.cookiecutters() / 'module-f90')
 
         with messages.TaskInfo(f"Expanding cookiecutter template `{template}`"):
-            cookiecutter( template=template
-                        , extra_context=cookiecutter_params
-                        , output_dir=parent_module_path
-                        , no_input=True
-                        , overwrite_if_exists=True
-                        )
+            cookiecutter(
+                template=template,
+                extra_context=cookiecutter_params,
+                output_dir=parent_module_path,
+                no_input=True,
+                overwrite_if_exists=True
+            )
 
         template = (utils.cookiecutters() / 'module-py-tests' ) if flag_py  else \
                    (utils.cookiecutters() / 'module-cpp-tests') if flag_cpp else \
@@ -68,12 +69,13 @@ def wip_add(ctx: click.Context):
 
         with messages.TaskInfo(f"Expanding cookiecutter template `{template.relative_to(utils.wiptools())}`"):
             output_dir = project_path / 'tests' / parent_module_path_relative
-            cookiecutter( template=str(template)
-                        , extra_context=cookiecutter_params
-                        , output_dir=output_dir
-                        , no_input=True
-                        , overwrite_if_exists=True
-                        )
+            cookiecutter(
+                template=str(template),
+                extra_context=cookiecutter_params,
+                output_dir=output_dir,
+                no_input=True,
+                overwrite_if_exists=True
+            )
 
     elif flag_cli or flag_clisub:
 
@@ -87,23 +89,25 @@ def wip_add(ctx: click.Context):
                    (utils.cookiecutters() / 'CLIsub')
 
         with messages.TaskInfo(f"Expanding cookiecutter template `{template.relative_to(utils.wiptools())}`"):
-            cookiecutter(template=str(template)
-                         , extra_context=cookiecutter_params
-                         , output_dir=project_path / package_name
-                         , no_input=True
-                         , overwrite_if_exists=True
-                         )
+            cookiecutter(
+                template=str(template),
+                extra_context=cookiecutter_params,
+                output_dir=project_path / package_name,
+                no_input=True,
+                overwrite_if_exists=True
+            )
 
         template = (utils.cookiecutters() / 'CLI-tests') if flag_cli else \
                    (utils.cookiecutters() / 'CLIsub-tests')
 
         with messages.TaskInfo(f"Expanding cookiecutter template `{template.relative_to(utils.wiptools())}`"):
-            cookiecutter(template=str(template)
-                         , extra_context=cookiecutter_params
-                         , output_dir=project_path / 'tests' / package_name
-                         , no_input=True
-                         , overwrite_if_exists=True
-                         )
+            cookiecutter(
+                template=str(template),
+                extra_context=cookiecutter_params,
+                output_dir=project_path / 'tests' / package_name,
+                no_input=True,
+                overwrite_if_exists=True
+            )
 
         with messages.TaskInfo("Updating pyproject.toml"):
             with utils.PyProjectTOML("rw") as pyproject:
