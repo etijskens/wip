@@ -26,6 +26,8 @@ mkdocs = "^1.4.3"
 mkdocstrings = {extras = ["python"], version = "^0.22.0"}
 mkdocs-material = "^9.1.16"
 mkdocs-autorefs = "^0.4.1"
+mkdocs-click = "^0.8.0"
+mkdocs-bootswatch = "^1.1"
 
 
 [tool.poetry.group.doc.dependencies]

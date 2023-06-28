@@ -531,6 +531,35 @@ Markdown = ">=3.3"
 mkdocs = ">=1.1"
 
 [[package]]
+name = "mkdocs-bootswatch"
+version = "1.1"
+description = "Bootswatch themes for MkDocs"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "mkdocs-bootswatch-1.1.tar.gz", hash = "sha256:cc999ba15a3ce2a46eab35fcaabea9907f5c74bc49e79d9c866b51d4b0fa7f33"},
+    {file = "mkdocs_bootswatch-1.1-py2.py3-none-any.whl", hash = "sha256:9cc2c8431a26026eba096c55abe7dd054de7881312ca8fc948c4a6a0da25840c"},
+]
+
+[package.dependencies]
+mkdocs = ">=1.1"
+
+[[package]]
+name = "mkdocs-click"
+version = "0.8.0"
+description = "An MkDocs extension to generate documentation for Click command line applications"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "mkdocs_click-0.8.0-py3-none-any.whl", hash = "sha256:f9c26d4abd505bca4113d1529d03d1ae709a68a82fc364db289634788d029353"},
+    {file = "mkdocs_click-0.8.0.tar.gz", hash = "sha256:965f38231eb04d8c980406c5ab4becf7303ef3ffc68fdb29be91927eff1adfbe"},
+]
+
+[package.dependencies]
+click = ">=8.1,<9.0"
+markdown = "==3.*"
+
+[[package]]
 name = "mkdocs-material"
 version = "9.1.17"
 description = "Documentation that simply works"
@@ -1052,4 +1081,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "6ae632cc203a0bb42fca3fc6b4caf6b690b7260a70b4ba7b6ed40e4305edd0aa"
+content-hash = "dbf2a06dae0a5a85ac020324aa5ca094eb6708516ed24a239c1d9a9d8f8f93d8"
