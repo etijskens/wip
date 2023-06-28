@@ -30,11 +30,12 @@ def wip_add(ctx: click.Context):
     cookiecutter_params = utils.read_wip_cookiecutter_json()
     project_path = Path.cwd()
     package_name = cookiecutter_params['package_name']
-    component = ctx.params['component'] # path to module relative to package directory
+    name = ctx.params['name'] # path to module relative to package directory
+    module_path = project_path / package_name / name
+    if module_path.is_dir():
+        messages.error_message(f"Package {package_name} already contains a component {name}")
 
     if flag_py or flag_cpp or flag_f90:
-
-        module_path = project_path / package_name / component
         module_name = module_path.name
         parent_module_path = module_path.parent
         parent_module_path_relative = parent_module_path.relative_to(project_path)
@@ -76,7 +77,7 @@ def wip_add(ctx: click.Context):
 
     elif flag_cli or flag_clisub:
 
-        cli_name = component
+        cli_name = name
 
         cookiecutter_params.update(
             {'cli_name': cli_name}

@@ -35,7 +35,7 @@ mkdocs-video = "^1.5.0"
 python-markdown-math = "^0.8"
 
 [tool.poetry.scripts]
-wip = "wiptools.wip.__main__:main"
+wip = "wiptools.wip.__main__:wip"
 
 [build-system]
 requires = ["poetry>=0.12"]

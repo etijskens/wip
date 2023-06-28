@@ -1,14 +1,24 @@
+# ------------------------------------
+# Generating documentation with mkdocs
 # configuration for documentation generation with mkdocs
 # see the help text at the end of the file
-site_name: wiptools-wip
+
+# For details check out https://realpython.com/python-project-documentation-with-mkdocs/
+# In the project folder, generally (but not necessarily) using the project's virtual environment:
+#   (.venv) > mkdocs serve
+# This command builds a development version of your documentation and makes it available locally
+# in your browser at http://127.0.0.1:8000.
+# To build a static `site/` documentation:
+#   (.venv) > mkdocs build
+# To deploy your documenation on GitHub
+#   (.venv) > mkdocs gh-deploy
+#   INFO - Your documentation should shortly be available at:
+#          https://etijskens.github.io/wiptools-wip/
+
+site_name: wiptools
 
 theme:
   name: lumen
-
-nav:
-  - index.md
-  - overview.md
-  - api-reference.md
 
 markdown_extensions:
     - markdown.extensions.admonition
@@ -25,17 +35,9 @@ plugins:
   - mkdocstrings
   - mkdocs-video
 
-# ------------------------------------
-# Generating documentation with mkdocs
-# ------------------------------------
-# For details check out https://realpython.com/python-project-documentation-with-mkdocs/
-# In the project folder, generally (but not necessarily) using the project's virtual environment:
-#   (.venv) > mkdocs serve
-# This command builds a development version of your documentation and makes it available locally
-# in your browser at http://127.0.0.1:8000.
-# To build a static `site/` documentation:
-#   (.venv) > mkdocs build
-# To deploy your documenation on GitHub
-#   (.venv) > mkdocs gh-deploy
-#   INFO - Your documentation should shortly be available at:
-#          https://etijskens.github.io/wiptools-wip/
+nav:
+  - Home: index.md
+  - overview.md
+  - user-guide.md
+  - api-reference.md
+

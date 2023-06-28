@@ -1,4 +1,4 @@
-# The wiptools-wip package
+# The wiptools package
 
 Python project skeleton and management
 

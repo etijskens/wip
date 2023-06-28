@@ -18,10 +18,12 @@ Wiptools provides:
   and virtual environments, publishing on [PyPI](https://pypi.org)
 - version management with [bump2version](https://github.com/c4urself/bump2version)
 - adding subcomponents 
-  - Python (sub)modules
-  - binary extension modules in C++ with [nanobind](https://nanobind.readthedocs.io/en/latest/))
-    and Fortran with [f2py](https://numpy.org/doc/stable/f2py/)
-  - command line interfaces with [click](https://click.palletsprojects.com/en/), 
-    single command and with subcommands
+    - Python (sub)modules
+    - binary extension modules in C++ with [nanobind](https://nanobind.readthedocs.io/en/latest/))
+      and Fortran with [f2py](https://numpy.org/doc/stable/f2py/)
+    - command line interfaces with [click](https://click.palletsprojects.com/en/), 
+      single command and with subcommands
+- test templates for all added components and pytest integration
 - documentation generation with [mkdocs](https://www.mkdocs.org) or 
   [sphinx](https://www.sphinx-doc.org/en/master/) (to be implemented)
+

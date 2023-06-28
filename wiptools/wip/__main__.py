@@ -26,45 +26,43 @@ def wip_version():
              , help="The verbosity of the program output."
              )
 @click.option('--version'
-             , help="print wiptools version."
+             , help="Print the wiptools version number."
              , is_flag=True
              )
 @click.option('--config', default=Path.home() / '.wip' / 'config.json', type=Path
-             , help='location of config.file. If it does not exist, the config file is '
-                    'created, otherwise it is kept without modification (i.e. missing '
-                    'parameters are not stored).'
+             , help='The location (path) of the config.file containing developer information (name, e-mail address, '
+                    'GitHub username, GitHub personal access token). If it does not exist, the application creates the '
+                    'file, asks for missing the information and stores it in the file. If the file exists, it is kept '
+                    'without modification (i.e. missing parameters supplied by the user are not stored).'
              )
 @click.pass_context
-def main(ctx, verbosity, version, config):
+def wip(ctx, verbosity, version, config):
     """Command line interface wip.
     """
-    # wip.main arguments are retrieved from ctx.parent.params
-    # wip.some.subcommand arguments are retrieved from ctx.params
-
     if not ctx.invoked_subcommand:
         print(wip_version())
 
     if verbosity:
         print(wip_version())
 
-@main.command()
+@wip.command()
 @click.argument('project_name')
 @click.option('--python-version', default=''
-             , help='minimal Python version'
+             , help='The minimal Python version for the project.'
              )
 @click.option('--description', '-d', default=''
-             , help='short description of project'
+             , help='A short description of project.'
              )
 @click.option('--remote-visibility'
-             , help="Option for creating a remote GitHub repo with visibility `public` (default) or `private`. "
-                    "If `none` is specified no remote is created. The option is case-insensitive."
+             , help="Create a remote GitHub repo with visibility 'public' (default) or 'private'. "
+                    "If 'none' is specified no remote is created. This option is case-insensitive."
              , default='public'
              )
 @click.option('--md', is_flag=True
-             , help='Add documentation templates (markdown format) to this project. (This is the default case).'
+             , help='Add documentation templates in Markdown format to this project. (This is the default case).'
              )
 @click.option('--rst', is_flag=True
-             , help='Add documentation templates (restructuredText format) to this project.'
+             , help='Add documentation templates in restructuredText format to this project.'
              )
 @click.pass_context
 def init( ctx
@@ -75,7 +73,7 @@ def init( ctx
         , md: bool
         , rst: bool
         ):
-    """Initialize a new project.
+    """Initialize a new project skeleton.
 
     The creation of a remote GitHub repo requires a GitHub username and
     a personal access token with `repo` and `read:org` permissions.
@@ -95,13 +93,14 @@ def init( ctx
     wip_init(ctx)
 
 
-@main.command()
+@wip.command()
 @click.pass_context
 def env(ctx):
     """Check the environment for needed components."""
     wip_env(ctx)
 
-@main.command()
+
+@wip.command()
 @click.option('--md', is_flag=True
              , help='Add documentation templates (markdown format) to this project. (This is the default case).'
              )
@@ -114,42 +113,43 @@ def docs(ctx, md, rst):
     wip_docs(ctx)
 
 
-@main.command()
-@click.argument('component')
+@wip.command()
+@click.argument('name')
 @click.option('--py', is_flag=True
              , help='Add a Python submodule to the project.'
              )
 @click.option('--cli', is_flag=True
-             , help='Add a Python CLI to the project.'
+             , help='Add a Python CLI (with a single command) to the project.'
              )
 @click.option('--clisub', is_flag=True
              , help='Add a Python CLI with subcommands to the project.'
              )
 @click.option('--cpp', is_flag=True
-             , help='Add a C++ binary extension module to the project (using nanobind).'
+             , help='Add a C++ binary extension module to the project (building requires nanobind and CMake).'
              )
 @click.option('--f90', is_flag=True
-             , help='Add a Modern Fortran binary extension module to the project (using numpy.f2py).'
+             , help='Add a Modern Fortran binary extension module to the project (building requires numpy.f2py and CMake).'
              )
 @click.pass_context
-def add(ctx, component, py, cpp, f90, cli, clisub):
+def add(ctx, name, py, cpp, f90, cli, clisub):
     """Add components, such as submodules and CLIs, to the project.
 
     Args:
-        component: If the component is a submodule, a submodule name preceeded with a path relative to the package, must
-            be supplied. For CLIs only the name must be supplied, as the path is fixed and autmatically supplied.
+        name: For submodules the name can contain a path to an already existion component relative to the package
+            directory. CLI names must not contain a path, only a name.
     """
     wip_add(ctx)
 
 
-@main.command()
+@wip.command()
 @click.pass_context
 def info(ctx):
-    """Provide info about the project's structure."""
+    """List info about the project's structure."""
 
     wip_info(ctx)
 
-@main.command()
+
+@wip.command()
 @click.argument('component', default='')
 @click.option('--cpp', is_flag=True, default=False
              , help='Build all C++ binary extension modules.'
@@ -162,11 +162,11 @@ def build(ctx, component: str, f90: bool, cpp: bool):
     """Build binary extension modules.
 
     Args:
-        component: Component to build, path to component, relattive to package directory.
+        component: Path to the component to build, relative to package directory.
     """
 
     wip_build(ctx)
 
 
 if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
+    sys.exit(wip())  # pragma: no cover
