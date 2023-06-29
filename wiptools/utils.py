@@ -202,6 +202,7 @@ def docs_format() -> str:
     else:
         return ''
 
+
 def component_type(path_to_component):
     """return the type of a component directory."""
     if list(path_to_component.glob('*.cpp')):
@@ -211,7 +212,7 @@ def component_type(path_to_component):
     elif list(path_to_component.glob('__init__.py')):
         return 'py'
     elif list(path_to_component.glob('__main__.py')):
-        return 'cli'
+        return 'cli' # cli or cli with subcommands
     else:
         return ''
 

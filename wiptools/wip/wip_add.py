@@ -119,7 +119,7 @@ def wip_add(ctx: click.Context):
     if docs_format == 'md':
         with messages.TaskInfo("updating `docs/api-reference.md`"):
             path_to_api_reference_md = project_path / 'docs' / 'api-reference.md'
-            path_to_component = project_path / package_name / component
+            path_to_component = project_path / package_name / name
             if utils.component_type(path_to_component) == 'py':
                 with path_to_api_reference_md.open(mode="a") as fp:
                     p = str(path_to_component.relative_to(project_path)).replace(os.sep, '.')

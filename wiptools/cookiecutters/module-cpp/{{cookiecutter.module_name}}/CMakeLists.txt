@@ -19,7 +19,7 @@ find_package(nanobind CONFIG REQUIRED)
 nanobind_add_module({{cookiecutter.module_name}} {{cookiecutter.module_name}}.cpp)
 
 # install the module
-install(TARGETS {{cookiecutter.module_name}} DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}")
+install(TARGETS {{cookiecutter.module_name}} DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
 # generate/build/install _cmake_build directory
 # > cmake -S . -B _cmake_build

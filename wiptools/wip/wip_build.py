@@ -13,22 +13,24 @@ def wip_build(ctx: click.Context):
     """build binary extensions"""
 
     cookiecutter_params = utils.read_wip_cookiecutter_json()
-    component = ctx.params['component']
-    cpp_flag =  ctx.params['cpp']
-    f90_flag =  ctx.params['f90']
+    component =  ctx.params['component']
 
     build = BinaryExtensionBuilder(cookiecutter_params)
 
     if component:
-        # ignore language flags if set.
-        if f90_flag:
-            messages.warning_message("ignoring '--f90' flag")
-        if f90_flag:
-            messages.warning_message("ignoring '--cpp' flag")
+        component = Path(cookiecutter_params['project_path']) / cookiecutter_params['package_name'] / component
+        component_type = utils.component_type(component)
+        # command line language flags are ignored
+        if component_type == 'cpp':
+            build.cpp_flag = True
+        elif component_type == 'f90':
+            build.f90_flag ==True
 
         build(component)
         
     else:
+        cpp_flag = ctx.params['cpp']
+        f90_flag = ctx.params['f90']
         if not cpp_flag and not f90_flag:
             # No language flags set, and no component selected, hence build all binary components
             build.cpp_flag = build.f90_flag = True
@@ -56,6 +58,7 @@ class BinaryExtensionBuilder:
         language = 'C++'            if (component_type == 'cpp' and self.cpp_flag) else \
                    'Modern Fortran' if (component_type == 'f90' and self.f90_flag) else \
                    None
+        print(language)
         if language:
             with messages.TaskInfo(
                 f"Building {language} binary extension `{path_to_component.relative_to(self.cookiecutter_params['project_path'])}`"

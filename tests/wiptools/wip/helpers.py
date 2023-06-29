@@ -10,7 +10,7 @@ import uuid
 from click.testing import CliRunner
 
 import wiptools
-from wiptools.cli.wip import main as wip_main
+from wiptools.wip.__main__ import wip as wip_main
 
 
 def test_workspace(clear: bool = False):
