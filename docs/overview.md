@@ -27,3 +27,7 @@ Wiptools provides:
 - documentation generation with [mkdocs](https://www.mkdocs.org) or 
   [sphinx](https://www.sphinx-doc.org/en/master/) (to be implemented)
 
+## Links
+
+ - [Wiptools GitHub repository](https://github.com/etijskens/wiptools)
+ - [Wiptools homepage](https://etijskens.github.io/wiptools)

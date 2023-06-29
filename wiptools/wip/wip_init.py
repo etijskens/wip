@@ -86,9 +86,9 @@ def wip_init(ctx: click.Context):
     if not add_docs:
         # ask the user if we must configure the project for documentation generation:
         answer = messages.ask("Add documentation templates? press \n"
-                              "  [enter] for no,\n"
                               "  [m] for markdown format,\n"
                               "  [r] for restructuredText format"
+                              "  (leave empty for none)\n"
                              , default=''
                              )
         if answer:
