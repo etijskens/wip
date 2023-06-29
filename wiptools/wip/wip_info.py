@@ -29,6 +29,9 @@ def wip_info(ctx: click.Context):
     print(f"Home page  : {'--' if not homepage else homepage}")
     print(f"Location   : {project_path}")
 
+    if ctx.params['short']:
+        return
+
     # Package structure
     click.secho(f"\nStructure of Python package {package_name}", fg='bright_blue')
     paths = DisplayablePath.make_tree(

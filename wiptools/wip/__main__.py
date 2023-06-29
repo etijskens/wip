@@ -142,8 +142,11 @@ def add(ctx, name, py, cpp, f90, cli, clisub):
 
 
 @wip.command()
+@click.option('--short', '-s', default=False, is_flag=True
+             , help='List short project info (suppress project tree).'
+             )
 @click.pass_context
-def info(ctx):
+def info(ctx, short):
     """List info about the project's structure."""
 
     wip_info(ctx)
