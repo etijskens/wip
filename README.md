@@ -1,6 +1,6 @@
 # Python package wiptools
 
-Python project skeleton and management.
+Python project skeleton set up and management.
 
 ## Quick start
 

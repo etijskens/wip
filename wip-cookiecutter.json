@@ -2,8 +2,8 @@
   "full_name": "Bert Tijskens",
   "email_address": "engelbert.tijskens@uantwerpen.be",
   "github_username": "etijskens",
-  "project_name": "wiptools-wip",
+  "project_name": "wiptools",
   "package_name": "wiptools",
-  "project_short_description": "Python project skeleton and management",
+  "project_short_description": "Python project skeleton set up and management",
   "minimal_python_version": "3.9"
 }
