@@ -189,7 +189,11 @@ def remote(ctx: click.Context, private: bool):
 @click.argument('args', type=str, default='')
 @click.pass_context
 def bump(ctx: click.Context, args: str):
-    """Bump2version wrapper."""
+    """Bump2version wrapper.
+
+    Args:
+        args: a quoted str containing the bump2version arguments.
+    """
 
     wip_bump(ctx)
 

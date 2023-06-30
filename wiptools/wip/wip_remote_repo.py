@@ -2,20 +2,26 @@
 
 from pathlib import Path
 
+import click
+
 import wiptools.messages as messages
 import wiptools.utils as utils
 
 
-def wip_remote_repo(ctx):
-    """"""
+def wip_remote_repo(ctx:click.Context):
+    """Add a remote Github repo."""
+
+    # Retrieve github_username
     cookiecutter_params = utils.read_wip_cookiecutter_json()
     github_username = cookiecutter_params['github_username']
+
     remote_visibility = 'private' if ctx.params['private'] else 'public'
+
     add_remote(github_username, remote_visibility)
 
 
-def add_remote(github_username,remote_visibility):
-    """."""
+def add_remote(github_username:str, remote_visibility: str):
+    """Add a remote GitHub repo."""
     if not github_username:
         messages.warning_message("A GitHub username must be supplied to create remote GitHub repositories.")
         return

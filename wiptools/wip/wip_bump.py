@@ -9,7 +9,7 @@ import wiptools.utils as utils
 
 
 def wip_bump(ctx: click.Context):
-    """Bump2version wrapper"""
+    """Bump2version wrapper."""
 
     cookiecutter_params = utils.read_wip_cookiecutter_json()
     project_name = cookiecutter_params['project_name']
