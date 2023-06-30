@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-import json
-from pathlib import Path
-import shutil
-import subprocess
 
-import click
+from pathlib import Path
 
 import wiptools.messages as messages
 import wiptools.utils as utils
@@ -39,4 +35,4 @@ def add_remote(github_username,remote_visibility):
                 ('gh auth login --with-token', {'stdin': fd_pat, 'text': True}),
                 f'gh repo create --source . --{remote_visibility} --push'
             ]
-            utils.subprocess_run_cmds(cmds)
+            utils.subprocess_run_cmds(cmds, relative_to=Path.cwd().parent)

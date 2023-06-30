@@ -16,10 +16,14 @@ def warning_message(message:str, return_code:int = 0):
         click.secho(f"WARNING: exiting ({return_code=})", fg='red')
         sys.exit(return_code)
 
+def info_message(message: str):
+    click.secho(f"\n{message}", fg='green')
+
 class TaskInfo:
     """Context manager class for printing a message before and after a task """
-    def __init__(self, message: str, fg='green'):
+    def __init__(self, message: str, end_message:str = '', fg='bright_black'):
         self.message = message
+        self.end_message = end_message if end_message else message
         self.fg = fg
     def __enter__(self):
         click.secho(f"\n[[{self.message}...", fg=self.fg)
@@ -27,7 +31,7 @@ class TaskInfo:
         if exc_value:
             click.secho(f"]] (FAILED {self.message})", fg='red')
         else:
-            click.secho(f"]] (done {self.message})", fg=self.fg)
+            click.secho(f"]] (done {self.end_message})", fg=self.fg)
 
 
 def ask(question: str, type=str, default=None):

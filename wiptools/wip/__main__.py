@@ -12,6 +12,7 @@ import click
 
 import wiptools
 from wiptools.wip.wip_add   import wip_add
+from wiptools.wip.wip_bump  import wip_bump
 from wiptools.wip.wip_build import wip_build
 from wiptools.wip.wip_docs  import wip_docs
 from wiptools.wip.wip_env   import wip_env
@@ -182,6 +183,17 @@ def remote(ctx: click.Context, private: bool):
     """Add a remote GitHub repo."""
 
     wip_remote_repo(ctx)
+
+
+@wip.command()
+@click.argument('args', type=str, default='')
+@click.pass_context
+def bump(ctx: click.Context, args: str):
+    """Bump2version wrapper."""
+
+    wip_bump(ctx)
+
+
 
 
 if __name__ == "__main__":

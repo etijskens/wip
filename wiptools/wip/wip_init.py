@@ -8,7 +8,7 @@ import click
 from cookiecutter.main import cookiecutter
 
 from wiptools.wip.wip_docs import wip_docs
-from wiptools.wip.wip_remote_repo import wip_remote
+from wiptools.wip.wip_remote_repo import wip_remote_repo
 import wiptools.messages as messages
 import wiptools.utils as utils
 
@@ -120,7 +120,7 @@ def wip_init(ctx: click.Context):
                    , 'git add .gitignore'
                    ,f'git commit -m "Initial commit from wip init {project_name}"'
                    ]
-            utils.subprocess_run_cmds(cmds)
+            utils.subprocess_run_cmds(cmds, relative_to=Path.cwd().parent)
 
         # Verify necessary conditions for creating a remote GitHub repo :
         remote_visibility = ctx.params['remote'].lower()
@@ -134,5 +134,5 @@ def wip_init(ctx: click.Context):
         if remote_visibility.lower() == 'none':
             messages.warning_message('No remote repository created (--remote=none).')
         else: # public|private
-            wip_remote(github_username, remote_visibility)
+            wip_remote_repo(github_username, remote_visibility)
 

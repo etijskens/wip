@@ -144,23 +144,35 @@ def subprocess_run_cmds(
                    , Tuple[str,dict]        # a (command string, kwargs) pair
                    , List[Union[str,Tuple[str,dict]]]  # a list of the above
                    ],
+        relative_to = None
     ):
     """Run a series of commands using subprocess.run, optionally with kwargs, and exit on failure."""
 
     if isinstance(cmds, (str, tuple)):
         cmds = [cmds]
 
+    cwd = Path.cwd() if not relative_to else Path.cwd().relative_to(relative_to)
     for cmd in cmds:
         if isinstance(cmd, str):
             # a command without kwargs
             command = cmd
-            with messages.TaskInfo(f"Running `{command}` in directory {Path.cwd()}"):
+            msg = f"Running `{command}`"
+
+            with messages.TaskInfo(
+                f"{msg}` in directory '{cwd}' ",
+                end_message=msg
+            ):
                 completed_process = subprocess.run(command, shell=True)
         else:
             # a command with kwargs
             command = cmd[0]
+            msg = f"Running `{command} {kwargs=}`"
+
             kwargs  = cmd[1]
-            with messages.TaskInfo(f"Running `{command} {kwargs=}` in directory {Path.cwd()}"):
+            with messages.TaskInfo(
+                f"{msg} in directory '{cwd}' ",
+                end_message=msg
+            ):
                 completed_process = subprocess.run(command, shell=True, **kwargs, )
 
         if completed_process.returncode:

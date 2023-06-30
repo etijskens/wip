@@ -51,6 +51,7 @@ class BinaryExtensionBuilder:
         self.cookiecutter_params = cookiecutter_params
         self.f90_flag = False
         self.cpp_flag = False
+        self.relative_to = Path().cwd().parent
 
     def __call__(self, path_to_component: Path):
         """Build this component's binary extension module."""
@@ -73,4 +74,4 @@ class BinaryExtensionBuilder:
             "cmake --install _cmake_build"
         ]
         with utils.in_directory(path_to_component):
-            utils.subprocess_run_cmds(cmds)
+            utils.subprocess_run_cmds(cmds, relative_to=self.relative_to)
