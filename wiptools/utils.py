@@ -86,8 +86,8 @@ def get_config(config_path: Path, needed: dict = {}) -> dict:
     """Get cookiecutter parameters from a config file and prompt for missing parameters.
 
     Args:
-        config_path: path to config file. If it does not exist, the user is prompted for all needed parameters
-            and the answers are saved to config_path.
+        config_path: path to config file with developer info. If it does not exist, the user is prompted for all
+            needed parameters and the answers are saved to config_path.
 
         needed: (key, kwargs) pairs. Each key is the name of a needed parameter, and kwargs is a dict passed as
             messages.ask(**kwargs) to prompt the user for parameters missing from the config file in config_path.

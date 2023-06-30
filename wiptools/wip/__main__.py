@@ -17,6 +17,7 @@ from wiptools.wip.wip_docs  import wip_docs
 from wiptools.wip.wip_env   import wip_env
 from wiptools.wip.wip_info  import wip_info
 from wiptools.wip.wip_init  import wip_init
+from wiptools.wip.wip_remote_repo  import wip_remote_repo
 
 def wip_version():
     return f"wip CLI v{wiptools.__version__}"
@@ -29,14 +30,15 @@ def wip_version():
              , help="Print the wiptools version number."
              , is_flag=True
              )
-@click.option('--config', default=Path.home() / '.wip' / 'config.json', type=Path
-             , help='The location (path) of the config.file containing developer information (name, e-mail address, '
+@click.option('--config', default=Path.home() / '.wiptools' / 'config.json'
+             , type=Path
+             , help='The location (path) of the config.file with developer information (name, e-mail address, '
                     'GitHub username, GitHub personal access token). If it does not exist, the application creates the '
                     'file, asks for missing the information and stores it in the file. If the file exists, it is kept '
                     'without modification (i.e. missing parameters supplied by the user are not stored).'
              )
 @click.pass_context
-def wip(ctx, verbosity, version, config):
+def wip(ctx: click.Context, verbosity, version, config):
     """Command line interface wip.
     """
     if not ctx.invoked_subcommand:
@@ -53,7 +55,7 @@ def wip(ctx, verbosity, version, config):
 @click.option('--description', '-d', default=''
              , help='A short description of project.'
              )
-@click.option('--remote-visibility'
+@click.option('--remote'
              , help="Create a remote GitHub repo with visibility 'public' (default) or 'private'. "
                     "If 'none' is specified no remote is created. This option is case-insensitive."
              , default='public'
@@ -69,7 +71,7 @@ def init( ctx
         , project_name: str
         , python_version: str
         , description: str
-        , remote_visibility: str
+        , remote: str
         , md: bool
         , rst: bool
         ):
@@ -108,7 +110,7 @@ def env(ctx):
              , help='Add documentation templates (restructuredText format) to this project.'
              )
 @click.pass_context
-def docs(ctx, md, rst):
+def docs(ctx: click.Context, md, rst):
     """Add documentation to the project."""
     wip_docs(ctx)
 
@@ -131,7 +133,7 @@ def docs(ctx, md, rst):
              , help='Add a Modern Fortran binary extension module to the project (building requires numpy.f2py and CMake).'
              )
 @click.pass_context
-def add(ctx, name, py, cpp, f90, cli, clisub):
+def add(ctx: click.Context, name, py, cpp, f90, cli, clisub):
     """Add components, such as submodules and CLIs, to the project.
 
     Args:
@@ -146,7 +148,7 @@ def add(ctx, name, py, cpp, f90, cli, clisub):
              , help='List short project info (suppress project tree).'
              )
 @click.pass_context
-def info(ctx, short):
+def info(ctx: click.Context, short):
     """List info about the project's structure."""
 
     wip_info(ctx)
@@ -161,7 +163,7 @@ def info(ctx, short):
              , help='Build all Modern Fortran binary extension modules.'
              )
 @click.pass_context
-def build(ctx, component: str, f90: bool, cpp: bool):
+def build(ctx: click.Context, component: str, f90: bool, cpp: bool):
     """Build binary extension modules.
 
     Args:
@@ -169,6 +171,17 @@ def build(ctx, component: str, f90: bool, cpp: bool):
     """
 
     wip_build(ctx)
+
+
+@wip.command()
+@click.option('--private', is_flag=True, default=False
+             , help='Add a private remote GitHub repo, otherwise a public one.'
+             )
+@click.pass_context
+def remote(ctx: click.Context, private: bool):
+    """Add a remote GitHub repo."""
+
+    wip_remote_repo(ctx)
 
 
 if __name__ == "__main__":

@@ -37,8 +37,16 @@ create a private GitHub repo, or no remote repo at all.
     After creating the project skeleton, you must `cd` into your project folder to 
     apply other wip commands.
 
+!!! Tip
+    If your work requires different developer info can specify a config file: 
+    `wip init --config=personal-config.json`. If the file exists, it will retrieve 
+    the developer info from it, otherwise it will ask for new developer info and 
+    save it in the file. The default configuration file is in 
+    `$HOME/.wiptools/config.json`. Personal access tokens for GitHub are also stored 
+    there.oo
 
-### Listing project info
+
+## Listing project info
 
 Cd into the project folder (`cd foo`) and use `wip info`:
 
@@ -61,7 +69,7 @@ Structure of Python package foo
 Note that wip translates the project name `FOO` in to the PEP compliant package name
 `foo`, converting to lowercase (and replacing hyphens with underscores).
 
-### Add components
+## Add components
 
 You can add Python submodules (`--py`), C++ binary extension modules (`--cpp`) or 
 Modern Fortran binary extension modules (`--f90`), as well as CLIs with a single 
@@ -107,7 +115,7 @@ path/to/FOO > wip add foo_py/bar --cpp
 ...
 path/to/FOO > wip info
 ...
-Structure of Python package foofoo
+Structure of Python package foo
   foo [Python module]
   ├── __init__.py
   ...
@@ -137,7 +145,7 @@ On Windows. The middle part depends on the Python distribution the binary extens
 was built against, and on the operating system. 
 
 ```python
-Structure of Python package foofoo
+Structure of Python package foo
   foo [Python module]
   ├── __init__.py
   ├── foo_cli [CLI]

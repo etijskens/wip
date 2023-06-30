@@ -8,6 +8,7 @@ import click
 from cookiecutter.main import cookiecutter
 
 from wiptools.wip.wip_docs import wip_docs
+from wiptools.wip.wip_remote_repo import wip_remote
 import wiptools.messages as messages
 import wiptools.utils as utils
 
@@ -58,8 +59,9 @@ def wip_init(ctx: click.Context):
         'Enter a short description for the project:', default='<project_short_description>'
     )
     minimal_python_version = ctx.params['python_version'] if ctx.params['python_version'] else messages.ask(
-        'Enter the minimal Python version', default='3.8'
+        'Enter the minimal Python version', default='3.9'
     )
+    messages.warn_for_python_before_3_8(minimal_python_version)
 
     cookiecutter_params.update(
       { 'project_name' : project_name
@@ -87,8 +89,9 @@ def wip_init(ctx: click.Context):
         # ask the user if we must configure the project for documentation generation:
         answer = messages.ask("Add documentation templates? press \n"
                               "  [m] for markdown format,\n"
-                              "  [r] for restructuredText format"
+                              "  [r] for restructuredText format\n"
                               "  (leave empty for none)\n"
+                              " "
                              , default=''
                              )
         if answer:
@@ -102,7 +105,7 @@ def wip_init(ctx: click.Context):
         with utils.in_directory(project_path):
             wip_docs(ctx)
 
-    if not cookiecutter_params['github_username'] or ctx.params['remote_visibility']:
+    if not cookiecutter_params['github_username'] or ctx.params['remote']:
         with utils.in_directory(project_path):
             with utils.PyProjectTOML("rw") as pyproject:
                 pyproject.toml['tool']['poetry']['repository'] = r""
@@ -120,7 +123,7 @@ def wip_init(ctx: click.Context):
             utils.subprocess_run_cmds(cmds)
 
         # Verify necessary conditions for creating a remote GitHub repo :
-        remote_visibility = ctx.params['remote_visibility'].lower()
+        remote_visibility = ctx.params['remote'].lower()
         if not remote_visibility in ['public', 'private', 'none']:
             messages.error_message(
                 f"ERROR: --remote={remote_visibility} is not a valid option. Valid options are:\n"
@@ -128,25 +131,8 @@ def wip_init(ctx: click.Context):
                 f"       --remote=private\n"
                 f"       --remote=none\n"
             )
-        if remote_visibility.lower() != 'none':
-            if not github_username:
-                messages.warning_message("A GitHub username must be supplied to create remote GitHub repositories.")
-                return
-
-            # Find .pat file (personal access token)
-            pat_file = utils.pat(github_username)
-            if not pat_file.is_file():
-                messages.error_message(f"No personal access token (PAT) for `github.com/{github_username}` found at \n"
-                                       f"`{pat_file}`. (A PAT is needed to access your GitHub account).\n"
-                                       f"The remote GitHub repo `github.com/{github_username}/{project_name}` cannot be created."
-                                      )
-
-            # Create remote GitHub repo:
-            with messages.TaskInfo('Creating a remote GitHub repo'):
-                with open(pat_file) as fd_pat:
-                    cmds = [
-                        ('gh auth login --with-token', {'stdin': fd_pat, 'text': True}),
-                        f'gh repo create --source . --{remote_visibility} --push'
-                    ]
-                    utils.subprocess_run_cmds(cmds)
+        if remote_visibility.lower() == 'none':
+            messages.warning_message('No remote repository created (--remote=none).')
+        else: # public|private
+            wip_remote(github_username, remote_visibility)
 
