@@ -16,6 +16,9 @@ new project. Wip will ask you for missing info and remember it.
     When creating a GitHub personal access token for use with wip, make sure that 
     you check the scopes `repo` and `read:org`.
 
+Wip builds on other tools. You can test your environment for their presence with 
+`wip env`.
+
 ## Create a new skeleton 
 
 Use the command `wip init <project_name>`. This will create the project in the folder 
@@ -162,7 +165,17 @@ You can build a single binary extension by specifiyng its path:
 ```python
 path/to/FOO > wip build foo_py/bar
 ```
-or build all C++/Fortran binary extensions `wip build --cpp|--f90`.
+or build all C++/Fortran binary extensions using `wip build --cpp|--f90`.
+
+## Documentation
+
+For small projects, we recommend writing down the documentation in `README.md`. 
+Larger projects with submodules or CLIs are more conveniently documented with 
+[mkdocs](https://mkdocs.org), using the [Markdown](https://www.markdownguide.org) 
+format, or [sphinx](https//sphinx-doc.org) using the 
+[restructuredText](https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html). 
+When creating a new project, wip asks for a documentation format. If you choose none, 
+you can always add the necessary documentation templates running `wip docs [--md|--rst]`
 
 ## Links
 
