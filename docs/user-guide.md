@@ -56,7 +56,7 @@ Structure of Python package foo
   └── __init__.py
 ```
 Note that wip translates the project name `FOO` in to the PEP compliant package name
-`foo`.
+`foo`, converting to lowercase (and replacing hyphens with underscores).
 
 ### Add components
 
@@ -103,20 +103,66 @@ package folder), e.g. to add a C++ binary extension module to the `foo_py` submo
 path/to/FOO > wip add foo_py/bar --cpp
 ...
 path/to/FOO > wip info
-``Structure of Python package foofoo
+...
+Structure of Python package foofoo
   foo [Python module]
   ├── __init__.py
-...
-  │   ├── foo_f90.f90
-  │   └── foo_f90.md
+  ...
   └── foo_py [Python module]
       ├── __init__.py
       └── bar [C++ binary extension module]
           ├── bar.cpp
           └── bar.md
-`
+```
 
-To build the binary extension modules use the `wip build` command 
+To build the binary extension modules use the `wip build` command. This builds all
+binary extension modules and installs them in the parent of the submodule folder. 
+Hence, they can be imported using the path you specified when you added it. E.g. a
+client script could import these modules as:
+
+```python
+import foo            # the foo package
+import foo.foo_cpp    # the foo_cpp submodule (C++ binary extension) 
+import foo.foo_f90    # the foo_f90 submodule (Fortran binary extension)
+import foo.foo_py     # the foo_py submodule
+import foo.foo_py.bar # the bar subsubmodule in the foo_py submodule
+``` 
+
+I the build process was successful, will see some dynamic libraries in the directory 
+tree. On Linux and MacOS these have the `.so` (shared objecrt) extension and `.dll` 
+On Windows. The middle part depends on the Python distribution the binary extension 
+was built against, and on the operating system. 
+
+```python
+Structure of Python package foofoo
+  foo [Python module]
+  ├── __init__.py
+  ├── foo_cli [CLI]
+  │   └── __main__.py
+  ├── foo_clisub [CLI]
+  │   └── __main__.py
+  ├── foo_cpp.cpython-39.darwin.so
+  ├── foo_cpp [C++ binary extension module]
+  │   ├── foo_cpp.cpp
+  │   └── foo_cpp.md
+  ├── foo_f90.cpython-39.darwin.so
+  ├── foo_f90 [Modern Fortran binary extension module]
+  │   ├── foo_f90.f90
+  │   └── foo_f90.md
+  └── foo_py [Python module]
+      ├── __init__.py
+      └── bar.cpython-39.darwin.so
+      └── bar [C++ binary extension module]
+          ├── bar.cpp
+          └── bar.md
+```
+
+You can build a single binary extension by specifiyng its path:
+
+```python
+path/to/FOO > wip build foo_py/bar
+```
+or build all C++/Fortran binary extensions `wip build --cpp|--f90`.
 
 ## Links
 

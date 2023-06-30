@@ -43,9 +43,9 @@ def wip_info(ctx: click.Context):
 
 def criteria(path: Path):
     if path.is_dir():
-        return path.name != '__pycache__'
+        return path.name != '__pycache__' and path.name != '_cmake_build'
     else:
-        return path.suffix in ['.py', '.cpp', '.f90', '.md', 'rst']
+        return path.suffix in ['.py', '.cpp', '.f90', '.md', 'rst', '.so']
 
 
 class DisplayablePath:
@@ -72,7 +72,17 @@ class DisplayablePath:
         if self.path.is_dir():
             component_string = utils.component_string(self.path)
             return click.style(component_string, fg='blue')
+
+        if self.is_shared_object():
+            dot = self.path.name.find('.')
+            stem = self.path.name[:dot]
+            sufx = self.path.name[dot:]
+            return click.style(stem, fg='blue') + click.style(sufx, fg='cyan')
+
         return click.style(self.path.name, fg='cyan')
+
+    def is_shared_object(self):
+        return self.path.suffix in ('.so', '.dll', '.dylib')
 
     @classmethod
     def make_tree( cls,
