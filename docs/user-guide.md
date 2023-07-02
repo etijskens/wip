@@ -43,7 +43,12 @@ create a private GitHub repo, or no remote repo at all.
     the developer info from it, otherwise it will ask for new developer info and 
     save it in the file. The default configuration file is in 
     `$HOME/.wiptools/config.json`. Personal access tokens for GitHub are also stored 
-    there.oo
+    there.
+
+!!! Note
+    If you choose to not create a remote GitHub repo (e.g. because you have no 
+    internet connection), you can always add it later with `wip remote [--private]`.
+) 
 
 
 ## Listing project info
@@ -184,6 +189,38 @@ format, or [sphinx](https//sphinx-doc.org) using the
 [restructuredText](https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html). 
 When creating a new project, wip asks for a documentation format. If you choose none, 
 you can always add the necessary documentation templates running `wip docs [--md|--rst]`
+
+## Version management
+
+Wip relies on [bump2version](https://pypi.org/project/bump2version/) for version 
+management. Newly created project have a `bumpversion.cfg` file. The `bumpversion` 
+command can directly be used, e.g.: `bump[2]version major|minor|patch|release`. 
+There is also a wip subcommand `wip bump` that wraps the `bumpversion` command and 
+lists information about the previous and the new version:
+
+```shell
+path/to/FOO > bumpversion patch
+path/to/FOO > wip bump patch
+
+[[Running `bump2version patch`` in directory 'oops' ...
+]] (done Running `bump2version patch`)
+
+oops v0.0.1-dev -> v0.0.2-dev
+
+path/to/FOO > wip bump release
+
+[[Running `bump2version release`` in directory 'oops' ...
+]] (done Running `bump2version release`)
+
+oops v0.0.2-dev -> v0.0.2
+
+> wip bump minor
+
+[[Running `bump2version minor`` in directory 'oops' ...
+]] (done Running `bump2version minor`)
+
+oops v0.0.2 -> v0.1.0-dev
+```
 
 ## Links
 
