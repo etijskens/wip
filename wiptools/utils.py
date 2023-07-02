@@ -144,8 +144,9 @@ def subprocess_run_cmds(
                    , Tuple[str,dict]        # a (command string, kwargs) pair
                    , List[Union[str,Tuple[str,dict]]]  # a list of the above
                    ],
-        relative_to = None
-    ):
+        relative_to = None,
+        short = False
+        ):
     """Run a series of commands using subprocess.run, optionally with kwargs, and exit on failure."""
 
     if isinstance(cmds, (str, tuple)):
@@ -160,7 +161,8 @@ def subprocess_run_cmds(
 
             with messages.TaskInfo(
                 f"{msg}` in directory '{cwd}' ",
-                end_message=msg
+                end_message=msg,
+                short=short
             ):
                 completed_process = subprocess.run(command, shell=True)
         else:
@@ -171,7 +173,8 @@ def subprocess_run_cmds(
             kwargs  = cmd[1]
             with messages.TaskInfo(
                 f"{msg} in directory '{cwd}' ",
-                end_message=msg
+                end_message=msg,
+                short=short
             ):
                 completed_process = subprocess.run(command, shell=True, **kwargs, )
 
