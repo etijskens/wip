@@ -19,7 +19,7 @@ COMPONENT_TYPES = {
 }
 
 DOCUMENTATION_FORMATS = {
-    'md': 'Markdown',
+    'md' : 'Markdown',
     'rst': 'restructuredText',
     ''   : ''
 }
