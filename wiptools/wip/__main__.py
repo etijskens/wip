@@ -59,6 +59,8 @@ def wip(ctx: click.Context, verbosity, version, config):
 @click.option('--remote'
              , help="Create a remote GitHub repo with visibility 'public' (default) or 'private'. "
                     "If 'none' is specified no remote is created. This option is case-insensitive."
+                    "The creation of a remote GitHub repo requires a GitHub username and a personal "
+                    "access token with `repo` and `read:org` permissions."
              , default='public'
              )
 @click.option('--md', is_flag=True
@@ -78,11 +80,8 @@ def init( ctx
         ):
     """Initialize a new project skeleton.
 
-    The creation of a remote GitHub repo requires a GitHub username and
-    a personal access token with `repo` and `read:org` permissions.
-
     Args:
-        project_name: name of the project to create.
+        project_name: name of the project folder to create.
     """
     # allow only one documentation format
     if md:
@@ -104,14 +103,11 @@ def env(ctx):
 
 
 @wip.command()
-@click.option('--md', is_flag=True
-             , help='Add documentation templates (markdown format) to this project. (This is the default case).'
-             )
-@click.option('--rst', is_flag=True
-             , help='Add documentation templates (restructuredText format) to this project.'
+@click.option('--fmt', '-f', type=click.Choice(['md', 'rst']), default='md'
+             , help="Documentation format to be used (md=Markdown (default), rst=restructuredText)."
              )
 @click.pass_context
-def docs(ctx: click.Context, md, rst):
+def docs(ctx: click.Context, fmt):
     """Add documentation to the project."""
     wip_docs(ctx)
 

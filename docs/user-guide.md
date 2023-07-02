@@ -1,6 +1,44 @@
 # User guide
 
-The work hors of `wiptools` is the `wip` CLI.
+The work horse of `wiptools` is the `wip` CLI. you can ask `wip` and its subcommands 
+for help:
+
+```shell
+> wip --help
+Usage: wip [OPTIONS] COMMAND [ARGS]...
+
+  Command line interface wip.
+
+Options:
+  -v, --verbosity  The verbosity of the program output.
+  --version        Print the wiptools version number.
+  --config PATH    The location (path) of the config.file with developer
+                   information (name, e-mail address, GitHub username, GitHub
+                   personal access token). If it does not exist, the
+                   application creates the file, asks for missing the
+                   information and stores it in the file. If the file exists,
+                   it is kept without modification (i.e. missing parameters
+                   supplied by the user are not stored).
+  --help           Show this message and exit.
+
+Commands:
+  add     Add components, such as submodules and CLIs, to the project.
+  build   Build binary extension modules.
+  bump    Bump2version wrapper.
+  docs    Add documentation to the project.
+  env     Check the environment for needed components.
+  info    List info about the project's structure.
+  init    Initialize a new project skeleton.
+  remote  Add a remote GitHub repo.
+  
+> wip info --help
+Usage: wip info [OPTIONS]
+
+  List info about the project's structure.
+
+Options:
+  -s, --short  List short project info (suppress project tree).
+  --help       Show this message and exit.```
 
 ## Developer info
 
@@ -19,10 +57,10 @@ new project. Wip will ask you for missing info and remember it.
 Wip builds on other tools. You can test your environment for their presence with 
 `wip env`.
 
-## Create a new skeleton 
+## Create a new project skeleton 
 
-Use the command `wip init <project_name>`. This will create the project in the folder 
-`project_name`. Wip will ask you to supply 
+You create a new project skeleton  `wip init <project_name>` in the directory where you want to create 
+the new project. This will create a project folder `project_name`. Wip will ask you to supply 
 
 - a brief project description, 
 - a minimal Python version, and
@@ -188,7 +226,10 @@ Larger projects with submodules or CLIs are more conveniently documented with
 format, or [sphinx](https//sphinx-doc.org) using the 
 [restructuredText](https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html). 
 When creating a new project, wip asks for a documentation format. If you choose none, 
-you can always add the necessary documentation templates running `wip docs [--md|--rst]`
+you can always add the necessary documentation templates running `wip docs [--md|--rst]`.
+
+!!! Tip
+    Learn documenting your project with mkdocs [here](https://realpython.com/python-project-documentation-with-mkdocs/).
 
 ## Version management
 

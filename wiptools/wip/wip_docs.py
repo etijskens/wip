@@ -12,6 +12,10 @@ import wiptools.messages as messages
 import wiptools.utils as utils
 
 
+formats = {
+    'md': 'Markdown',
+    'rst': 'restructuredText'
+}
 def wip_docs(ctx: click.Context):
     """Add project documentation"""
 
@@ -20,32 +24,22 @@ def wip_docs(ctx: click.Context):
 
     # Verify that the project is not already configured for documentation generation:
     docs_path = Path.cwd() / 'docs'
-    docs_format = 'markdown'         if (docs_path / 'index.md' ).is_file() else \
-                  'restructuredText' if (docs_path / 'index.rst').is_file() else ''
-    if docs_format:
+    fmt = 'md'  if (docs_path / 'index.md' ).is_file() else \
+          'rst' if (docs_path / 'index.rst').is_file() else ''
+    if fmt:
         messages.warning_message( f"Project {cookiecutter_params['project_name']} is already configured \n"
-                                  f"for documentation generation ({docs_format} format)."
+                                  f"for documentation generation ({formats[fmt]} format)."
                                 )
         return
 
-    if ctx.params['md'] and ctx.params['rst']:
-        messages.warning_message(f"Both '--md' and '--rst' specified: ignoring '--rst'.")
-
-    docs_format = 'md'  if ctx.params['md' ] else \
-                  'rst' if ctx.params['rst'] else \
-                  None
-
-    if not docs_format:
-        messages.warning_message("No documentation format specified")
-        return # nothing to do.
+    fmt = ctx.params['fmt']
 
     # for the time being...
-    if docs_format == 'rst':
+    if fmt == 'rst':
         messages.error_message("RestructuredText documentation generation is not yet implemented")
 
     # top level documentation template -----------------------------------------------------------
-    template = 'project-doc-md'  if docs_format == 'md'  else \
-               'project-doc-rst' if docs_format == 'rst' else None
+    template = f'project-doc-{fmt}'
     if template:
         template = str(utils.cookiecutters() / template)
 
@@ -61,11 +55,11 @@ def wip_docs(ctx: click.Context):
     with messages.TaskInfo(f"Adding documentation for components "):
         utils.iter_components(
             Path.cwd() / cookiecutter_params['package_name'],
-            apply=AddComponentDocumentation(cookiecutter_params)
+            apply=AddComponentDocumentationMarkdown(cookiecutter_params)
         )
 
-class AddComponentDocumentation:
-    """A Functor for adding documentation generation skeleton."""
+class AddComponentDocumentationMarkdown:
+    """A Functor for adding Markdowndocumentation generation skeleton."""
     def __init__(self, cookiecutter_params):
         self.cookiecutter_params = cookiecutter_params
         self.project_path = Path(self.cookiecutter_params['project_path'])
@@ -74,6 +68,7 @@ class AddComponentDocumentation:
     def __call__(self, path_to_component: Path):
         """Add documentation generation skeleton for this component."""
         component_type = utils.component_type(path_to_component)
+        messages.info_message(f"Adding documentation templates for {component_type}: {path_to_component.relative_to(self.project_path)}")
         if component_type == 'py':
             self.add_docs_py(path_to_component)
         elif component_type == 'cli':
