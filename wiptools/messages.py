@@ -20,30 +20,38 @@ def info_message(message: str):
     click.secho(f"\n{message}", fg='green')
 
 class TaskInfo:
-    """Context manager class for printing a message before and after a task """
-    def __init__(self, message: str, end_message:str = '', fg='bright_black', short=False):
-        self.message = message
-        self.end_message = end_message if end_message else message
+    """Context manager class for printing a message before and after a task.
+
+    if short == False, prints
+    f"{message1}{message2} ... done|FAILED!" executing the body of the task manager right after printing '...'.
+    else prints
+    f"[[{message1}{message2} ..."
+    f"]]done|FAILED {message1}" executing the body of the task manager right after printing '...'.
+    executing the body of the task manager right after printing the first line.
+    """
+    def __init__(self, message1: str, message2:str = '', fg='bright_black', short=False):
+        self.message1 = message1
+        self.message2 = message2
         self.fg = fg
         self.short = short
 
     def __enter__(self):
         if self.short:
-            click.secho(f"{self.message} ... ", fg=self.fg, nl=False)
+            click.secho(f"{self.message1}{self.message2} ... ", fg=self.fg, nl=False)
         else:
-            click.secho(f"\n[[{self.message} ...", fg=self.fg)
+            click.secho(f"\n[[{self.message1}{self.message2} ...", fg=self.fg)
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         if exc_value:
             if self.short:
                 click.secho(f"FAILED!", fg='red')
             else:
-                click.secho(f"]] (FAILED {self.end_message})", fg='red')
+                click.secho(f"]] (FAILED {self.message1})", fg='red')
         else:
             if self.short:
                 click.secho(f"done", fg=self.fg)
             else:
-              click.secho(f"]] (done {self.end_message})", fg=self.fg)
+                click.secho(f"]] (done {self.message1})", fg=self.fg)
 
 
 def ask(question: str, type=str, default=None):

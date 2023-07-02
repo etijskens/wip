@@ -16,6 +16,9 @@ def wip_bump(ctx: click.Context):
 
     old_version = utils.read_pyproject_toml()['tool']['poetry']['version']
     command = f"bump2version {ctx.params['args']}"
-    utils.subprocess_run_cmds(command, relative_to=Path.cwd().parent)
+    utils.subprocess_run_cmds(command,
+        message2 = f" in project folder `{project_name}`"
+    )
+
     new_version = utils.read_pyproject_toml()['tool']['poetry']['version']
     messages.info_message(f"{project_name} v{old_version} -> v{new_version}")

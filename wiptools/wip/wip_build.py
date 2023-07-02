@@ -73,5 +73,7 @@ class BinaryExtensionBuilder:
             "cmake --build _cmake_build",
             "cmake --install _cmake_build"
         ]
-        with utils.in_directory(path_to_component):
-            utils.subprocess_run_cmds(cmds, relative_to=self.relative_to)
+        utils.subprocess_run_cmds(cmds,
+            cwd=path_to_component,
+            message2=f" in folder `{path_to_component.relative_to(utils.PROJECT_PATH)}"
+        )

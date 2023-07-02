@@ -31,7 +31,7 @@ def add_remote(github_username:str, remote_visibility: str):
     if not pat_file.is_file():
         messages.error_message(f"No personal access token (PAT) for `github.com/{github_username}` found at \n"
                                f"`{pat_file}`. (A PAT is needed to access your GitHub account).\n"
-                               f"The remote GitHub repo `github.com/{github_username}/{project_name}` cannot be created."
+                               f"The remote GitHub repo `github.com/{github_username}/{utils.PROJECT_PATH.name}` cannot be created."
                                )
 
     # Create remote GitHub repo:
@@ -41,4 +41,4 @@ def add_remote(github_username:str, remote_visibility: str):
                 ('gh auth login --with-token', {'stdin': fd_pat, 'text': True}),
                 f'gh repo create --source . --{remote_visibility} --push'
             ]
-            utils.subprocess_run_cmds(cmds, relative_to=Path.cwd().parent)
+            utils.subprocess_run_cmds(cmds, message2=f" in project folder {utils.PROJECT_PATH.name}")

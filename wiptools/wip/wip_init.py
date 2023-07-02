@@ -95,27 +95,31 @@ def wip_init(ctx: click.Context):
                 pyproject.toml['tool']['poetry']['homepage']   = r""
 
     # Take care of git version control
-    with utils.in_directory(project_path):
-        # Create local git repo:
-        with messages.TaskInfo('Creating a local git repo'):
-            cmds = [ 'git init --initial-branch=main'
-                   , 'git add *'
-                   , 'git add .gitignore'
-                   ,f'git commit -m "Initial commit from wip init {project_name}"'
-                   ]
-            utils.subprocess_run_cmds(cmds, relative_to=Path.cwd().parent)
+    # with utils.in_directory(project_path):
 
-        # Verify necessary conditions for creating a remote GitHub repo :
-        remote_visibility = ctx.params['remote'].lower()
-        if not remote_visibility in ['public', 'private', 'none']:
-            messages.error_message(
-                f"ERROR: --remote={remote_visibility} is not a valid option. Valid options are:\n"
-                f"       --remote=public\n"
-                f"       --remote=private\n"
-                f"       --remote=none\n"
-            )
-        if remote_visibility.lower() == 'none':
-            messages.warning_message('No remote repository created (--remote=none).')
-        else: # public|private
-            wip_remote_repo(github_username, remote_visibility)
+    # Create local git repo:
+    with messages.TaskInfo('Creating a local git repo'):
+        cmds = [ 'git init --initial-branch=main'
+               , 'git add *'
+               , 'git add .gitignore'
+               ,f'git commit -m "Initial commit from wip init {project_name}"'
+               ]
+        utils.subprocess_run_cmds(cmds,
+            cwd=project_path,
+            message2=f" in project folder {project_path.relative_to(project_path.parent)}"
+        )
+
+    # Verify necessary conditions for creating a remote GitHub repo :
+    remote_visibility = ctx.params['remote'].lower()
+    if not remote_visibility in ['public', 'private', 'none']:
+        messages.error_message(
+            f"ERROR: --remote={remote_visibility} is not a valid option. Valid options are:\n"
+            f"       --remote=public\n"
+            f"       --remote=private\n"
+            f"       --remote=none\n"
+        )
+    if remote_visibility.lower() == 'none':
+        messages.warning_message('No remote repository created (--remote=none).')
+    else: # public|private
+        wip_remote_repo(github_username, remote_visibility)
 

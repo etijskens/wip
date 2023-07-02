@@ -17,6 +17,11 @@ import click
 
 import wiptools.messages as messages
 
+
+PROJECT_PATH = None
+# After succesfully executing read_wip_cookiecutter_json() this variabel contains the project path.
+
+
 @contextmanager
 def in_directory(path):
     """Context manager for changing the current working directory while the body of the
@@ -130,6 +135,8 @@ def read_wip_cookiecutter_json() -> dict:
             cookiecutter_params = json.load(fp)
             if Path.cwd().name != cookiecutter_params['project_name']:
                 messages.error_message("Path.cwd().name != cookiecutter_params['project_name']: This is unexpected.")
+            global PROJECT_PATH
+            PROJECT_PATH = Path.cwd()
             cookiecutter_params['project_path'] = str(Path.cwd())
             return cookiecutter_params
             # The project path is not needed by cookiecutter, but it is practical to have available.
@@ -144,7 +151,8 @@ def subprocess_run_cmds(
                    , Tuple[str,dict]        # a (command string, kwargs) pair
                    , List[Union[str,Tuple[str,dict]]]  # a list of the above
                    ],
-        relative_to = None,
+        cwd=None,
+        message2='',
         short = False
         ):
     """Run a series of commands using subprocess.run, optionally with kwargs, and exit on failure."""
@@ -152,31 +160,28 @@ def subprocess_run_cmds(
     if isinstance(cmds, (str, tuple)):
         cmds = [cmds]
 
-    cwd = Path.cwd() if not relative_to else Path.cwd().relative_to(relative_to)
     for cmd in cmds:
         if isinstance(cmd, str):
             # a command without kwargs
             command = cmd
-            msg = f"Running `{command}`"
 
             with messages.TaskInfo(
-                f"{msg}` in directory '{cwd}' ",
-                end_message=msg,
+                message1=f"Running `{command}`",
+                message2=message2,
                 short=short
             ):
-                completed_process = subprocess.run(command, shell=True)
+                completed_process = subprocess.run(command, shell=True, cwd=cwd)
         else:
             # a command with kwargs
             command = cmd[0]
-            msg = f"Running `{command} {kwargs=}`"
-
             kwargs  = cmd[1]
+
             with messages.TaskInfo(
-                f"{msg} in directory '{cwd}' ",
-                end_message=msg,
+                message1=f"Running `{command} {kwargs=}`",
+                message2=message2,
                 short=short
             ):
-                completed_process = subprocess.run(command, shell=True, **kwargs, )
+                completed_process = subprocess.run(command, shell=True,cwd=cwd, **kwargs, )
 
         if completed_process.returncode:
             messages.error_message(f'Command `{command}` failed')

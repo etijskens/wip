@@ -20,7 +20,7 @@ from wiptools.wip.wip_info  import wip_info
 from wiptools.wip.wip_init  import wip_init
 from wiptools.wip.wip_remote_repo  import wip_remote_repo
 
-documentation_formats = ('md', 'rst')
+documentation_formats = list(wiptools.DOCUMENTATION_FORMATS.keys())
 
 def wip_version():
     return f"wip CLI v{wiptools.__version__}"
