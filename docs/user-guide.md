@@ -85,7 +85,7 @@ create a private GitHub repo, or no remote repo at all.
 
 !!! Note
     If you choose to not create a remote GitHub repo (e.g. because you have no 
-    internet connection), you can always add it later with `wip remote [--private]`.
+    internet connection), you can always add it later with `wip init_remote [--private]`.
 ) 
 
 

@@ -21,17 +21,29 @@ def info_message(message: str):
 
 class TaskInfo:
     """Context manager class for printing a message before and after a task """
-    def __init__(self, message: str, end_message:str = '', fg='bright_black'):
+    def __init__(self, message: str, end_message:str = '', fg='bright_black', short=False):
         self.message = message
         self.end_message = end_message if end_message else message
         self.fg = fg
+        self.short = short
+
     def __enter__(self):
-        click.secho(f"\n[[{self.message}...", fg=self.fg)
+        if self.short:
+            click.secho(f"{self.message} ... ", fg=self.fg, nl=False)
+        else:
+            click.secho(f"\n[[{self.message} ...", fg=self.fg)
+
     def __exit__(self, exc_type, exc_value, exc_tb):
         if exc_value:
-            click.secho(f"]] (FAILED {self.message})", fg='red')
+            if self.short:
+                click.secho(f"FAILED!", fg='red')
+            else:
+                click.secho(f"]] (FAILED {self.end_message})", fg='red')
         else:
-            click.secho(f"]] (done {self.end_message})", fg=self.fg)
+            if self.short:
+                click.secho(f"done", fg=self.fg)
+            else:
+              click.secho(f"]] (done {self.end_message})", fg=self.fg)
 
 
 def ask(question: str, type=str, default=None):

@@ -84,24 +84,7 @@ def wip_init(ctx: click.Context):
         json.dump(cookiecutter_params, fp, indent=2)
 
     # add documentation files if requested
-    add_docs = ctx.params['md'] or ctx.params['rst']
-    if not add_docs:
-        # ask the user if we must configure the project for documentation generation:
-        answer = messages.ask("Add documentation templates? press \n"
-                              "  [m] for markdown format,\n"
-                              "  [r] for restructuredText format\n"
-                              "  (leave empty for none)\n"
-                              " "
-                             , default=''
-                             )
-        if answer:
-            if answer == 'm':
-                ctx.params['md'] = True
-            if answer == 'r':
-                ctx.params['rst'] = True
-            add_docs = ctx.params['md'] or ctx.params['rst']
-
-    if add_docs:
+    if ctx.params['fmt']:
         with utils.in_directory(project_path):
             wip_docs(ctx)
 

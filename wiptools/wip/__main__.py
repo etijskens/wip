@@ -20,6 +20,8 @@ from wiptools.wip.wip_info  import wip_info
 from wiptools.wip.wip_init  import wip_init
 from wiptools.wip.wip_remote_repo  import wip_remote_repo
 
+documentation_formats = ('md', 'rst')
+
 def wip_version():
     return f"wip CLI v{wiptools.__version__}"
 
@@ -63,11 +65,8 @@ def wip(ctx: click.Context, verbosity, version, config):
                     "access token with `repo` and `read:org` permissions."
              , default='public'
              )
-@click.option('--md', is_flag=True
-             , help='Add documentation templates in Markdown format to this project. (This is the default case).'
-             )
-@click.option('--rst', is_flag=True
-             , help='Add documentation templates in restructuredText format to this project.'
+@click.option('--fmt', '-f', type=click.Choice(documentation_formats)
+             , help="Documentation format to be used (md=Markdown, rst=restructuredText)."
              )
 @click.pass_context
 def init( ctx
@@ -75,22 +74,13 @@ def init( ctx
         , python_version: str
         , description: str
         , remote: str
-        , md: bool
-        , rst: bool
+        , fmt: str
         ):
     """Initialize a new project skeleton.
 
     Args:
         project_name: name of the project folder to create.
     """
-    # allow only one documentation format
-    if md:
-        rst = False
-    if rst:
-        md = False
-
-    assert ctx.params['md'] == md
-    assert ctx.params['rst'] == rst
 
     wip_init(ctx)
 
@@ -103,7 +93,7 @@ def env(ctx):
 
 
 @wip.command()
-@click.option('--fmt', '-f', type=click.Choice(['md', 'rst']), default='md'
+@click.option('--fmt', '-f', type=click.Choice(documentation_formats), default='md'
              , help="Documentation format to be used (md=Markdown (default), rst=restructuredText)."
              )
 @click.pass_context
@@ -175,7 +165,7 @@ def build(ctx: click.Context, component: str, f90: bool, cpp: bool):
              , help='Add a private remote GitHub repo, otherwise a public one.'
              )
 @click.pass_context
-def remote(ctx: click.Context, private: bool):
+def init_remote(ctx: click.Context, private: bool):
     """Add a remote GitHub repo."""
 
     wip_remote_repo(ctx)
