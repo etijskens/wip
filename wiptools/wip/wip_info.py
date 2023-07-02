@@ -5,8 +5,10 @@ from typing import Callable
 
 import click
 
+from wiptools import DOCUMENTATION_FORMATS
 import wiptools.messages as messages
 import wiptools.utils as utils
+from wiptools.wip.wip_docs import get_documentation_format
 
 
 def wip_info(ctx: click.Context):
@@ -28,6 +30,7 @@ def wip_info(ctx: click.Context):
     print(f"GitHub repo: {'--' if not repository else repository}")
     print(f"Home page  : {'--' if not homepage else homepage}")
     print(f"Location   : {project_path}")
+    print(f"docs       : {DOCUMENTATION_FORMATS[get_documentation_format()]}")
 
     if ctx.params['short']:
         return

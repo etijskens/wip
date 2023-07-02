@@ -8,14 +8,11 @@ import subprocess
 import click
 from cookiecutter.main import cookiecutter
 
+from wiptools import COMPONENT_TYPES, DOCUMENTATION_FORMATS
 import wiptools.messages as messages
 import wiptools.utils as utils
 
 
-formats = {
-    'md': 'Markdown',
-    'rst': 'restructuredText'
-}
 def wip_docs(ctx: click.Context):
     """Add project documentation"""
 
@@ -23,12 +20,10 @@ def wip_docs(ctx: click.Context):
     package_name = cookiecutter_params['package_name']
 
     # Verify that the project is not already configured for documentation generation:
-    docs_path = Path.cwd() / 'docs'
-    fmt = 'md'  if (docs_path / 'index.md' ).is_file() else \
-          'rst' if (docs_path / 'index.rst').is_file() else ''
+    fmt = get_documentation_format()
     if fmt:
         messages.warning_message( f"Project {cookiecutter_params['project_name']} is already configured \n"
-                                  f"for documentation generation ({formats[fmt]} format)."
+                                  f"for documentation generation ({DOCUMENTATION_FORMATS[fmt]} format)."
                                 )
         return
 
@@ -58,13 +53,14 @@ def wip_docs(ctx: click.Context):
             apply=AddComponentDocumentation(cookiecutter_params, fmt=fmt)
         )
 
+def get_documentation_format():
+    """"""
+    try:
+        index_fmt = list((Path.cwd() / 'docs').glob('index.*'))[0]
+    except:
+        return ''
 
-component_types = {
-    'py': 'Python module',
-    'cpp': 'C++ binary extension',
-    'f90': 'Modern Fortran binary extension',
-    'cli': 'CLI'
-}
+    return index_fmt.suffix[1:]
 
 class AddComponentDocumentation:
     """A Functor for adding Markdowndocumentation generation skeleton."""
@@ -79,7 +75,8 @@ class AddComponentDocumentation:
         """Add documentation generation skeleton for this component."""
         component_type = utils.component_type(path_to_component)
         with messages.TaskInfo(
-                f"Adding documentation templates for {component_types[component_type]} `{path_to_component.relative_to(self.project_path)}`.",
+                f"Adding documentation templates for {COMPONENT_TYPES[component_type]} "
+                f"`{path_to_component.relative_to(self.project_path)}`.",
                 short=True
             ):
             if component_type == 'py':

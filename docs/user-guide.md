@@ -63,8 +63,7 @@ You create a new project skeleton  `wip init <project_name>` in the directory wh
 the new project. This will create a project folder `project_name`. Wip will ask you to supply 
 
 - a brief project description, 
-- a minimal Python version, and
-- a documentation generation format (none, Markdown, or restructuredText) 
+- a minimal Python version
 
 Wip will automatically create a local git repositoy and a remote public GitHub repo 
 for you project (if you have provided a GitHub username and a personal access token 
