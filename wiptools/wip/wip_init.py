@@ -26,7 +26,7 @@ def wip_init(ctx: click.Context):
         messages.error_message(f"A directory with name '{project_name}' exists already.")
 
     cookiecutter_params = utils.get_config(
-        ctx.parent.params['config']
+        ctx.params['config']
       , needed={ 'full_name'      : { 'question': 'Enter your full name'}
                , 'email_address'  : { 'question': 'Enter your email address'}
                , 'github_username': { 'question': 'Enter your GitHub username (leave empty if no remote repos needed)'
@@ -39,9 +39,10 @@ def wip_init(ctx: click.Context):
         pat_standard_location = Path.home() / '.wiptools' / f'{github_username}.pat'
         if not pat_standard_location.is_file():
             while True:
-                pat_location = messages.ask(question=f'Enter location of personal access token for github.com/{github_username}\n'
-                                                     f'(i.e. a directory containing file `{github_username}.pat`)'
-                                           )
+                pat_location = messages.ask(
+                    question=f'Enter location of personal access token for github.com/{github_username}\n'
+                             f'(i.e. a directory containing file `{github_username}.pat`)'
+                )
                 if not pat_location.strip():
                     messages.error_message('Interrupted.', return_code=0)
                     break
@@ -49,7 +50,11 @@ def wip_init(ctx: click.Context):
                 if pat_location.is_dir():
                     pat_location = pat_location / f'{github_username}.pat'
                     if pat_location.is_file():
-                        shutil.copy(pat_location, pat_standard_location)
+                        with messages.TaskInfo(
+                                message1=f"Copying personal access token to `{pat_standard_location}`.",
+                                short=True,
+                            ):
+                            shutil.copy(pat_location, pat_standard_location)
                         break
                     else:
                         continue

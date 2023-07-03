@@ -12,7 +12,7 @@ from wiptools.wip.wip_docs import get_documentation_format
 
 
 def wip_info(ctx: click.Context):
-    """get info about the project's structure."""
+    """List project info."""
 
     cookiecutter_params = utils.read_wip_cookiecutter_json()
 
@@ -21,28 +21,38 @@ def wip_info(ctx: click.Context):
 
     # project version
     toml = utils.read_pyproject_toml()
-    version    = toml['tool']['poetry']['version']
-    repository = toml['tool']['poetry']['repository']
-    homepage   = toml['tool']['poetry']['homepage']
-    print(f"Project    : {project_path.name}")
-    print(f"Version    : {version}")
-    print(f"Package    : {package_name}")
-    print(f"GitHub repo: {'--' if not repository else repository}")
-    print(f"Home page  : {'--' if not homepage else homepage}")
-    print(f"Location   : {project_path}")
-    print(f"docs       : {DOCUMENTATION_FORMATS[get_documentation_format()]}")
-
-    if ctx.params['short']:
-        return
-
-    # Package structure
-    click.secho(f"\nStructure of Python package {package_name}", fg='bright_blue')
-    paths = DisplayablePath.make_tree(
-        project_path / package_name
-      , criteria=criteria
+    version     = toml['tool']['poetry']['version']
+    repository  = toml['tool']['poetry']['repository']
+    homepage    = toml['tool']['poetry']['homepage']
+    description = toml['tool']['poetry']['description']
+    print(
+        f"Project    : {project_path.name}: {description}\n"
+        f"Version    : {version}\n"
+        f"Package    : {package_name}\n"
+        f"GitHub repo: {'--' if not repository else repository}\n"
+        f"Home page  : {'--' if not homepage else homepage}\n"
+        f"Location   : {project_path}\n"
+        f"docs       : {DOCUMENTATION_FORMATS[get_documentation_format()]}\n"
     )
-    for path in paths:
-        click.echo('  ' + path.displayable())
+
+    if ctx.params['dev']:
+        # developer info
+        print(
+            f"Developer info:\n"
+            f"  author         : {cookiecutter_params['full_name']}\n"
+            f"  e-mail         : {cookiecutter_params['email_address']}\n"
+            f"  GitHub username: {cookiecutter_params['github_username']}\n"
+        )
+
+    if ctx.params['pkg']:
+        # Package structure
+        click.secho(f"Structure of Python package {package_name}", fg='bright_blue')
+        paths = DisplayablePath.make_tree(
+            project_path / package_name
+          , criteria=criteria
+        )
+        for path in paths:
+            click.echo('  ' + path.displayable())
 
 def criteria(path: Path):
     if path.is_dir():

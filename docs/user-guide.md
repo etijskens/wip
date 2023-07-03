@@ -1,7 +1,6 @@
 # User guide
 
-The work horse of `wiptools` is the `wip` CLI. you can ask `wip` and its subcommands 
-for help:
+The work horse of `wiptools` is the `wip` CLI. You can ask `wip` for help:
 
 ```shell
 > wip --help
@@ -9,78 +8,98 @@ Usage: wip [OPTIONS] COMMAND [ARGS]...
 
   Command line interface wip.
 
-Options:
-  -v, --verbosity  The verbosity of the program output.
-  --version        Print the wiptools version number.
-  --config PATH    The location (path) of the config.file with developer
-                   information (name, e-mail address, GitHub username, GitHub
-                   personal access token). If it does not exist, the
-                   application creates the file, asks for missing the
-                   information and stores it in the file. If the file exists,
-                   it is kept without modification (i.e. missing parameters
-                   supplied by the user are not stored).
-  --help           Show this message and exit.
+...
+```
 
-Commands:
-  add     Add components, such as submodules and CLIs, to the project.
-  build   Build binary extension modules.
-  bump    Bump2version wrapper.
-  docs    Add documentation to the project.
-  env     Check the environment for needed components.
-  info    List info about the project's structure.
-  init    Initialize a new project skeleton.
-  remote  Add a remote GitHub repo.
-  
+as well as its subcommands:
+
+```shell  
 > wip info --help
 Usage: wip info [OPTIONS]
 
   List info about the project's structure.
 
-Options:
-  -s, --short  List short project info (suppress project tree).
-  --help       Show this message and exit.```
-
-## Developer info
-
-Wip stores your name, and e-mail adress, and optionally also your GitHub username
-(see [signing up for a new GitHub account](https://docs.github.
-com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account))
-and a GitHub personal access token (check 
-[this](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
-for details). The latter is used to automatically create a remote repository for a 
-new project. Wip will ask you for missing info and remember it.
-
-!!! Note 
-    When creating a GitHub personal access token for use with wip, make sure that 
-    you check the scopes `repo` and `read:org`.
+...
+```
 
 Wip builds on other tools. You can test your environment for their presence with 
 `wip env`.
 
+
+
 ## Create a new project skeleton 
 
-You create a new project skeleton  `wip init <project_name>` in the directory where you want to create 
-the new project. This will create a project folder `project_name`. Wip will ask you to supply 
+You create a new project skeleton by executing `wip init <project_name>`. This will create a 
+project folder `project_name` in the current working directory.
 
-- a brief project description, 
-- a minimal Python version
+Before `wip` can create a new project skeleton, some developer specific and project specific 
+information must be provided. 
 
-Wip will automatically create a local git repositoy and a remote public GitHub repo 
-for you project (if you have provided a GitHub username and a personal access token 
-(see[Developer info](#developer-info)). Use `--remote-visibility=private|none` to 
-create a private GitHub repo, or no remote repo at all. 
+### Developer info - GitHub access
+
+As the developer info is typically the same for many projects, it is stored in a `config.json` 
+file. It contains your **name**, your **e-mail address**, and your **GitHub username**. Here is 
+an example `config.json` file:
+
+```json
+{
+  "full_name": "Bert Tijskens",
+  "email_address": "engelbert.tijskens@uantwerpen.be",
+  "github_username": "etijskens"
+}
+```
+
+The default location of the `config.json` file is `$HOME/.wiptools`, but you can store it 
+wherever you like, or with a different name, in case you need to deal with several sets of 
+developer info, e.g. if you have work-related as well as personal projects, which are 
+maintained on different GitHub accounts or with a different e-mail address.  In that case
+use the `--config` flag to pass a config file other than the default one:
+
+```shell
+> wip init <project_name> --config=path/to/another_config.json [options]
+```
+
+If the config file does not exist, which is typically the case the first time you execute 
+`wip init`, `wip` prompts you to supply your name, your e-mail address and your GitHub username,
+and creates a new file to store the supplied info. If the file exists, but has missing fields,
+the user is prompted to supply them, but the file is **not** updated. When a new GitHub username 
+is supplied, `wip` also prompts the user to supply a **GitHub personal access token**. This is a 
+kind of password for accessing your GitHub account. It enables `wip` to automatically create a 
+remote GitHub repository to store and backup you work.  
+The personal access tokens you provide are always copied to 
+`$HOME/.wiptools/<github_username>.pat`, where `<github_username>` is taken from the 
+`github_username` field in the `config.json` file. 
+
+When you create a new project `wip` automatically creates a remote GitHub repository for 
+the project. This is highly recommended, as this gets you a secure backup of your code 
+(and all its prior versions) on a remote machine. The only effort needed is that you commit
+and push your code regularly to the remote repo. 
+
+!!! Note
+    If you do not already have a GitHub account, 
+    create one at [Signing up for a new GitHub account](https://docs.github.
+    com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account)
+    and create a (classic) personal access token following [these instructions]
+    (https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
+    When creating a GitHub personal access token for use with wip, make sure that 
+    you check the scopes `repo` and `read:org`.
+
+!!! Note
+    Wip will automatically create a local git repositoy and a remote public GitHub repo 
+    for you project (if you have provided a GitHub username and a personal access token 
+    (see[Developer info](#developer-info)). Use `--remote=private|none` to 
+    create a private GitHub repo, or no remote repo at all.
+
+### Project info
+
+For every project you create, `wip` will ask you to supply 
+
+- a brief project description, and
+- a minimal Python version.
 
 !!! Note
     After creating the project skeleton, you must `cd` into your project folder to 
     apply other wip commands.
-
-!!! Tip
-    If your work requires different developer info can specify a config file: 
-    `wip init --config=personal-config.json`. If the file exists, it will retrieve 
-    the developer info from it, otherwise it will ask for new developer info and 
-    save it in the file. The default configuration file is in 
-    `$HOME/.wiptools/config.json`. Personal access tokens for GitHub are also stored 
-    there.
 
 !!! Note
     If you choose to not create a remote GitHub repo (e.g. because you have no 
@@ -222,7 +241,7 @@ or build all C++/Fortran binary extensions using `wip build --cpp|--f90`.
 For small projects, we recommend writing down the documentation in `README.md`. 
 Larger projects with submodules or CLIs are more conveniently documented with 
 [mkdocs](https://mkdocs.org), using the [Markdown](https://www.markdownguide.org) 
-format, or [sphinx](https//sphinx-doc.org) using the 
+format, or [sphinx](https//www.sphinx-doc.org/) using the 
 [restructuredText](https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html). 
 When creating a new project, wip asks for a documentation format. If you choose none, 
 you can always add the necessary documentation templates running `wip docs [--md|--rst]`.

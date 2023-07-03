@@ -5,4 +5,5 @@ Python project skeleton and management
 ## Table of Contents
 
 1. [Overview](overview.md)
-2. [API reference](api-reference.md)
+2. [User guide](user-guide.md)
+3. [API reference](api-reference.md)

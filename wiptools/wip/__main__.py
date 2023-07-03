@@ -33,15 +33,8 @@ def wip_version():
              , help="Print the wiptools version number."
              , is_flag=True
              )
-@click.option('--config', default=Path.home() / '.wiptools' / 'config.json'
-             , type=Path
-             , help='The location (path) of the config.file with developer information (name, e-mail address, '
-                    'GitHub username, GitHub personal access token). If it does not exist, the application creates the '
-                    'file, asks for missing the information and stores it in the file. If the file exists, it is kept '
-                    'without modification (i.e. missing parameters supplied by the user are not stored).'
-             )
 @click.pass_context
-def wip(ctx: click.Context, verbosity, version, config):
+def wip(ctx: click.Context, verbosity, version):
     """Command line interface wip.
     """
     if not ctx.invoked_subcommand:
@@ -68,6 +61,13 @@ def wip(ctx: click.Context, verbosity, version, config):
 @click.option('--fmt', '-f', type=click.Choice(documentation_formats)
              , help="Documentation format to be used (md=Markdown, rst=restructuredText)."
              )
+@click.option('--config', default=Path.home() / '.wiptools' / 'config.json'
+             , type=Path
+             , help='The location (path) of the config.file with developer information (name, e-mail address, '
+                    'GitHub username). If the file does not exist, it is created and the user is prompted to supply '
+                    'the fields. If the file exists, but has missing information, the user is prompted to supply '
+                    'the missing fields. The file is NOT updated.'
+             )
 @click.pass_context
 def init( ctx
         , project_name: str
@@ -75,6 +75,7 @@ def init( ctx
         , description: str
         , remote: str
         , fmt: str
+        , config: str
         ):
     """Initialize a new project skeleton.
 
@@ -131,8 +132,11 @@ def add(ctx: click.Context, name, py, cpp, f90, cli, clisub):
 
 
 @wip.command()
-@click.option('--short', '-s', default=False, is_flag=True
-             , help='List short project info (suppress project tree).'
+@click.option('--pgk', '-p', default=False, is_flag=True
+             , help='Lists the package tree, with information about submodules and CLIs.'
+             )
+@click.option('--dev', '-d', default=False, is_flag=True
+             , help='Lists the developer info.'
              )
 @click.pass_context
 def info(ctx: click.Context, short):

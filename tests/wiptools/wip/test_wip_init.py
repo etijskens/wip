@@ -34,8 +34,9 @@ def test_init_project_name_does_not_exist():
     # test with no config file given
     with utils.in_directory(test_workspace(clear=True)):
         project = 'foo'
-        result = run_wip( ['-vv', '--config', '.wip/config.json', 'init', project]
-                        , stdin='bert tijskens\n'
+        result = run_wip( ['-vv', 'init', project, '--config=.wip/config.json']
+                        , stdin='y\n'
+                                'bert tijskens\n'
                                 'engelbert.tijskens@uantwerpen.be\n'
                                 '\n'                        # default github_username
                                 'foo description\n'         #
@@ -51,7 +52,7 @@ def test_init_project_name_does_not_exist():
             assert completed_process.returncode == 0
 
         project = 'bar'
-        result = run_wip( ['-vv', '--config', '.wip/config.json', 'init', project]
+        result = run_wip( ['-vv', 'init', project, '--config=.wip/config.json']
                         , stdin='\n'
                         , assert_exit_code=False)
         project_path = Path(project)

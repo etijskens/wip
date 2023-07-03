@@ -92,7 +92,8 @@ def get_config(config_path: Path, needed: dict = {}) -> dict:
 
     Args:
         config_path: path to config file with developer info. If it does not exist, the user is prompted for all
-            needed parameters and the answers are saved to config_path.
+            needed parameters and the answers are saved to config_path. If the file exists but has missing parameters
+            the user is prompted for the missing info. The file is NOT updated.
 
         needed: (key, kwargs) pairs. Each key is the name of a needed parameter, and kwargs is a dict passed as
             messages.ask(**kwargs) to prompt the user for parameters missing from the config file in config_path.
@@ -103,13 +104,22 @@ def get_config(config_path: Path, needed: dict = {}) -> dict:
 
     save = False
     if config_path.is_file():
+        # read the config file
         with open(config_path) as f:
             config = json.load(f)
     else:
-        config = {}
-        if config_path:
+        # create a new config file
+        if click.confirm(
+            f"The config file `{config_path}` does not exist.\n"
+            f"Create it and prompt for missing fields?"
+          , default=False
+        ):
+            config = {}
             save = True
+        else:
+            messages.error_message("Aborted!")
 
+    # Prompt for missing fields:
     header = False
     for cookiecutter_parameter, kwargs in needed.items():
         if not cookiecutter_parameter in config:
@@ -118,10 +128,11 @@ def get_config(config_path: Path, needed: dict = {}) -> dict:
                 header = True
             config[cookiecutter_parameter] = messages.ask(**kwargs)
 
-    if save:
+    if save: # Save the config file
         config_path.parent.mkdir(parents=True)
-        with open(config_path, mode='w') as f:
-            json.dump(config, f, indent=2)
+        with messages.TaskInfo(message1=f"Saving config file `{config_path}`"):
+            with open(config_path, mode='w') as f:
+                json.dump(config, f, indent=2)
 
     return config
 
