@@ -32,7 +32,7 @@ def wip_info(ctx: click.Context):
         f"GitHub repo: {'--' if not repository else repository}\n"
         f"Home page  : {'--' if not homepage else homepage}\n"
         f"Location   : {project_path}\n"
-        f"docs       : {DOCUMENTATION_FORMATS[get_documentation_format()]}\n"
+        f"docs format: {DOCUMENTATION_FORMATS[get_documentation_format()]}\n"
     )
 
     if ctx.params['dev']:

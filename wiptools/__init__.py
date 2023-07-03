@@ -21,4 +21,5 @@ COMPONENT_TYPES = {
 DOCUMENTATION_FORMATS = {
     'md' : 'Markdown',
     'rst': 'restructuredText',
+    ''   : 'none'
 }

@@ -131,14 +131,17 @@ def add(ctx: click.Context, name, py, cpp, f90, cli, clisub):
 
 
 @wip.command()
-@click.option('--pgk', '-p', default=False, is_flag=True
+@click.option('--pkg', '-p', default=False, is_flag=True
              , help='Lists the package tree, with information about submodules and CLIs.'
              )
 @click.option('--dev', '-d', default=False, is_flag=True
              , help='Lists the developer info.'
              )
 @click.pass_context
-def info(ctx: click.Context, short):
+def info(ctx: click.Context
+        , pkg: bool
+        , dev: bool
+        ):
     """List info about the project's structure."""
 
     wip_info(ctx)
