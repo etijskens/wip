@@ -45,7 +45,7 @@ def cookiecutters():
 
 def pat(github_username):
     """Return the personal access token for github.com/{github_username} from the standard location."""
-    return Path.home() / '.wiptools' / f'{github_username}.pat'
+    return Path.home() / '.wiptools' / f'github-{github_username}.pat'
 
 def verify_project_name(project_name: str) -> bool:
     """Project names must start with a char, and contain only chars, digits, underscores and dashes.

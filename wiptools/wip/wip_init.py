@@ -36,7 +36,7 @@ def wip_init(ctx: click.Context):
 
     github_username = cookiecutter_params['github_username']
     if github_username:
-        pat_standard_location = Path.home() / '.wiptools' / f'{github_username}.pat'
+        pat_standard_location = utils.pat()
         if not pat_standard_location.is_file():
             while True:
                 pat_location = messages.ask(
