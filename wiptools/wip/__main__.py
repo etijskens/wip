@@ -37,11 +37,10 @@ def wip_version():
 def wip(ctx: click.Context, verbosity, version):
     """Command line interface wip.
     """
-    if not ctx.invoked_subcommand:
+    if not ctx.invoked_subcommand \
+    or verbosity:
         print(wip_version())
 
-    if verbosity:
-        print(wip_version())
 
 @wip.command()
 @click.argument('project_name')
@@ -49,7 +48,7 @@ def wip(ctx: click.Context, verbosity, version):
              , help='The minimal Python version for the project.'
              )
 @click.option('--description', '-d', default=''
-             , help='A short description of project.'
+             , help='A short (1 line) description of the project.'
              )
 @click.option('--remote'
              , help="Create a remote GitHub repo with visibility 'public' (default) or 'private'. "
@@ -66,7 +65,7 @@ def wip(ctx: click.Context, verbosity, version):
              , help='The location (path) of the config.file with developer information (name, e-mail address, '
                     'GitHub username). If the file does not exist, it is created and the user is prompted to supply '
                     'the fields. If the file exists, but has missing information, the user is prompted to supply '
-                    'the missing fields. The file is NOT updated.'
+                    'the missing fields, but the file is NOT updated.'
              )
 @click.pass_context
 def init( ctx
