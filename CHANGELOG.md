@@ -1,4 +1,5 @@
 **unreleased**
+**v1.1.8-dev**
 **v1.1.7-dev**
 **v1.1.6-dev**
 **v1.1.5-dev**
