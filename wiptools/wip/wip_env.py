@@ -20,7 +20,7 @@ def wip_env(ctx: click.Context):
     has_gh('2.31')
     has_bumpversion('1.0')
     has_nanobind('1.4')
-    has_numpy('2.22')
+    has_numpy('1.22')
     has_cmake('3.18')
     has_poetry('1.5')
     has_mkdocs('1.4.3')
