@@ -10,9 +10,19 @@ dependencies as:
 ```
 
 This installs the bare `wip`. Because `wip` relies on quite a bit of other tools, installing al its
-dependencies may waste quite a bit of resources, especially on clusters.  
+dependencies may waste quite a bit of resources, especially on clusters. For that reason the user
+is responsible for installing them - if needed. The `wip env` command lists which tools are 
+available in the current environment and which not, what they are used for and how they can be 
+installed.
 
+## Installing on a HPC cluster
 
+HPC cluster administrators, typically, prefer that users do not install software components. 
+Most tools used by `wip` will be available through LMOD modules and are made available with
+`module load` commands. Python modules that are not available must be installed with 
+`python -m pip install <package> --user`. The installation location must be chosen by exporting
+the `PYTHONUSERBASE` environment variable:
 
-## Installing on a (VSC) cluster
-
+```shell
+> export PYTHONUSERBASE=$VSC_DATA/.local
+```
