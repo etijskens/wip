@@ -9,6 +9,7 @@ from wiptools import DOCUMENTATION_FORMATS
 import wiptools.messages as messages
 import wiptools.utils as utils
 from wiptools.wip.wip_docs import get_documentation_format
+from wiptools.wip.wip_env import wip_env
 
 
 def wip_info(ctx: click.Context):
@@ -35,8 +36,8 @@ def wip_info(ctx: click.Context):
         f"docs format: {DOCUMENTATION_FORMATS[get_documentation_format()]}\n"
     )
 
+    # developer info
     if ctx.params['dev']:
-        # developer info
         print(
             f"Developer info:\n"
             f"  author         : {cookiecutter_params['full_name']}\n"
@@ -44,8 +45,8 @@ def wip_info(ctx: click.Context):
             f"  GitHub username: {cookiecutter_params['github_username']}\n"
         )
 
+    # Package structure
     if ctx.params['pkg']:
-        # Package structure
         click.secho(f"Structure of Python package {package_name}", fg='bright_blue')
         paths = DisplayablePath.make_tree(
             project_path / package_name
@@ -53,6 +54,10 @@ def wip_info(ctx: click.Context):
         )
         for path in paths:
             click.echo('  ' + path.displayable())
+
+    # Run environment check
+    if ctx.params['env']:
+        wip_env(ctx)
 
 def criteria(path: Path):
     if path.is_dir():

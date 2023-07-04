@@ -25,6 +25,7 @@ def wip_env(ctx: click.Context):
     has_poetry('1.5')
     has_mkdocs('1.4.3')
 
+
 fg = {
     0: 'red',
     1: 'green'

@@ -137,10 +137,14 @@ def add(ctx: click.Context, name, py, cpp, f90, cli, clisub):
 @click.option('--dev', '-d', default=False, is_flag=True
              , help='Lists the developer info.'
              )
+@click.option('--env', '-e', default=False, is_flag=True
+             , help='Run environment check.'
+             )
 @click.pass_context
 def info(ctx: click.Context
         , pkg: bool
         , dev: bool
+        , env: bool
         ):
     """List info about the project's structure."""
 

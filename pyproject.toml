@@ -17,6 +17,7 @@ python = "^3.9"
 cookiecutter = "^2.1.1"
 tomlkit = "^0.11.8"
 click = "^8.1.3"
+packaging = "^23.1"
 
 [tool.poetry.group.dev.dependencies]
 nanobind = "^1.4.0"
