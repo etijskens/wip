@@ -45,40 +45,37 @@ def has_python(minimal: str):
 def has_git(minimal: str):
     """git"""
     cmd = 'git'
-    completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
-    if completed_proces.returncode:
-        missing(f"Command {cmd}")
-    else:
+    try:
+        completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8')
         version = s.split(' ')[2]
         check_version(version, minimal=minimal, message=s.replace('\n',' '))
+    except FileNotFoundError:
+        missing(f"Command {cmd}")
 
 def has_gh(minimal: str):
     """git CLI"""
     cmd = 'gh'
-    completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
-    if completed_proces.returncode:
-        missing(f"Command {cmd}")
-    else:
+    try:
+        completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8').replace('\n', ' ')
         version = s.split(' ')[2]
         check_version(version, minimal=minimal, message=s)
+    except FileNotFoundError:
+        missing(f"Command {cmd}")
 
 def has_bumpversion(minimal: str):
     cmd = 'bumpversion'
     try:
         completed_process = run([cmd, '-h'], capture_output=True, )
-    except FileNotFoundError:
-        missing(f"Command {cmd}")
-    if completed_process.returncode:
-        missing(f"Command {cmd}")
-    else:
         lines = completed_process.stdout.decode('utf-8').split('\n')
         for line in lines:
             if 'bumpversion:' in line:
                 v = line.split(' ')[1][1:]
                 check_version(v, minimal=minimal, message=line)
                 break
+    except FileNotFoundError:
+        missing(f"Command {cmd}")
 
 
 def has_nanobind(minimal: str):
@@ -101,35 +98,35 @@ def has_numpy(minimal: str):
 def has_cmake(minimal: str):
     """git"""
     cmd = 'cmake'
-    completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
-    if completed_proces.returncode:
-        missing(f"Command {cmd}")
-    else:
+    try:
+        completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8')
         p = s.find('\n')
         s = s[:p]
         version = s.split(' ')[2]
         check_version(version, minimal=minimal, message=s.replace('\n',' '))
+    except FileNotFoundError:
+        missing(f"Command {cmd}")
 
 def has_poetry(minimal: str):
     """"""
     cmd = 'poetry'
-    completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
-    if completed_proces.returncode:
-        missing(f"Command {cmd}")
-    else:
+    try:
+        completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8').replace('\n', ' ')
         version = s.split(' ')[2][:-1]
         check_version(version, minimal=minimal, message=s.replace('\n',' '))
+    except FileNotFoundError:
+        missing(f"Command {cmd}")
 
 def has_mkdocs(minimal: str):
     """"""
     cmd = 'mkdocs'
-    completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
-    if completed_proces.returncode:
-        missing(f"Command {cmd}")
-    else:
+    try:
+        completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8')
         version = s.split(' ')[2]
         check_version(version, minimal=minimal, message=s.replace('\n',' '))
+    except FileNotFoundError:
+        missing(f"Command {cmd}")
 
