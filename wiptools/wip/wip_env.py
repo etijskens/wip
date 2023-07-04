@@ -35,7 +35,7 @@ def wip_env(ctx: click.Context):
     msg = "\nAll components are present." if ok else \
           "\nSome components are missing. This is only a problem is you are planning to use them.\n" \
           "If you are working on your own machine, you must install these components yourself.\n" \
-          "If you are working on a HPC cluster, you must load the corresponding modules."
+          "If you are working on a HPC cluster, preferably load the corresponding modules. \n"
 
     click.secho(msg, fg = fg[ok])
 
