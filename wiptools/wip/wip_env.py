@@ -108,7 +108,7 @@ def has_bumpversion(minimal: str):
 
 def has_nanobind(minimal: str):
     """"""
-    install_instructions = "\nTo install: `pip install nanobind --upgrade [--user]`\n"
+    install_instructions = "\nTo install: `python -m pip install nanobind --upgrade [--user]`\n"
     try:
         from nanobind import __version__ as nanobind_version
         return check_version(
@@ -121,7 +121,7 @@ def has_nanobind(minimal: str):
 
 def has_numpy(minimal: str):
     """"""
-    install_instructions = "\nTo install see https://cli.github.com/manual/installation.\n"
+    install_instructions = "\nTo install: `python -m pip install numpy --upgrade [--user]`\n"
     try:
         from numpy import __version__ as numpy_version
         return check_version(
