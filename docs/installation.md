@@ -9,5 +9,10 @@ dependencies as:
 > pip install wiptools
 ```
 
+This installs the bare `wip`. Because `wip` relies on quite a bit of other tools, installing al its
+dependencies may waste quite a bit of resources, especially on clusters.  
+
+
+
 ## Installing on a (VSC) cluster
 
