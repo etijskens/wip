@@ -66,7 +66,10 @@ def has_gh(minimal: str):
 
 def has_bumpversion(minimal: str):
     cmd = 'bumpversion'
-    completed_process = run([cmd, '-h'], capture_output=True)
+    try:
+        completed_process = run([cmd, '-h'], capture_output=True, )
+    except FileNotFoundError:
+        missing(f"Command {cmd}")
     if completed_process.returncode:
         missing(f"Command {cmd}")
     else:
