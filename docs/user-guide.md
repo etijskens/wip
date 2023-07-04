@@ -40,8 +40,6 @@ Poetry (version 1.5.1)  (OK)
 mkdocs, version 1.4.3 from /Users/etijskens/software/dev/workspace/wiptools/.venv/lib/python3.9/site-packages/mkdocs (Python 3.9)  (OK)
 ```
 
-
-
 ## Create a new project skeleton 
 
 You create a new project skeleton by executing `wip init <project_name>`. This will create a 
@@ -119,7 +117,6 @@ For every project you create, `wip` will ask you to supply
     If you choose to not create a remote GitHub repo (e.g. because you have no 
     internet connection), you can always add it later with `wip init_remote [--private]`.
 ) 
-
 
 ## Listing project info
 
@@ -304,7 +301,37 @@ foo v0.0.2-dev -> v0.0.2
 foo v0.0.2 -> v0.1.0-dev
 ```
 
-## Links
+## Publishing on PyPI
 
- - [Wiptools GitHub repository](https://github.com/etijskens/fp=)
- - [Wiptools homepage](https://etijskens.github.io/wiptools)
+When your code is published on [PyPI](https://pypi.org/) users can effortlessly install it with
+`pip install your-package`. Dependencies are automatically installed as well.
+
+Wip relies on [poetry](https://python-poetry.org) for publishing to [PyPI](https://pypi.org/).
+To be able to publish on PyPI, you must
+
+1. [Create an account on PyPI](https://pypi.org/account/register/).
+2. Log in on your account, and go to `account settings`. Scroll down and hit `Add API token`. 
+3. Choose a token name, _e.g._ `poetry-publishing-on-pypi`, and select a scope, _e.g._ 
+   `Entire account (all projects)` to use the token for publishing all your projects. 
+4. Hit `Add token` to generate a new token, and copy the token.
+5. Finally, add your API token to Poetry with this command
+   `poetry config pypi-token.pypi your-api-token` (paste the copied token for `your-api-token`).
+
+Now you can publish your code as below:
+
+```shell
+(wiptools-py3.9) ~/workspace/wiptools > poetry publish --build
+Building wiptools (1.2.0-dev)
+  - Building sdist
+  - Built wiptools-1.2.0.dev0.tar.gz
+  - Building wheel
+  - Built wiptools-1.2.0.dev0-py3-none-any.whl
+
+Publishing wiptools (1.2.0-dev) to PyPI
+ - Uploading wiptools-1.2.0.dev0-py3-none-any.whl 100%
+ - Uploading wiptools-1.2.0.dev0.tar.gz 100%
+```
+
+!!! Note
+    You can publish a version of your code only once to PyPI. If you want to publish an 
+    update, you must `bump2version` your code first. 
