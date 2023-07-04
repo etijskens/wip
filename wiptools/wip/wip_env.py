@@ -58,7 +58,7 @@ def has_python(minimal: str):
 def has_git(minimal: str):
     """git"""
     cmd = 'git'
-    install_instructions = "\nTo install see https://git-scm.com/book/en/v2/Getting-Started-Installing-Git."
+    install_instructions = "\nTo install see https://git-scm.com/book/en/v2/Getting-Started-Installing-Git.\n"
     try:
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8')
@@ -74,7 +74,7 @@ def has_git(minimal: str):
 def has_gh(minimal: str):
     """git CLI"""
     cmd = 'gh'
-    install_instructions = "\nTo install see https://cli.github.com/manual/installation."
+    install_instructions = "\nTo install see https://cli.github.com/manual/installation.\n"
     try:
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8').replace('\n', ' ')
@@ -89,7 +89,7 @@ def has_gh(minimal: str):
 
 def has_bumpversion(minimal: str):
     cmd = 'bumpversion'
-    install_instructions = "\nTo install: `python -m pip install bump2version --upgrade [--user]`."
+    install_instructions = "\nTo install: `python -m pip install bump2version --upgrade [--user]`\n"
     try:
         completed_process = run([cmd, '-h'], capture_output=True, )
         lines = completed_process.stdout.decode('utf-8').split('\n')
@@ -108,7 +108,7 @@ def has_bumpversion(minimal: str):
 
 def has_nanobind(minimal: str):
     """"""
-    install_instructions = "\nTo install: `pip install nanobind --upgrade [--user]`"
+    install_instructions = "\nTo install: `pip install nanobind --upgrade [--user]`\n"
     try:
         from nanobind import __version__ as nanobind_version
         return check_version(
@@ -121,7 +121,7 @@ def has_nanobind(minimal: str):
 
 def has_numpy(minimal: str):
     """"""
-    install_instructions = "\nTo install see https://cli.github.com/manual/installation."
+    install_instructions = "\nTo install see https://cli.github.com/manual/installation.\n"
     try:
         from numpy import __version__ as numpy_version
         return check_version(
@@ -136,7 +136,7 @@ def has_numpy(minimal: str):
 def has_cmake(minimal: str):
     """git"""
     cmd = 'cmake'
-    install_instructions = "\nTo install see https://cmake.org/install/."
+    install_instructions = "\nTo install see https://cmake.org/install/.\n"
     try:
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8')
@@ -154,7 +154,7 @@ def has_cmake(minimal: str):
 def has_poetry(minimal: str):
     """"""
     cmd = 'poetry'
-    install_instructions = "\nTo install: `python -m pip install poetry --upgrade [--user]`"
+    install_instructions = "\nTo install: `python -m pip install poetry --upgrade [--user]`\n"
     try:
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8').replace('\n', ' ')
@@ -166,7 +166,7 @@ def has_poetry(minimal: str):
 def has_mkdocs(minimal: str):
     """"""
     cmd = 'mkdocs'
-    install_instructions = "\nTo install: `python -m pip install mkdocs --upgrade [--user]`"
+    install_instructions = "\nTo install: `python -m pip install mkdocs --upgrade [--user]`\n"
     try:
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8')
