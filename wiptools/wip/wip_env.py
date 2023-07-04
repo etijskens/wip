@@ -10,37 +10,48 @@ import click
 import wiptools.messages as messages
 from wiptools.utils import subprocess_run_cmds
 
-def wip_env(ctx: click.Context):
-    """Check the current environment for necessary components."""
-
-    print(("For full `wip` functionality the following commands and packages must be available in our envirionment:\n"))
-
-    has_python('3.9')
-    has_git('2.35')
-    has_gh('2.31')
-    has_bumpversion('1.0')
-    has_nanobind('1.4')
-    has_numpy('1.22')
-    has_cmake('3.18')
-    has_poetry('1.5')
-    has_mkdocs('1.4.3')
-
 
 fg = {
     0: 'red',
     1: 'green'
 }
 
+def wip_env(ctx: click.Context):
+    """Check the current environment for necessary components."""
+
+    print(("For a full functional `wip` the following commands and packages must be available in our environment:\n"))
+
+    ok = True
+    ok &= has_python('3.9')
+    ok &= has_git('2.35')
+    ok &= has_gh('2.31')
+    ok &= has_bumpversion('1.0')
+    ok &= has_nanobind('1.4')
+    ok &= has_numpy('1.22')
+    ok &= has_cmake('3.18')
+    ok &= has_poetry('1.5')
+    ok &= has_mkdocs('1.4.3')
+
+    msg = "\nAll components are present." if ok else \
+          "\nSome components are missing. This is only a problem is you are planning to use them.\n" \
+          "If you are working on your own machine, you must install these components yourself.\n" \
+          "Otherwise, if you are working on a HPC cluster, you must load the corresponding modules."
+
+    click.secho(msg, fg = fg[ok])
+
+
 def check_version(v: str, minimal: str, message: str):
     ok = Version(v) >= Version(minimal)
     click.secho(f"{message} {'(OK)' if ok else f': {minimal=} (not OK)'}", fg=fg[ok])
+    return ok
 
 def missing(what):
     click.secho(f"{what} is missing in the current environment.", fg =fg[False])
+    return False
 
 def has_python(minimal: str):
     """Python"""
-    check_version(python_version(), minimal=minimal, message='python ' + sys.version.replace('\n',' '))
+    return check_version(python_version(), minimal=minimal, message='python ' + sys.version.replace('\n',' '))
 
 def has_git(minimal: str):
     """git"""
@@ -49,9 +60,9 @@ def has_git(minimal: str):
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8')
         version = s.split(' ')[2]
-        check_version(version, minimal=minimal, message=s.replace('\n',' '))
+        return check_version(version, minimal=minimal, message=s.replace('\n',' '))
     except FileNotFoundError:
-        missing(f"Command {cmd}")
+        return missing(f"Command {cmd}")
 
 def has_gh(minimal: str):
     """git CLI"""
@@ -60,9 +71,9 @@ def has_gh(minimal: str):
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8').replace('\n', ' ')
         version = s.split(' ')[2]
-        check_version(version, minimal=minimal, message=s)
+        return check_version(version, minimal=minimal, message=s)
     except FileNotFoundError:
-        missing(f"Command {cmd}")
+        return missing(f"Command {cmd}")
 
 def has_bumpversion(minimal: str):
     cmd = 'bumpversion'
@@ -72,27 +83,27 @@ def has_bumpversion(minimal: str):
         for line in lines:
             if 'bumpversion:' in line:
                 v = line.split(' ')[1][1:]
-                check_version(v, minimal=minimal, message=line)
-                break
+                return check_version(v, minimal=minimal, message=line)
+
     except FileNotFoundError:
-        missing(f"Command {cmd}")
+        return missing(f"Command {cmd}")
 
 
 def has_nanobind(minimal: str):
     """"""
     try:
         from nanobind import __version__
-        check_version(__version__, minimal=minimal, message=f"nanobind {__version__}")
+        return check_version(__version__, minimal=minimal, message=f"nanobind {__version__}")
     except ModuleNotFoundError:
-        missing(f"Module nanobind")
+        return missing(f"Module nanobind")
 
 def has_numpy(minimal: str):
     """"""
     try:
         from numpy import __version__
-        check_version(__version__, minimal=minimal, message=f"numpy {__version__}")
+        return check_version(__version__, minimal=minimal, message=f"numpy {__version__}")
     except ModuleNotFoundError:
-        missing(f"Module numpy")
+        return missing(f"Module numpy")
 
 
 def has_cmake(minimal: str):
@@ -104,9 +115,9 @@ def has_cmake(minimal: str):
         p = s.find('\n')
         s = s[:p]
         version = s.split(' ')[2]
-        check_version(version, minimal=minimal, message=s.replace('\n',' '))
+        return check_version(version, minimal=minimal, message=s.replace('\n',' '))
     except FileNotFoundError:
-        missing(f"Command {cmd}")
+        return missing(f"Command {cmd}")
 
 def has_poetry(minimal: str):
     """"""
@@ -115,9 +126,9 @@ def has_poetry(minimal: str):
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8').replace('\n', ' ')
         version = s.split(' ')[2][:-1]
-        check_version(version, minimal=minimal, message=s.replace('\n',' '))
+        return check_version(version, minimal=minimal, message=s.replace('\n',' '))
     except FileNotFoundError:
-        missing(f"Command {cmd}")
+        return missing(f"Command {cmd}")
 
 def has_mkdocs(minimal: str):
     """"""
@@ -126,7 +137,7 @@ def has_mkdocs(minimal: str):
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8')
         version = s.split(' ')[2]
-        check_version(version, minimal=minimal, message=s.replace('\n',' '))
+        return check_version(version, minimal=minimal, message=s.replace('\n',' '))
     except FileNotFoundError:
-        missing(f"Command {cmd}")
+        return missing(f"Command {cmd}")
 
