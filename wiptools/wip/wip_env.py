@@ -58,7 +58,9 @@ def has_python(minimal: str):
 def has_git(minimal: str):
     """git"""
     cmd = 'git'
-    install_instructions = "\nTo install see https://git-scm.com/book/en/v2/Getting-Started-Installing-Git.\n"
+    install_instructions = "\nTo install see https://git-scm.com/book/en/v2/Getting-Started-Installing-Git.\n" \
+                           "Needed for local and remote version control.\n" \
+                           "Highly recommended.\n"
     try:
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8')
@@ -74,7 +76,9 @@ def has_git(minimal: str):
 def has_gh(minimal: str):
     """git CLI"""
     cmd = 'gh'
-    install_instructions = "\nTo install see https://cli.github.com/manual/installation.\n"
+    install_instructions = "\nTo install see https://cli.github.com/manual/installation.\n" \
+                           "Enables `wip init` to create remote GitHub repositories.\n" \
+                           "Highly recommended.\n"
     try:
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8').replace('\n', ' ')
@@ -89,7 +93,9 @@ def has_gh(minimal: str):
 
 def has_bumpversion(minimal: str):
     cmd = 'bumpversion'
-    install_instructions = "\nTo install: `python -m pip install bump2version --upgrade [--user]`\n"
+    install_instructions = "\nTo install: `python -m pip install bump2version --upgrade [--user]`\n" \
+                           "Needed for version string management.\n" \
+                           "Highly recommended.\n"
     try:
         completed_process = run([cmd, '-h'], capture_output=True, )
         lines = completed_process.stdout.decode('utf-8').split('\n')
@@ -108,7 +114,8 @@ def has_bumpversion(minimal: str):
 
 def has_nanobind(minimal: str):
     """"""
-    install_instructions = "\nTo install: `python -m pip install nanobind --upgrade [--user]`\n"
+    install_instructions = "\nTo install: `python -m pip install nanobind --upgrade [--user]`\n" \
+                           "Needed to construct C++ binary extension modules.\n"
     try:
         from nanobind import __version__ as nanobind_version
         return check_version(
@@ -121,7 +128,8 @@ def has_nanobind(minimal: str):
 
 def has_numpy(minimal: str):
     """"""
-    install_instructions = "\nTo install: `python -m pip install numpy --upgrade [--user]`\n"
+    install_instructions = "\nTo install: `python -m pip install numpy --upgrade [--user]`\n" \
+                           "Needed to construct Modern Fortran binary extension modules./n"
     try:
         from numpy import __version__ as numpy_version
         return check_version(
@@ -134,9 +142,10 @@ def has_numpy(minimal: str):
 
 
 def has_cmake(minimal: str):
-    """git"""
+    """cmake"""
     cmd = 'cmake'
-    install_instructions = "\nTo install see https://cmake.org/install/.\n"
+    install_instructions = "\nTo install see https://cmake.org/install/.\n" \
+                           "Needed to build C++ and Modern Fortran binary extension modules.\n"
     try:
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8')
@@ -154,7 +163,9 @@ def has_cmake(minimal: str):
 def has_poetry(minimal: str):
     """"""
     cmd = 'poetry'
-    install_instructions = "\nTo install: `python -m pip install poetry --upgrade [--user]`\n"
+    install_instructions = "\nTo install: `python -m pip install poetry --upgrade [--user]`\n" \
+                           "Needed for dependency management, publishing to PyPI.\n" \
+                           "Recommended for virtual environments during development.\n"
     try:
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8').replace('\n', ' ')
@@ -166,7 +177,9 @@ def has_poetry(minimal: str):
 def has_mkdocs(minimal: str):
     """"""
     cmd = 'mkdocs'
-    install_instructions = "\nTo install: `python -m pip install mkdocs --upgrade [--user]`\n"
+    install_instructions = "\nTo install: `python -m pip install mkdocs --upgrade [--user]`\n" \
+                           "Needed for documentation generation.\n" \
+                           "Highly recommended on workstations, discouraged on HPC clusters.\n"
     try:
         completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
         s = completed_proces.stdout.decode('utf-8')
