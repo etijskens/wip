@@ -22,8 +22,23 @@ Usage: wip info [OPTIONS]
 ...
 ```
 
-Wip builds on other tools. You can test your environment for their presence with 
-`wip env`.
+Wip relies on a bunch of other tools. You can test your environment for their presence and 
+version compliance with `wip env`:
+
+```shell
+> wip env
+For full `wip` functionality the following commands and packages must be available in our envirionment:
+
+python 3.9.5 (default, Sep 20 2021, 16:33:56)  [Clang 12.0.5 (clang-1205.0.22.9)] (OK)
+git version 2.35.1  (OK)
+gh version 2.31.0 (2023-06-20) https://github.com/cli/cli/releases/tag/v2.31.0  (OK)
+bumpversion: v1.0.1 (using Python v3.9.5) (OK)
+nanobind 1.4.0 (OK)
+numpy 1.25.0 : minimal='2.22' (not OK)
+cmake version 3.21.2 (OK)
+Poetry (version 1.5.1)  (OK)
+mkdocs, version 1.4.3 from /Users/etijskens/software/dev/workspace/wiptools/.venv/lib/python3.9/site-packages/mkdocs (Python 3.9)  (OK)
+```
 
 
 
