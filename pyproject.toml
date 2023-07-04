@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "wiptools"
-version = "1.2.7-dev"
+version = "1.2.8-dev"
 description = "Python project skeleton and management"
 authors = ["Bert Tijskens <engelbert.tijskens@uantwerpen.be>"]
 license = "MIT"
