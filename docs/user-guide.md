@@ -61,14 +61,13 @@ use the `--config` flag to pass a config file other than the default one:
 
 If the config file does not exist, which is typically the case the first time you execute 
 `wip init`, `wip` prompts you to supply your name, your e-mail address and your GitHub username,
-and creates a new file to store the supplied info. If the file exists, but has missing fields,
-the user is prompted to supply them, but the file is **not** updated. When a new GitHub username 
-is supplied, `wip` also prompts the user to supply a **GitHub personal access token**. This is a 
+and creates a new file to store the supplied info. If, on the other hand, the file exists, but has 
+missing fields, the user is also prompted to supply them, but the file is **not** updated. When a 
+new GitHub username is supplied, `wip` also prompts the user to supply a **GitHub personal access token**. This is a 
 kind of password for accessing your GitHub account. It enables `wip` to automatically create a 
-remote GitHub repository to store and backup you work.  
-The personal access tokens you provide are always copied to 
-`$HOME/.wiptools/<github_username>.pat`, where `<github_username>` is taken from the 
-`github_username` field in the `config.json` file. 
+remote GitHub repository to store and backup you work. The personal access tokens you provide are 
+always copied to `$HOME/.wiptools/github_{github_username}.pat`, where `github_username` is taken 
+from the corresponding field in the `config.json` file. 
 
 When you create a new project `wip` automatically creates a remote GitHub repository for 
 the project. This is highly recommended, as this gets you a secure backup of your code 
@@ -94,7 +93,7 @@ and push your code regularly to the remote repo.
 
 For every project you create, `wip` will ask you to supply 
 
-- a brief project description, and
+- a brief project description, which can be left empty, and
 - a minimal Python version.
 
 !!! Note
@@ -112,21 +111,28 @@ For every project you create, `wip` will ask you to supply
 Cd into the project folder (`cd foo`) and use `wip info`:
 
 ```shell
-path/to > wip init FOO
+path/to > wip init FOO 
 ...
 path/to > cd FOO
-path/to/FOO > wip info
-Project    : FOO
+path/to/FOO > wip info --pkg --dev
+Project    : FOO: <project_short_description>
 Version    : 0.0.0
 Package    : foo
-GitHub repo: "https://github.com/<your github username>/foo"
-Home page  : "https://<your github username>.github.io/foo"
-Location   : /Users/etijskens/software/dev/ws-wip/foo
+GitHub repo: --
+Home page  : --
+Location   : /Users/etijskens/software/dev/workspace/.test-wip/FOO
+docs format: none
+
+Developer info:
+  author         : Bert Tijskens
+  e-mail         : engelbert.tijskens@uantwerpen.be
+  GitHub username: etijskens
 
 Structure of Python package foo
   foo [Python module]
   └── __init__.py
 ```
+
 Note that wip translates the project name `FOO` in to the PEP compliant package name
 `foo`, converting to lowercase (and replacing hyphens with underscores).
 
@@ -142,13 +148,14 @@ path/to/FOO > wip add foo_cpp --cpp
 path/to/FOO > wip add foo_f90 --f90
 path/to/FOO > wip add foo_cli --cli
 path/to/FOO > wip add foo_clisub --clisub
-path/to/FOO > wip info
-Project    : FOO
+path/to/FOO > wip info --pkg 
+Project    : FOO: the foo package
 Version    : 0.0.0
 Package    : foo
 GitHub repo: https://github.com/<your github username>/foo
 Home page  : https://<your github username>.github.io/foo
 Location   : /Users/etijskens/software/dev/workspace/wiptools/.test-workspace/foofoo
+docs format: none
 
 Structure of Python package foofoo
   foo [Python module]
@@ -247,7 +254,8 @@ When creating a new project, wip asks for a documentation format. If you choose 
 you can always add the necessary documentation templates running `wip docs [--md|--rst]`.
 
 !!! Tip
-    Learn documenting your project with mkdocs [here](https://realpython.com/python-project-documentation-with-mkdocs/).
+    Learn documenting your project with mkdocs [here]
+    (https://realpython.com/python-project-documentation-with-mkdocs/).
 
 ## Version management
 
@@ -261,24 +269,24 @@ lists information about the previous and the new version:
 path/to/FOO > bumpversion patch
 path/to/FOO > wip bump patch
 
-[[Running `bump2version patch`` in directory 'oops' ...
+[[Running `bump2version patch`` in directory 'foo' ...
 ]] (done Running `bump2version patch`)
 
-oops v0.0.1-dev -> v0.0.2-dev
+foo v0.0.1-dev -> v0.0.2-dev
 
 path/to/FOO > wip bump release
 
-[[Running `bump2version release`` in directory 'oops' ...
+[[Running `bump2version release`` in directory 'foo' ...
 ]] (done Running `bump2version release`)
 
-oops v0.0.2-dev -> v0.0.2
+foo v0.0.2-dev -> v0.0.2
 
 > wip bump minor
 
-[[Running `bump2version minor`` in directory 'oops' ...
+[[Running `bump2version minor`` in directory 'foo' ...
 ]] (done Running `bump2version minor`)
 
-oops v0.0.2 -> v0.1.0-dev
+foo v0.0.2 -> v0.1.0-dev
 ```
 
 ## Links

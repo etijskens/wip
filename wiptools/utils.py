@@ -4,16 +4,10 @@ import os
 from pathlib import Path
 import re
 import subprocess
-
-# try:
-#     import tomllib
-# except ModuleNotFoundError:
-#     import tomli as tomllib
-# import tomli_w as tomli_w
-import tomlkit
 from typing import List, Union, Tuple, Callable
 
 import click
+import tomlkit
 
 import wiptools.messages as messages
 

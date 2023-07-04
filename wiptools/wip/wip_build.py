@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
 from pathlib import Path
-import subprocess
 
 import click
 

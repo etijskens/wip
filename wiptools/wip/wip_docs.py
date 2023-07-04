@@ -2,8 +2,6 @@
 
 import os
 from pathlib import Path
-import shutil
-import subprocess
 
 import click
 from cookiecutter.main import cookiecutter
