@@ -105,8 +105,8 @@ def has_command( command             : list
                , minimal             : str
                , info: str=''
                , extract_version     : Callable=extract_version
-               ):
-    """"""
+               ) -> bool:
+    """Verify whether a command is avalaible, and if so if its version is <minimal> or higher."""
     try:
         cmd = ' '.join(command)
         completed_process = run(cmd, shell=True, capture_output=True, encoding='utf-8')
@@ -117,7 +117,8 @@ def has_command( command             : list
                 info=info,
             )
     except FileNotFoundError:
-        return missing(f"Command {command[0]}", info=info)
+        pass
+    return missing(f"Command {command[0]}", info=info)
 
 def extract_version_bump2version(stdout: str):
     """extract version from `bump2version -h` output."""
