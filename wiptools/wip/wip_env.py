@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-
-from  platform import python_version
-import sys
+import importlib
+from platform import python_version
 from packaging.version import Version
+import re
 from subprocess import run
+from typing import Callable,Tuple
 
 import click
 
@@ -23,14 +24,43 @@ def wip_env(ctx: click.Context):
 
     ok = True
     ok &= has_python('3.9')
-    ok &= has_git('2.35')
-    ok &= has_gh('2.31')
-    ok &= has_bumpversion('1.0')
-    ok &= has_nanobind('1.4')
-    ok &= has_numpy('1.22')
-    ok &= has_cmake('3.18')
-    ok &= has_poetry('1.5')
-    ok &= has_mkdocs('1.4.3')
+    ok &= has_command( ['git', '--version'], '2.35',
+        info="\nTo install see https://git-scm.com/book/en/v2/Getting-Started-Installing-Git.\n" \
+             "  Needed for local and remote version control.\n" \
+             "  Highly recommended.\n"
+    )
+    ok &= has_command( ['gh', '--version'], '2.31',
+        info="\nTo install see https://cli.github.com/manual/installation.\n" \
+             "  Enables `wip init` to create remote GitHub repositories.\n" \
+             "  Highly recommended.\n"
+    )
+    ok &= has_command( ['bump2version', '-h'], '1.0',
+        info="\nTo install: `python -m pip install bump2version --upgrade [--user]`\n" \
+             "  Needed for version string management.\n" \
+             "  Highly recommended.\n"
+    )
+    ok &= has_command( ['poetry', '--version'], '1.5',
+        info="\nTo install: `python -m pip install poetry --upgrade [--user]`\n" \
+             "  Needed for dependency management, publishing to PyPI.\n" \
+             "  Recommended for virtual environments during development.\n"
+    )
+    ok &= has_command( ['mkdocs', '--version'], '1.4.3',
+        info="\nTo install: `python -m pip install mkdocs --upgrade [--user]`\n" \
+             "  Needed for documentation generation.\n" \
+             "  Highly recommended on workstations, discouraged on HPC clusters.\n"
+    )
+    ok &= has_module('nanobind', '1.4',
+        info="\nTo install: `python -m pip install nanobind --upgrade [--user]`\n" \
+             "  Needed to construct C++ binary extension modules.\n"
+    )
+    ok &= has_module('numpy', '1.22',
+        info="\nTo install: `python -m pip install numpy --upgrade [--user]`\n" \
+             "  Needed to construct Modern Fortran binary extension modules./n"
+    )
+    ok &= has_command( ['cmake', '--version'], '3.18',
+        info="\nTo install see https://cmake.org/install/.\n" \
+             "  Needed to build C++ and Modern Fortran binary extension modules.\n"
+    )
 
     msg = "\nAll components are present." if ok else \
           "\nSome components are missing. This is only a problem is you are planning to use them.\n" \
@@ -40,151 +70,71 @@ def wip_env(ctx: click.Context):
     click.secho(msg, fg = fg[ok])
 
 
-def check_version(v: str, minimal: str, message: str, install_instructions: str = ""):
-    ok = Version(v) >= Version(minimal)
-    click.secho(f"{message} {'(OK)' if ok else f': {minimal=} (not OK){install_instructions}'}", fg=fg[ok])
+def check_version(command: str, version: str, minimal: str, info: str = ""):
+    ok = Version(version) >= Version(minimal)
+    click.secho(f"{command}: v{version} {'(OK)' if ok else f': {minimal=} (not OK){info}'}", fg=fg[ok])
     return ok
 
-def missing(what:str, install_instructions:str = ""):
-    click.secho(f"{what} is missing in the current environment.{install_instructions}", fg =fg[False])
+def missing(what:str, info:str = ""):
+    click.secho(f"{what} is missing in the current environment.{info}", fg =fg[False])
     return False
 
 def has_python(minimal: str):
     """Python"""
-    return check_version(python_version(), minimal=minimal,
-        message='python ' + sys.version.replace('\n',' '),
-    )
+    return check_version('Python', python_version(), minimal=minimal)
 
-def has_git(minimal: str):
-    """git"""
-    cmd = 'git'
-    install_instructions = "\nTo install see https://git-scm.com/book/en/v2/Getting-Started-Installing-Git.\n" \
-                           "Needed for local and remote version control.\n" \
-                           "Highly recommended.\n"
-    try:
-        completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
-        s = completed_proces.stdout.decode('utf-8')
-        version = s.split(' ')[2]
-        return check_version(
-            version, minimal=minimal,
-            message=s.replace('\n',' '),
-            install_instructions=install_instructions
-        )
-    except FileNotFoundError:
-        return missing(f"Command {cmd}", install_instructions=install_instructions)
+# From https://gist.github.com/jhorsman/62eeea161a13b80e39f5249281e17c39
+semver = re.compile(r'^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$')
 
-def has_gh(minimal: str):
-    """git CLI"""
-    cmd = 'gh'
-    install_instructions = "\nTo install see https://cli.github.com/manual/installation.\n" \
-                           "Enables `wip init` to create remote GitHub repositories.\n" \
-                           "Highly recommended.\n"
-    try:
-        completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
-        s = completed_proces.stdout.decode('utf-8').replace('\n', ' ')
-        version = s.split(' ')[2]
-        return check_version(
-            version, minimal=minimal,
-            install_instructions=install_instructions,
-            message=s
-        )
-    except FileNotFoundError:
-        return missing(f"Command {cmd}", install_instructions=install_instructions)
+def extract_version(stdout: str) -> str:
+    """Extract version string from output."""
 
-def has_bumpversion(minimal: str):
-    cmd = 'bumpversion'
-    install_instructions = "\nTo install: `python -m pip install bump2version --upgrade [--user]`\n" \
-                           "Needed for version string management.\n" \
-                           "Highly recommended.\n"
-    try:
-        completed_process = run([cmd, '-h'], capture_output=True, )
-        lines = completed_process.stdout.decode('utf-8').split('\n')
-        for line in lines:
-            if 'bumpversion:' in line:
-                v = line.split(' ')[1][1:]
-                return check_version(
-                    v, minimal=minimal,
-                    message=line,
-                    install_instructions=install_instructions
-                )
+    lines = stdout.split('\n')
+    for line in lines:
+        words = line.replace(')', '').split(' ')
+        for word in words:
+            if word.startswith('v'):
+                word = word[1:]
+            if re.match(semver, word):
+                return word
 
-    except FileNotFoundError:
-        return missing(f"Command {cmd}", install_instructions=install_instructions)
+    print(f"oops: {stdout=}")
+    return '??? no version string found'
 
-
-def has_nanobind(minimal: str):
+def has_command( command             : list
+               , minimal             : str
+               , info: str=''
+               , extract_version     : Callable=extract_version
+               ):
     """"""
-    install_instructions = "\nTo install: `python -m pip install nanobind --upgrade [--user]`\n" \
-                           "Needed to construct C++ binary extension modules.\n"
     try:
-        from nanobind import __version__ as nanobind_version
-        return check_version(
-            nanobind_version, minimal=minimal,
-            message=f"nanobind {nanobind_version}",
-            install_instructions=install_instructions
+        cmd = ' '.join(command)
+        completed_process = run(cmd, shell=True, capture_output=True, encoding='utf-8')
+        if not completed_process.returncode:
+            version = extract_version(completed_process.stdout)
+            return check_version(
+                command[0], version, minimal,
+                info=info,
+            )
+    except FileNotFoundError:
+        return missing(f"Command {command[0]}", info=info)
+
+def extract_version_bump2version(stdout: str):
+    """extract version from `bump2version -h` output."""
+    lines = stdout.split('\n')
+    for line in lines:
+        if 'bumpversion:' in line:
+            v = line.split(' ')[1][1:]
+            return v
+
+
+def has_module(module_name: str, minimal: str, info="", version_var='__version__') -> bool:
+    try:
+        m = importlib.import_module(module_name)
+        version = eval(f"m.{version_var}")
+        return check_version(module_name, version, minimal=minimal,
+            info=info
         )
+        return True
     except ModuleNotFoundError:
-        return missing(f"Module nanobind", install_instructions=install_instructions)
-
-def has_numpy(minimal: str):
-    """"""
-    install_instructions = "\nTo install: `python -m pip install numpy --upgrade [--user]`\n" \
-                           "Needed to construct Modern Fortran binary extension modules./n"
-    try:
-        from numpy import __version__ as numpy_version
-        return check_version(
-            numpy_version, minimal=minimal,
-            message=f"numpy {numpy_version}",
-            install_instructions=install_instructions
-        )
-    except ModuleNotFoundError:
-        return missing(f"Module numpy", install_instructions=install_instructions)
-
-
-def has_cmake(minimal: str):
-    """cmake"""
-    cmd = 'cmake'
-    install_instructions = "\nTo install see https://cmake.org/install/.\n" \
-                           "Needed to build C++ and Modern Fortran binary extension modules.\n"
-    try:
-        completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
-        s = completed_proces.stdout.decode('utf-8')
-        p = s.find('\n')
-        s = s[:p]
-        version = s.split(' ')[2]
-        return check_version(
-            version, minimal=minimal,
-            message=s.replace('\n',' '),
-            install_instructions=install_instructions
-        )
-    except FileNotFoundError:
-        return missing(f"Command {cmd}", install_instructions=install_instructions)
-
-def has_poetry(minimal: str):
-    """"""
-    cmd = 'poetry'
-    install_instructions = "\nTo install: `python -m pip install poetry --upgrade [--user]`\n" \
-                           "Needed for dependency management, publishing to PyPI.\n" \
-                           "Recommended for virtual environments during development.\n"
-    try:
-        completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
-        s = completed_proces.stdout.decode('utf-8').replace('\n', ' ')
-        version = s.split(' ')[2][:-1]
-        return check_version(version, minimal=minimal, message=s.replace('\n',' '))
-    except FileNotFoundError:
-        return missing(f"Command {cmd}", install_instructions=install_instructions)
-
-def has_mkdocs(minimal: str):
-    """"""
-    cmd = 'mkdocs'
-    install_instructions = "\nTo install: `python -m pip install mkdocs --upgrade [--user]`\n" \
-                           "Needed for documentation generation.\n" \
-                           "Highly recommended on workstations, discouraged on HPC clusters.\n"
-    try:
-        completed_proces = run(f"{cmd} --version", shell=True, capture_output=True)
-        s = completed_proces.stdout.decode('utf-8')
-        version = s.split(' ')[2]
-        return check_version(version, minimal=minimal, message=s.replace('\n',' '))
-    except FileNotFoundError:
-        return missing(f"Command {cmd}", install_instructions=install_instructions)
-
+        return missing(f"Module numpy", info=info)

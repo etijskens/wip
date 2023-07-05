@@ -15,14 +15,28 @@ is responsible for installing them - if needed. The `wip env` command lists whic
 available in the current environment and which not, what they are used for and how they can be 
 installed.
 
-## Installing on a HPC cluster
+## Installing on a HPC cluster (Linux)
 
-HPC cluster administrators, typically, prefer that users do not install software components. 
-Most tools used by `wip` will be available through LMOD modules and are made available with
-`module load` commands. Python modules that are not available must be installed with 
-`python -m pip install <package> --user`. The installation location must be chosen by exporting
-the `PYTHONUSERBASE` environment variable:
+On a HPC cluster software is installed in a central location, where users do not have write 
+access. Hence, they must install their tools somewhere in their own file systems. In line with
+general Linux expectations, we recommend  `~/.local`. Adding Python packages to a centrally 
+installed Python distribution is achieved by pointing the `PYTHONUSERBASE` environment variable 
+to this location and adding its `bin` folder to your `PATH`:
 
 ```shell
-> export PYTHONUSERBASE=$VSC_DATA/.local
+# in .bashrc
+export PYTHONUSERBASE='path/to/my/homedir/.local/'
+export PATH="$PATH:path/to/my/homedir/.local/bin/"
 ```
+
+Now one can `pip install` packages with the `--user` flag. This works fine, even when working 
+with different Python distributions. Installed CLIs will end up in `.local/bin/`, while packages 
+installed using python 3.10, _e.g._, will end up in `.local/lib/python3.10/site-packages`. 
+
+!!! Note "Note for VSC users"
+    Use the `$VSC_DATA` file system for storing your `.local/` installations. `$VSC_HOME` is too 
+    small for that purpose, and the `$VSC_SCRATCH` file system is not suitable for storing lots 
+    of small files. (you might need to provide the expanded version of `$VSC_DATA`).
+
+
+
