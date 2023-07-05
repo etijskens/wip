@@ -55,8 +55,8 @@ def wip_env(ctx: click.Context):
     )
     ok &= has_module('numpy', '1.22',
         info="\nTo install: `python -m pip install numpy --upgrade [--user]`\n" \
-             "  Needed to construct Modern Fortran binary extension modules (f2py is part of numpy)./n"
-             "  Generally extremely useful for scientific computing, HPC, ... "
+             "  Needed to construct Modern Fortran binary extension modules (f2py is part of numpy).\n"
+             "  Generally extremely useful for scientific computing, HPC, ... \n"
     )
     ok &= has_command( ['cmake', '--version'], '3.18',
         info="\nTo install see https://cmake.org/install/.\n" \
