@@ -16,43 +16,44 @@ available in the current environment and which not, what they are used for and h
 installed.
 
 ```shell
+> wip env
 For a full functional `wip` the following commands and packages must be available in your environment:
 
 Python: v3.10.4 (OK)
-git: v2.39.3 (OK)
-Command gh is missing in the current environment (minimal='2.31'')
+Command git is missing in the current environment (minimal='2.3.5')
+Command gh is missing in the current environment (minimal='2.31')
 To install see https://cli.github.com/manual/installation.
   Enables `wip init` to create remote GitHub repositories.
   Highly recommended.
 
-Command bump2version is missing in the current environment (minimal='1.0'')
+Command bump2version is missing in the current environment (minimal='1.0')
 To install: `python -m pip install bump2version --upgrade [--user]`
   Needed for version string management.
   Highly recommended.
 
-poetry: v1.1.13 : (not OK, minimal='1.5' )
+Command poetry is missing in the current environment (minimal='1.5')
 To install: `python -m pip install poetry --upgrade [--user]`
   Needed for dependency management, publishing to PyPI.
   Highly recommended in development environments.
 
-Command mkdocs is missing in the current environment (minimal='1.4.3'')
+Command mkdocs is missing in the current environment (minimal='1.4.3')
 
 To install: `python -m pip install mkdocs --upgrade [--user]`
   Needed for documentation generation.
   Highly recommended on workstations, discouraged on HPC clusters.
 
-Module numpy is missing in the current environment (minimal='1.4'')
+Module numpy is missing in the current environment (minimal='1.4')
 
 To install: `python -m pip install nanobind --upgrade [--user]`
   Needed to construct C++ binary extension modules.
 
-Module numpy is missing in the current environment (minimal='1.22'')
+Module numpy is missing in the current environment (minimal='1.22')
 
 To install: `python -m pip install numpy --upgrade [--user]`
   Needed to construct Modern Fortran binary extension modules (f2py is part of numpy).
   Generally extremely useful for scientific computing, HPC, ...
 
-Command cmake is missing in the current environment (minimal='3.18'')
+Command cmake is missing in the current environment (minimal='3.18')
 
 To install see https://cmake.org/install/.
   Needed to build C++ and Modern Fortran binary extension modules.
