@@ -39,7 +39,9 @@ def wip_env(ctx: click.Context):
              "  Needed for version string management.\n" \
              "  Highly recommended.\n"
     )
-    ok &= has_command( ['poetry', '--version'], '1.5',
+
+    # poetry 1.1.13 is in the new toolchain, so we hope that is ok
+    ok &= has_command( ['poetry', '--version'], '1.1.13',
         info="\nTo install: `python -m pip install poetry --upgrade [--user]`\n" \
              "  Needed for dependency management, publishing to PyPI.\n" \
              "  Highly recommended in development environments.\n"
