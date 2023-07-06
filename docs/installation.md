@@ -78,9 +78,11 @@ export PYTHONUSERBASE='path/to/my/homedir/.local/'
 export PATH="$PATH:path/to/my/homedir/.local/bin/"
 ```
 
-Now one can `pip install` packages with the `--user` flag. This works fine, even when working 
-with different Python distributions. Installed CLIs will end up in `.local/bin/`, while packages 
-installed using python 3.10, _e.g._, will end up in `.local/lib/python3.10/site-packages`. 
+With these exports it is possible to `pip install` packages with the `--user` flag. 
+This works fine, even when working with different Python distributions. Installed CLIs will 
+end up in `.local/bin/`, while python packages themselves will end up in 
+`.local/lib/pythonX.Y/site-packages` (X and Y being the major anc minor version number of the 
+Python version used. 
 
 !!! Note "Note for VSC users"
     Use the `$VSC_DATA` file system for storing your `.local/` installations. `$VSC_HOME` is too 
