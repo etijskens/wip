@@ -27,48 +27,48 @@ def wip_env(ctx: click.Context):
     ok &= has_command( ['git', '--version'], '2.35',
         info="\nTo install see https://git-scm.com/book/en/v2/Getting-Started-Installing-Git.\n" \
              "  Needed for local and remote version control.\n" \
-             "  Highly recommended.\n"
+             "  Highly recommended."
     )
     ok &= has_command( ['gh', '--version'], '2.31',
         info="\nTo install see https://cli.github.com/manual/installation.\n" \
              "  Enables `wip init` to create remote GitHub repositories.\n" \
-             "  Highly recommended.\n"
+             "  Highly recommended."
     )
     ok &= has_command( ['bump2version', '-h'], '1.0',
         info="\nTo install: `python -m pip install bump2version --upgrade [--user]`\n" \
              "  Needed for version string management.\n" \
-             "  Highly recommended.\n"
+             "  Highly recommended."
     )
 
     # poetry 1.1.13 is in the new toolchain, so we hope that is ok
     ok &= has_command( ['poetry', '--version'], '1.1.13',
         info="\nTo install: `python -m pip install poetry --upgrade [--user]`\n" \
              "  Needed for dependency management, publishing to PyPI.\n" \
-             "  Highly recommended in development environments.\n"
+             "  Highly recommended in development environments."
     )
     ok &= has_command( ['mkdocs', '--version'], '1.4.3',
         info="\nTo install: `python -m pip install mkdocs --upgrade [--user]`\n" \
              "  Needed for documentation generation.\n" \
-             "  Highly recommended on workstations, discouraged on HPC clusters.\n"
+             "  Highly recommended on workstations, discouraged on HPC clusters."
     )
     ok &= has_module('nanobind', '1.4',
         info="\nTo install: `python -m pip install nanobind --upgrade [--user]`\n" \
-             "  Needed to construct C++ binary extension modules.\n"
+             "  Needed to construct C++ binary extension modules."
     )
     ok &= has_module('numpy', '1.22',
         info="\nTo install: `python -m pip install numpy --upgrade [--user]`\n" \
              "  Needed to construct Modern Fortran binary extension modules (f2py is part of numpy).\n"
-             "  Generally extremely useful for scientific computing, HPC, ... \n"
+             "  Generally extremely useful for scientific computing, HPC, ... "
     )
     ok &= has_command( ['cmake', '--version'], '3.18',
         info="\nTo install see https://cmake.org/install/.\n" \
-             "  Needed to build C++ and Modern Fortran binary extension modules.\n"
+             "  Needed to build C++ and Modern Fortran binary extension modules."
     )
 
     msg = "\nAll components are present." if ok else \
           "\nSome components are missing. This is only a problem is you are planning to use them.\n" \
           "If you are working on your own machine, you must install these components yourself.\n" \
-          "If you are working on a HPC cluster, preferably load the corresponding LMOD modules. \n"
+          "If you are working on a HPC cluster, preferably load the corresponding LMOD modules. "
 
     click.secho(msg, fg = fg[ok])
 
@@ -77,13 +77,13 @@ def check_version(command: str, version: str, minimal: str, info: str = ""):
     if not info.startswith('\n'):
         info = '\n' + info
     ok = Version(version) >= Version(minimal)
-    click.secho(f"{command}: v{version} {'(OK)' if ok else f': (not OK, {minimal=} ){info}'}", fg=fg[ok])
+    click.secho(f"\n{command}: v{version} {'(OK).' if ok else f': (not OK, {minimal=} ){info}'}", fg=fg[ok])
     return ok
 
 def missing(what:str, minimal: str, info:str = ""):
     if not info.startswith('\n'):
         info = '\n' + info
-    click.secho(f"{what} is missing in the current environment (minimal=v{minimal})."
+    click.secho(f"\n{what} is missing in the current environment (minimal=v{minimal})."
                 f"{info}", fg =fg[False])
     return False
 
