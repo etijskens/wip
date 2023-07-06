@@ -73,7 +73,7 @@ installed Python distribution is achieved by pointing the `PYTHONUSERBASE` envir
 to this location and adding its `bin` folder to your `PATH`:
 
 ```shell
-# in .bashrc
+# in file .bashrc
 export PYTHONUSERBASE='path/to/my/homedir/.local/'
 export PATH="$PATH:path/to/my/homedir/.local/bin/"
 ```
