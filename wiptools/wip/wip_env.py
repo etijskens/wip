@@ -49,7 +49,7 @@ def wip_env(ctx: click.Context):
              "  Needed for documentation generation.\n" \
              "  Highly recommended on workstations, discouraged on HPC clusters.\n"
     )
-    ok &= has_module('nanobind', '1.4',
+    ok &= has_module('nanobind', '2.4',
         info="\nTo install: `python -m pip install nanobind --upgrade [--user]`\n" \
              "  Needed to construct C++ binary extension modules.\n"
     )
@@ -72,12 +72,15 @@ def wip_env(ctx: click.Context):
 
 
 def check_version(command: str, version: str, minimal: str, info: str = ""):
+    if not info.startswith('\n'):
+        info = '\n' + info
     ok = Version(version) >= Version(minimal)
-    click.secho(f"{command}: v{version} {'(OK)' if ok else f': {minimal=} (not OK){info}'}", fg=fg[ok])
+    click.secho(f"{command}: v{version} {'(OK)' if ok else f': (not OK, {minimal=} ){info}'}", fg=fg[ok])
     return ok
 
-def missing(what:str, info:str = ""):
-    click.secho(f"{what} is missing in the current environment.{info}", fg =fg[False])
+def missing(what:str, minimal: str, info:str = ""):
+    click.secho(f"{what} is missing in the current environment ({minimal=}')\n"
+                f"{info}", fg =fg[False])
     return False
 
 def has_python(minimal: str):
@@ -119,7 +122,7 @@ def has_command( command             : list
             )
     except FileNotFoundError:
         pass
-    return missing(f"Command {command[0]}", info=info)
+    return missing(f"Command {command[0]}", minimal=minimal, info=info)
 
 def extract_version_bump2version(stdout: str):
     """extract version from `bump2version -h` output."""
@@ -139,4 +142,4 @@ def has_module(module_name: str, minimal: str, info="", version_var='__version__
         )
         return True
     except ModuleNotFoundError:
-        return missing(f"Module numpy", info=info)
+        return missing(f"Module numpy", minimal=minimal, info=info)
