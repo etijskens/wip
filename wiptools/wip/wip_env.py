@@ -20,7 +20,7 @@ fg = {
 def wip_env(ctx: click.Context):
     """Check the current environment for necessary components."""
 
-    print(("For a full functional `wip` the following commands and packages must be available in our environment:\n"))
+    print(("For a full functional `wip` the following commands and packages must be available in your environment:\n"))
 
     ok = True
     ok &= has_python('3.9')
@@ -79,7 +79,9 @@ def check_version(command: str, version: str, minimal: str, info: str = ""):
     return ok
 
 def missing(what:str, minimal: str, info:str = ""):
-    click.secho(f"{what} is missing in the current environment ({minimal=}')\n"
+    if not info.startswith('\n'):
+        info = '\n' + info
+    click.secho(f"{what} is missing in the current environment ({minimal=}')"
                 f"{info}", fg =fg[False])
     return False
 
