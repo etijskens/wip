@@ -13,51 +13,46 @@ This installs the bare `wip`. Because `wip` relies on quite a bit of other tools
 dependencies may waste quite a bit of resources, especially on clusters. For that reason the user
 is responsible for installing them - if needed. The `wip env` command lists which tools are 
 available in the current environment and which not, what they are used for and how they can be 
-installed.
+installed. Here is the output from `wip env` if all components are missing.
 
 ```shell
 > wip env
 For a full functional `wip` the following commands and packages must be available in your environment:
 
 Python: v3.10.4 (OK)
-Command git is missing in the current environment (minimal='2.3.5')
-Command gh is missing in the current environment (minimal='2.31')
+Command git is missing in the current environment (minimal=v2.35).
+Command gh is missing in the current environment (minimal=v2.31).
 To install see https://cli.github.com/manual/installation.
   Enables `wip init` to create remote GitHub repositories.
   Highly recommended.
 
-Command bump2version is missing in the current environment (minimal='1.0')
+Command bump2version is missing in the current environment (minimal=v1.0).
 To install: `python -m pip install bump2version --upgrade [--user]`
   Needed for version string management.
   Highly recommended.
 
-Command poetry is missing in the current environment (minimal='1.5')
+Command poetry is missing in the current environment (minimal=v1.5).
 To install: `python -m pip install poetry --upgrade [--user]`
   Needed for dependency management, publishing to PyPI.
   Highly recommended in development environments.
 
-Command mkdocs is missing in the current environment (minimal='1.4.3')
-
+Command mkdocs is missing in the current environment (minimal=v1.4.3).
 To install: `python -m pip install mkdocs --upgrade [--user]`
   Needed for documentation generation.
   Highly recommended on workstations, discouraged on HPC clusters.
 
-Module numpy is missing in the current environment (minimal='1.4')
-
+Module numpy is missing in the current environment (minimal=v1.4).
 To install: `python -m pip install nanobind --upgrade [--user]`
   Needed to construct C++ binary extension modules.
 
-Module numpy is missing in the current environment (minimal='1.22')
-
+Module numpy is missing in the current environment (minimal=v1.22).
 To install: `python -m pip install numpy --upgrade [--user]`
   Needed to construct Modern Fortran binary extension modules (f2py is part of numpy).
   Generally extremely useful for scientific computing, HPC, ...
 
-Command cmake is missing in the current environment (minimal='3.18')
-
+Command cmake is missing in the current environment (minimal=v3.18).
 To install see https://cmake.org/install/.
   Needed to build C++ and Modern Fortran binary extension modules.
-
 
 Some components are missing. This is only a problem is you are planning to use them.
 If you are working on your own machine, you must install these components yourself.

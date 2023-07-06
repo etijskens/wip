@@ -81,7 +81,7 @@ def check_version(command: str, version: str, minimal: str, info: str = ""):
 def missing(what:str, minimal: str, info:str = ""):
     if not info.startswith('\n'):
         info = '\n' + info
-    click.secho(f"{what} is missing in the current environment (minimal=v{minimal}.)"
+    click.secho(f"{what} is missing in the current environment (minimal=v{minimal})."
                 f"{info}", fg =fg[False])
     return False
 
