@@ -20,7 +20,12 @@ installed. Here is the output from `wip env` if all components are missing.
 For a full functional `wip` the following commands and packages must be available in your environment:
 
 Python: v3.10.4 (OK)
+
 Command git is missing in the current environment (minimal=v2.35).
+To install see https://git-scm.com/book/en/v2/Getting-Started-Installing-Git.
+  Needed for local and remote version control.
+  Highly recommended.
+
 Command gh is missing in the current environment (minimal=v2.31).
 To install see https://cli.github.com/manual/installation.
   Enables `wip init` to create remote GitHub repositories.
