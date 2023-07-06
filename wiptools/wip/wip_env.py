@@ -49,7 +49,7 @@ def wip_env(ctx: click.Context):
              "  Needed for documentation generation.\n" \
              "  Highly recommended on workstations, discouraged on HPC clusters.\n"
     )
-    ok &= has_module('nanobind', '2.4',
+    ok &= has_module('nanobind', '1.4',
         info="\nTo install: `python -m pip install nanobind --upgrade [--user]`\n" \
              "  Needed to construct C++ binary extension modules.\n"
     )
