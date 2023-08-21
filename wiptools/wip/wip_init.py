@@ -8,7 +8,7 @@ import click
 from cookiecutter.main import cookiecutter
 
 from wiptools.wip.wip_docs import wip_docs
-from wiptools.wip.wip_remote_repo import wip_remote_repo
+from wiptools.wip.wip_remote_repo import add_remote
 import wiptools.messages as messages
 import wiptools.utils as utils
 
@@ -126,5 +126,7 @@ def wip_init(ctx: click.Context):
     if remote_visibility.lower() == 'none':
         messages.warning_message('No remote repository created (--remote=none).')
     else: # public|private
-        wip_remote_repo(github_username, remote_visibility)
+        with utils.in_directory(project_name):
+            utils.read_wip_cookiecutter_json()
+            add_remote(github_username, remote_visibility)
 
