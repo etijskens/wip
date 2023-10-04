@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>User guide - wiptools</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/color-brewer.min.css">
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">wiptools</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../overview/" class="nav-link">About</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../installation/" class="nav-link">Installation</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">User guide</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../api-reference/" class="nav-link">Wiptools API reference</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../installation/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../api-reference/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#user-guide" class="nav-link">User guide</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#create-a-new-project-skeleton" class="nav-link">Create a new project skeleton</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#listing-project-info" class="nav-link">Listing project info</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#add-components" class="nav-link">Add components</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#documentation" class="nav-link">Documentation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#version-management" class="nav-link">Version management</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#publishing-on-pypi" class="nav-link">Publishing on PyPI</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<div><h1 id="user-guide">User guide</h1>
+<p>The work horse of <code>wiptools</code> is the <code>wip</code> CLI. You can ask <code>wip</code> for help:</p>
+<pre><code class="language-shell">&gt; wip --help
+Usage: wip [OPTIONS] COMMAND [ARGS]...
+
+  Command line interface wip.
+
+...
+</code></pre>
+<p>as well as its subcommands:</p>
+<pre><code class="language-shell">&gt; wip info --help
+Usage: wip info [OPTIONS]
+
+  List info about the project's structure.
+
+...
+</code></pre>
+<p>Wip relies on a bunch of other tools. You can test your environment for their presence and 
+version compliance with <code>wip env</code>:</p>
+<pre><code class="language-shell">&gt; wip env
+For full `wip` functionality the following commands and packages must be available in our envirionment:
+
+python 3.9.5 (default, Sep 20 2021, 16:33:56)  [Clang 12.0.5 (clang-1205.0.22.9)] (OK)
+git version 2.35.1  (OK)
+gh version 2.31.0 (2023-06-20) https://github.com/cli/cli/releases/tag/v2.31.0  (OK)
+bumpversion: v1.0.1 (using Python v3.9.5) (OK)
+nanobind 1.4.0 (OK)
+numpy 1.25.0 : minimal='2.22' (not OK)
+cmake version 3.21.2 (OK)
+Poetry (version 1.5.1)  (OK)
+mkdocs, version 1.4.3 from /Users/etijskens/software/dev/workspace/wiptools/.venv/lib/python3.9/site-packages/mkdocs (Python 3.9)  (OK)
+</code></pre>
+<h2 id="create-a-new-project-skeleton">Create a new project skeleton</h2>
+<p>You create a new project skeleton by executing <code>wip init &lt;project_name&gt;</code>. This will create a 
+project folder <code>project_name</code> in the current working directory.</p>
+<p>Before <code>wip</code> can create a new project skeleton, some developer specific and project specific 
+information must be provided. </p>
+<h3 id="developer-info-github-access">Developer info - GitHub access</h3>
+<p>As the developer info is typically the same for many projects, it is stored in a <code>config.json</code> 
+file. It contains your <strong>name</strong>, your <strong>e-mail address</strong>, and your <strong>GitHub username</strong>. Here is 
+an example <code>config.json</code> file:</p>
+<pre><code class="language-json">{
+  "full_name": "Bert Tijskens",
+  "email_address": "engelbert.tijskens@uantwerpen.be",
+  "github_username": "etijskens"
+}
+</code></pre>
+<p>The default location of the <code>config.json</code> file is <code>$HOME/.wiptools</code>, but you can store it 
+wherever you like, or with a different name, in case you need to deal with several sets of 
+developer info, e.g. if you have work-related as well as personal projects, which are 
+maintained on different GitHub accounts or with a different e-mail address.  In that case
+use the <code>--config</code> flag to pass a config file other than the default one:</p>
+<pre><code class="language-shell">&gt; wip init &lt;project_name&gt; --config=path/to/another_config.json [options]
+</code></pre>
+<p>If the config file does not exist, which is typically the case the first time you execute 
+<code>wip init</code>, <code>wip</code> prompts you to supply your name, your e-mail address and your GitHub username,
+and creates a new file to store the supplied info. If, on the other hand, the file exists, but has 
+missing fields, the user is also prompted to supply them, but the file is <strong>not</strong> updated. When a 
+new GitHub username is supplied, <code>wip</code> also prompts the user to supply a <strong>GitHub personal access token</strong>. This is a 
+kind of password for accessing your GitHub account. It enables <code>wip</code> to automatically create a 
+remote GitHub repository to store and backup you work. The personal access tokens you provide are 
+always copied to <code>$HOME/.wiptools/github_{github_username}.pat</code>, where <code>github_username</code> is taken 
+from the corresponding field in the <code>config.json</code> file. </p>
+<p>When you create a new project <code>wip</code> automatically creates a remote GitHub repository for 
+the project. This is highly recommended, as this gets you a secure backup of your code 
+(and all its prior versions) on a remote machine. The only effort needed is that you commit
+and push your code regularly to the remote repo. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you do not already have a GitHub account, 
+create one at <a href="https://docs.github.%0Acom/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account">Signing up for a new GitHub account</a>
+and create a (classic) personal access token following [these instructions]
+(https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
+When creating a GitHub personal access token for use with wip, make sure that 
+you check the scopes <code>repo</code> and <code>read:org</code>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Wip will automatically create a local git repositoy and a remote public GitHub repo 
+for you project (if you have provided a GitHub username and a personal access token 
+(see<a href="#developer-info">Developer info</a>). Use <code>--remote=private|none</code> to 
+create a private GitHub repo, or no remote repo at all.</p>
+</div>
+<h3 id="project-info">Project info</h3>
+<p>For every project you create, <code>wip</code> will ask you to supply </p>
+<ul>
+<li>a brief project description, which can be left empty, and</li>
+<li>a minimal Python version.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After creating the project skeleton, you must <code>cd</code> into your project folder to 
+apply other wip commands.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you choose to not create a remote GitHub repo (e.g. because you have no 
+internet connection), you can always add it later with <code>wip init_remote [--private]</code>.</p>
+</div>
+<p>) </p>
+<h2 id="listing-project-info">Listing project info</h2>
+<p>Cd into the project folder (<code>cd foo</code>) and use <code>wip info</code>:</p>
+<pre><code class="language-shell">path/to &gt; wip init FOO 
+...
+path/to &gt; cd FOO
+path/to/FOO &gt; wip info --pkg --dev
+Project    : FOO: &lt;project_short_description&gt;
+Version    : 0.0.0
+Package    : foo
+GitHub repo: --
+Home page  : --
+Location   : /Users/etijskens/software/dev/workspace/.test-wip/FOO
+docs format: none
+
+Developer info:
+  author         : Bert Tijskens
+  e-mail         : engelbert.tijskens@uantwerpen.be
+  GitHub username: etijskens
+
+Structure of Python package foo
+  foo [Python module]
+  └── __init__.py
+</code></pre>
+<p>Note that wip translates the project name <code>FOO</code> in to the PEP compliant package name
+<code>foo</code>, converting to lowercase (and replacing hyphens with underscores).</p>
+<h2 id="add-components">Add components</h2>
+<p>You can add Python submodules (<code>--py</code>), C++ binary extension modules (<code>--cpp</code>) or 
+Modern Fortran binary extension modules (<code>--f90</code>), as well as CLIs with a single 
+command (<code>--cli</code>) or with subcommands(<code>--clisub</code>):</p>
+<pre><code class="language-shell">path/to/FOO &gt; wip add foo_py --py
+path/to/FOO &gt; wip add foo_cpp --cpp
+path/to/FOO &gt; wip add foo_f90 --f90
+path/to/FOO &gt; wip add foo_cli --cli
+path/to/FOO &gt; wip add foo_clisub --clisub
+path/to/FOO &gt; wip info --pkg 
+Project    : FOO: the foo package
+Version    : 0.0.0
+Package    : foo
+GitHub repo: https://github.com/&lt;your github username&gt;/foo
+Home page  : https://&lt;your github username&gt;.github.io/foo
+Location   : /Users/etijskens/software/dev/workspace/wiptools/.test-workspace/foofoo
+docs format: none
+
+Structure of Python package foofoo
+  foo [Python module]
+  ├── __init__.py
+  ├── foo_cli [CLI]
+  │   └── __main__.py
+  ├── foo_clisub [CLI]
+  │   └── __main__.py
+  ├── foo_cpp [C++ binary extension module]
+  │   ├── foo_cpp.cpp
+  │   └── foo_cpp.md
+  ├── foo_f90 [Modern Fortran binary extension module]
+  │   ├── foo_f90.f90
+  │   └── foo_f90.md
+  └── foo_py [Python module]
+      └── __init__.py
+</code></pre>
+<p>Python submodules can contain other Python submodules, as well as binary extension
+modules. You only need to preceed the module name with the path (relative to the 
+package folder), e.g. to add a C++ binary extension module to the <code>foo_py</code> submodule:</p>
+<pre><code class="language-shell">path/to/FOO &gt; wip add foo_py/bar --cpp
+...
+path/to/FOO &gt; wip info
+...
+Structure of Python package foo
+  foo [Python module]
+  ├── __init__.py
+  ...
+  └── foo_py [Python module]
+      ├── __init__.py
+      └── bar [C++ binary extension module]
+          ├── bar.cpp
+          └── bar.md
+</code></pre>
+<p>To build the binary extension modules use the <code>wip build</code> command. This builds all
+binary extension modules and installs them in the parent of the submodule folder. 
+Hence, they can be imported using the path you specified when you added it. E.g. a
+client script could import these modules as:</p>
+<pre><code class="language-python">import foo            # the foo package
+import foo.foo_cpp    # the foo_cpp submodule (C++ binary extension) 
+import foo.foo_f90    # the foo_f90 submodule (Fortran binary extension)
+import foo.foo_py     # the foo_py submodule
+import foo.foo_py.bar # the bar subsubmodule in the foo_py submodule
+</code></pre>
+<p>I the build process was successful, will see some dynamic libraries in the directory 
+tree. On Linux and MacOS these have the <code>.so</code> (shared objecrt) extension and <code>.dll</code> 
+On Windows. The middle part depends on the Python distribution the binary extension 
+was built against, and on the operating system. </p>
+<pre><code class="language-python">Structure of Python package foo
+  foo [Python module]
+  ├── __init__.py
+  ├── foo_cli [CLI]
+  │   └── __main__.py
+  ├── foo_clisub [CLI]
+  │   └── __main__.py
+  ├── foo_cpp.cpython-39.darwin.so
+  ├── foo_cpp [C++ binary extension module]
+  │   ├── foo_cpp.cpp
+  │   └── foo_cpp.md
+  ├── foo_f90.cpython-39.darwin.so
+  ├── foo_f90 [Modern Fortran binary extension module]
+  │   ├── foo_f90.f90
+  │   └── foo_f90.md
+  └── foo_py [Python module]
+      ├── __init__.py
+      └── bar.cpython-39.darwin.so
+      └── bar [C++ binary extension module]
+          ├── bar.cpp
+          └── bar.md
+</code></pre>
+<p>You can build a single binary extension by specifiyng its path:</p>
+<pre><code class="language-python">path/to/FOO &gt; wip build foo_py/bar
+</code></pre>
+<p>or build all C++/Fortran binary extensions using <code>wip build --cpp|--f90</code>.</p>
+<h2 id="documentation">Documentation</h2>
+<p>For small projects, we recommend writing down the documentation in <code>README.md</code>. 
+Larger projects with submodules or CLIs are more conveniently documented with 
+<a href="https://mkdocs.org">mkdocs</a>, using the <a href="https://www.markdownguide.org">Markdown</a> 
+format, or <a href="https//www.sphinx-doc.org/">sphinx</a> using the 
+<a href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">restructuredText</a>. 
+When creating a new project, wip asks for a documentation format. If you choose none, 
+you can always add the necessary documentation templates running <code>wip docs [--md|--rst]</code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Learn documenting your project with mkdocs [here]
+(https://realpython.com/python-project-documentation-with-mkdocs/).</p>
+</div>
+<h2 id="version-management">Version management</h2>
+<p>Wip relies on <a href="https://pypi.org/project/bump2version/">bump2version</a> for version 
+management. Newly created project have a <code>bumpversion.cfg</code> file. The <code>bumpversion</code> 
+command can directly be used, e.g.: <code>bump[2]version major|minor|patch|release</code>. 
+There is also a wip subcommand <code>wip bump</code> that wraps the <code>bumpversion</code> command and 
+lists information about the previous and the new version:</p>
+<pre><code class="language-shell">path/to/FOO &gt; bumpversion patch
+path/to/FOO &gt; wip bump patch
+
+[[Running `bump2version patch`` in directory 'foo' ...
+]] (done Running `bump2version patch`)
+
+foo v0.0.1-dev -&gt; v0.0.2-dev
+
+path/to/FOO &gt; wip bump release
+
+[[Running `bump2version release`` in directory 'foo' ...
+]] (done Running `bump2version release`)
+
+foo v0.0.2-dev -&gt; v0.0.2
+
+&gt; wip bump minor
+
+[[Running `bump2version minor`` in directory 'foo' ...
+]] (done Running `bump2version minor`)
+
+foo v0.0.2 -&gt; v0.1.0-dev
+</code></pre>
+<h2 id="publishing-on-pypi">Publishing on PyPI</h2>
+<p>When your code is published on <a href="https://pypi.org/">PyPI</a> users can effortlessly install it with
+<code>pip install your-package</code>. Dependencies are automatically installed as well.</p>
+<p>Wip relies on <a href="https://python-poetry.org">poetry</a> for publishing to <a href="https://pypi.org/">PyPI</a>.
+To be able to publish on PyPI, you must</p>
+<ol>
+<li><a href="https://pypi.org/account/register/">Create an account on PyPI</a>.</li>
+<li>Log in on your account, and go to <code>account settings</code>. Scroll down and hit <code>Add API token</code>. </li>
+<li>Choose a token name, <em>e.g.</em> <code>poetry-publishing-on-pypi</code>, and select a scope, <em>e.g.</em> 
+   <code>Entire account (all projects)</code> to use the token for publishing all your projects. </li>
+<li>Hit <code>Add token</code> to generate a new token, and copy the token.</li>
+<li>Finally, add your API token to Poetry with this command
+   <code>poetry config pypi-token.pypi your-api-token</code> (paste the copied token for <code>your-api-token</code>).</li>
+</ol>
+<p>Now you can publish your code as below:</p>
+<pre><code class="language-shell">(wiptools-py3.9) ~/workspace/wiptools &gt; poetry publish --build
+Building wiptools (1.2.0-dev)
+  - Building sdist
+  - Built wiptools-1.2.0.dev0.tar.gz
+  - Building wheel
+  - Built wiptools-1.2.0.dev0-py3-none-any.whl
+
+Publishing wiptools (1.2.0-dev) to PyPI
+ - Uploading wiptools-1.2.0.dev0-py3-none-any.whl 100%
+ - Uploading wiptools-1.2.0.dev0.tar.gz 100%
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can publish a version of your code only once to PyPI. If you want to publish an 
+update, you must <code>bump2version</code> your code first. </p>
+</div></div></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

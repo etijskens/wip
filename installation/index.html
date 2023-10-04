@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Installation - wiptools</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/color-brewer.min.css">
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">wiptools</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../overview/" class="nav-link">About</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Installation</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../user-guide/" class="nav-link">User guide</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../api-reference/" class="nav-link">Wiptools API reference</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../overview/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../user-guide/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#installation" class="nav-link">Installation</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#installing-on-a-workstation" class="nav-link">Installing on a workstation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#installing-on-a-hpc-cluster-linux" class="nav-link">Installing on a HPC cluster (Linux)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<div><h1 id="installation">Installation</h1>
+<h2 id="installing-on-a-workstation">Installing on a workstation</h2>
+<p><code>Wiptools</code> is published on <a href="https://pypi.org/">PyPI</a>, and hence it can be installed with its 
+dependencies as:</p>
+<pre><code class="language-shell">&gt; pip install wiptools
+</code></pre>
+<p>This installs the bare <code>wip</code>. Because <code>wip</code> relies on quite a bit of other tools, installing al its
+dependencies may waste quite a bit of resources, especially on clusters. For that reason the user
+is responsible for installing them - if needed. The <code>wip env</code> command lists which tools are 
+available in the current environment and which not, what they are used for and how they can be 
+installed. Here is the output from <code>wip env</code> if all components are missing.</p>
+<pre><code class="language-shell">&gt; wip env
+For a full functional `wip` the following commands and packages must be available in your environment:
+
+Python: v3.10.4 (OK)
+
+Command git is missing in the current environment (minimal=v2.35).
+To install see https://git-scm.com/book/en/v2/Getting-Started-Installing-Git.
+  Needed for local and remote version control.
+  Highly recommended.
+
+Command gh is missing in the current environment (minimal=v2.31).
+To install see https://cli.github.com/manual/installation.
+  Enables `wip init` to create remote GitHub repositories.
+  Highly recommended.
+
+Command bump2version is missing in the current environment (minimal=v1.0).
+To install: `python -m pip install bump2version --upgrade [--user]`
+  Needed for version string management.
+  Highly recommended.
+
+Command poetry is missing in the current environment (minimal=v1.5).
+To install: `python -m pip install poetry --upgrade [--user]`
+  Needed for dependency management, publishing to PyPI.
+  Highly recommended in development environments.
+
+Command mkdocs is missing in the current environment (minimal=v1.4.3).
+To install: `python -m pip install mkdocs --upgrade [--user]`
+  Needed for documentation generation.
+  Highly recommended on workstations, discouraged on HPC clusters.
+
+Module numpy is missing in the current environment (minimal=v1.4).
+To install: `python -m pip install nanobind --upgrade [--user]`
+  Needed to construct C++ binary extension modules.
+
+Module numpy is missing in the current environment (minimal=v1.22).
+To install: `python -m pip install numpy --upgrade [--user]`
+  Needed to construct Modern Fortran binary extension modules (f2py is part of numpy).
+  Generally extremely useful for scientific computing, HPC, ...
+
+Command cmake is missing in the current environment (minimal=v3.18).
+To install see https://cmake.org/install/.
+  Needed to build C++ and Modern Fortran binary extension modules.
+
+Some components are missing. This is only a problem is you are planning to use them.
+If you are working on your own machine, you must install these components yourself.
+If you are working on a HPC cluster, preferably load the corresponding LMOD modules.
+</code></pre>
+<h2 id="installing-on-a-hpc-cluster-linux">Installing on a HPC cluster (Linux)</h2>
+<p>On a HPC cluster software is installed in a central location, where users do not have write 
+access. Hence, they must install their tools somewhere in their own file systems. In line with
+general Linux expectations, we recommend  <code>~/.local</code>. Adding Python packages to a centrally 
+installed Python distribution is achieved by pointing the <code>PYTHONUSERBASE</code> environment variable 
+to this location and adding its <code>bin</code> folder to your <code>PATH</code>:</p>
+<pre><code class="language-shell"># in file .bashrc
+export PYTHONUSERBASE='path/to/my/homedir/.local/'
+export PATH="$PATH:path/to/my/homedir/.local/bin/"
+</code></pre>
+<p>With these exports it is possible to <code>pip install</code> packages with the <code>--user</code> flag. 
+This works fine, even when working with different Python distributions. Installed CLIs will 
+end up in <code>.local/bin/</code>, while python packages themselves will end up in 
+<code>.local/lib/pythonX.Y/site-packages</code> (X and Y being the major anc minor version number of the 
+Python version used. </p>
+<div class="admonition note">
+<p class="admonition-title">Note for VSC users</p>
+<p>Use the <code>$VSC_DATA</code> file system for storing your <code>.local/</code> installations. <code>$VSC_HOME</code> is too 
+small for that purpose, and the <code>$VSC_SCRATCH</code> file system is not suitable for storing lots 
+of small files. (you might need to provide the expanded version of <code>$VSC_DATA</code>).</p>
+</div></div></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
