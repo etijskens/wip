@@ -10,12 +10,14 @@ In order to make full use of wiptools, it is higly recommended to first create a
 
 ## Installing on a workstation
 
-`Wiptools` is published on [PyPI](https://pypi.org/), and hence it can be installed with its 
-dependencies as:
+`Wiptools` is published on [PyPI](https://pypi.org/), and hence it can be installed with its dependencies as:
 
 ```shell
 > pip install wiptools
 ```
+
+!!! Tip
+    Consider installing in a virtual environment if you need to deal with differen Python versions. To learn about Python virtual environments, checkout [this primer](https://realpython.com/python-virtual-environments-a-primer/).
 
 This installs the bare `wip`. Because `wip` relies on quite a bit of other tools, installing al its
 dependencies may waste quite a bit of resources, especially on clusters. For that reason the user
@@ -101,4 +103,4 @@ The first line ensures that `> pip install --user wiptools` will install wiptool
 /data/antwerpen/201/vsc20170/.local/bin/wip
 ```
 
-As an alternative to using pip's `--user` flag, you can install wiptools in a virtual environment. To learn about Python virtual environments, checkout [this](https://realpython.com/python-virtual-environments-a-primer/).
+As an alternative to using pip's `--user` flag, you can install wiptools in a virtual environment. To learn about Python virtual environments, checkout [this primer](https://realpython.com/python-virtual-environments-a-primer/).
