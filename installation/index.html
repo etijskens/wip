@@ -87,6 +87,10 @@
             
             <li class="nav-item" data-level="1"><a href="#installation" class="nav-link">Installation</a>
               <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#prerequisites" class="nav-link">Prerequisites</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-level="2"><a href="#installing-on-a-workstation" class="nav-link">Installing on a workstation</a>
               <ul class="nav flex-column">
               </ul>
@@ -103,6 +107,16 @@
                     <div class="col-md-9" role="main">
 
 <div><h1 id="installation">Installation</h1>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>In order to make full use of wiptools, it is higly recommended to first create a github account for storing your work with <code>git</code> version controlled. If you do not already have a GitHub account, </p>
+<ul>
+<li>
+<p>create one at <a href="https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account">Signing up for a new GitHub account</a>, and </p>
+</li>
+<li>
+<p>create a (classic) personal access token following <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic">these instructions</a>. This is a kind of password for accessing your github repositories. When creating a GitHub personal access token for use with wiptools, make sure that you check the scopes <code>repo</code> and <code>read:org</code>.</p>
+</li>
+</ul>
 <h2 id="installing-on-a-workstation">Installing on a workstation</h2>
 <p><code>Wiptools</code> is published on <a href="https://pypi.org/">PyPI</a>, and hence it can be installed with its 
 dependencies as:</p>
@@ -161,26 +175,25 @@ If you are working on your own machine, you must install these components yourse
 If you are working on a HPC cluster, preferably load the corresponding LMOD modules.
 </code></pre>
 <h2 id="installing-on-a-hpc-cluster-linux">Installing on a HPC cluster (Linux)</h2>
-<p>On a HPC cluster software is installed in a central location, where users do not have write 
-access. Hence, they must install their tools somewhere in their own file systems. In line with
-general Linux expectations, we recommend  <code>~/.local</code>. Adding Python packages to a centrally 
-installed Python distribution is achieved by pointing the <code>PYTHONUSERBASE</code> environment variable 
-to this location and adding its <code>bin</code> folder to your <code>PATH</code>:</p>
-<pre><code class="language-shell"># in file .bashrc
-export PYTHONUSERBASE='path/to/my/homedir/.local/'
-export PATH="$PATH:path/to/my/homedir/.local/bin/"
+<p>On a HPC cluster software is installed in a central location, where users do not have write access. Users can, however, pip install additional Python packages by adding the <code>--user</code> flag. This installs the package by default under <code>~/.local</code>. <em>E.g.</em></p>
+<pre><code class="language-shell">&gt; python --version
+Python 3.10.4
+&gt; pip install --user wiptools
+...
 </code></pre>
-<p>With these exports it is possible to <code>pip install</code> packages with the <code>--user</code> flag. 
-This works fine, even when working with different Python distributions. Installed CLIs will 
-end up in <code>.local/bin/</code>, while python packages themselves will end up in 
-<code>.local/lib/pythonX.Y/site-packages</code> (X and Y being the major anc minor version number of the 
-Python version used. </p>
-<div class="admonition note">
-<p class="admonition-title">Note for VSC users</p>
-<p>Use the <code>$VSC_DATA</code> file system for storing your <code>.local/</code> installations. <code>$VSC_HOME</code> is too 
-small for that purpose, and the <code>$VSC_SCRATCH</code> file system is not suitable for storing lots 
-of small files. (you might need to provide the expanded version of <code>$VSC_DATA</code>).</p>
-</div></div></div>
+<p>will install wiptools in <code>~/.local/lib/python3.10/site-packages</code>. On VSC clusters, however, the home directory is in the <code>$VSC_HOME</code> file system, which is rather small (&lt;10GB) and therefor not suited for local installations. It is therefor recommended change the default <code>--user</code> installation location by setting the <code>PYTHONUSERBASE</code> environment variable. If you are on a VSC cluster, <em>e.g.</em> Vaughan, <code>$VSC_DATA</code> is the prefered file system for this. Therfor, add the following lines to your <code>.bashrc</code> file:</p>
+<pre><code class="language-shell">export PYTHONUSERBASE=$VSC_DATA/.local/
+export PATH="$PATH:$PYTHONUSERBASE/bin/"
+</code></pre>
+<p>The first line ensures that <code>&gt; pip install --user wiptools</code> will install wiptools in <code>$VSC_DATA/.local/lib/python3.10/site-packages</code> (when using Python 3.10, as above). The second line ensures that, if the package installs some CLIs, your shell will be able to find them. Wiptools indeed comes with a CLI <code>wip</code>:</p>
+<pre><code class="language-shell">&gt; echo $VSC_DATA 
+/data/antwerpen/201/vsc20170
+&gt; echo $PYTHONUSERBASE 
+/data/antwerpen/201/vsc20170/.local
+&gt; which wip
+/data/antwerpen/201/vsc20170/.local/bin/wip
+</code></pre>
+<p>As an alternative to using pip's <code>--user</code> flag, you can install wiptools in a virtual environment. To learn about Python virtual environments, checkout <a href="https://realpython.com/python-virtual-environments-a-primer/">this</a>.</p></div></div>
             </div>
         </div>
 
