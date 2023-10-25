@@ -1,5 +1,13 @@
 # Installation
 
+## Prerequisites
+
+In order to make full use of wiptools, it is higly recommended to first create a github account for storing your work with `git` version controlled. If you do not already have a GitHub account, 
+
+* create one at [Signing up for a new GitHub account](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account), and 
+
+* create a (classic) personal access token following [these instructions](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic). This is a kind of password for accessing your github repositories. When creating a GitHub personal access token for use with wiptools, make sure that you check the scopes `repo` and `read:org`.
+
 ## Installing on a workstation
 
 `Wiptools` is published on [PyPI](https://pypi.org/), and hence it can be installed with its 
@@ -66,28 +74,31 @@ If you are working on a HPC cluster, preferably load the corresponding LMOD modu
 
 ## Installing on a HPC cluster (Linux)
 
-On a HPC cluster software is installed in a central location, where users do not have write 
-access. Hence, they must install their tools somewhere in their own file systems. In line with
-general Linux expectations, we recommend  `~/.local`. Adding Python packages to a centrally 
-installed Python distribution is achieved by pointing the `PYTHONUSERBASE` environment variable 
-to this location and adding its `bin` folder to your `PATH`:
+On a HPC cluster software is installed in a central location, where users do not have write access. Users can, however, pip install additional Python packages by adding the `--user` flag. This installs the package by default under `~/.local`. _E.g._
 
 ```shell
-# in file .bashrc
-export PYTHONUSERBASE='path/to/my/homedir/.local/'
-export PATH="$PATH:path/to/my/homedir/.local/bin/"
+> python --version
+Python 3.10.4
+> pip install --user wiptools
+...
 ```
 
-With these exports it is possible to `pip install` packages with the `--user` flag. 
-This works fine, even when working with different Python distributions. Installed CLIs will 
-end up in `.local/bin/`, while python packages themselves will end up in 
-`.local/lib/pythonX.Y/site-packages` (X and Y being the major anc minor version number of the 
-Python version used. 
+will install wiptools in `~/.local/lib/python3.10/site-packages`. On VSC clusters, however, the home directory is in the `$VSC_HOME` file system, which is rather small (<10GB) and therefor not suited for local installations. It is therefor recommended change the default `--user` installation location by setting the `PYTHONUSERBASE` environment variable. If you are on a VSC cluster, _e.g._ Vaughan, `$VSC_DATA` is the prefered file system for this. Therfor, add the following lines to your `.bashrc` file:
 
-!!! Note "Note for VSC users"
-    Use the `$VSC_DATA` file system for storing your `.local/` installations. `$VSC_HOME` is too 
-    small for that purpose, and the `$VSC_SCRATCH` file system is not suitable for storing lots 
-    of small files. (you might need to provide the expanded version of `$VSC_DATA`).
+```shell
+export PYTHONUSERBASE=$VSC_DATA/.local/
+export PATH="$PATH:$PYTHONUSERBASE/bin/"
+```
 
+The first line ensures that `> pip install --user wiptools` will install wiptools in `$VSC_DATA/.local/lib/python3.10/site-packages` (when using Python 3.10, as above). The second line ensures that, if the package installs some CLIs, your shell will be able to find them. Wiptools indeed comes with a CLI `wip`:
 
+```shell
+> echo $VSC_DATA 
+/data/antwerpen/201/vsc20170
+> echo $PYTHONUSERBASE 
+/data/antwerpen/201/vsc20170/.local
+> which wip
+/data/antwerpen/201/vsc20170/.local/bin/wip
+```
 
+As an alternative to using pip's `--user` flag, you can install wiptools in a virtual environment. To learn about Python virtual environments, checkout [this](https://realpython.com/python-virtual-environments-a-primer/).

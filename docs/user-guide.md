@@ -50,6 +50,9 @@ information must be provided.
 
 ### Developer info - GitHub access
 
+!!! tip
+    Checkout [Prerequisites][prerequisites] before using `wip`.
+
 As the developer info is typically the same for many projects, it is stored in a `config.json` 
 file. It contains your **name**, your **e-mail address**, and your **GitHub username**. Here is 
 an example `config.json` file:
@@ -88,16 +91,10 @@ the project. This is highly recommended, as this gets you a secure backup of you
 and push your code regularly to the remote repo. 
 
 !!! Note
-    If you do not already have a GitHub account, 
-    create one at [Signing up for a new GitHub account](https://docs.github.
-    com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account)
-    and create a (classic) personal access token following [these instructions]
-    (https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
-    When creating a GitHub personal access token for use with wip, make sure that 
-    you check the scopes `repo` and `read:org`.
+    If you do not already have a GitHub account, create one at [Signing up for a new GitHub account](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account)and create a (classic) personal access token following [these instructions](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic). When creating a GitHub personal access token for use with wip, make sure that you check the scopes `repo` and `read:org`.
 
 !!! Note
-    Wip will automatically create a local git repositoy and a remote public GitHub repo 
+    Wip will automatically create a local git repository and a remote public GitHub repo 
     for you project (if you have provided a GitHub username and a personal access token 
     (see[Developer info](#developer-info)). Use `--remote=private|none` to 
     create a private GitHub repo, or no remote repo at all.

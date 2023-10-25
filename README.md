@@ -4,6 +4,12 @@ Python project skeleton set up and management.
 
 ## Quick start
 
+### Installation
+
+```shell
+> pip install [--user] wiptools
+```
+
 ### Create a skeleton for a new project `foo`
 
 `wip init foo`, will ask you to supply a brief project description, a minimal Python 
