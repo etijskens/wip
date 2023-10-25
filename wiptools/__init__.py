@@ -6,7 +6,7 @@
 Common tools between the CLIs
 """
 
-__version__ = "1.3.0"
+__version__ = "1.3.1-dev"
 
 def version():
     return f"wiptools v{__version__}"
