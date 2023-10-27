@@ -6,9 +6,7 @@ Python project skeleton set up and management.
 
 ### Installation
 
-```shell
-> pip install [--user] wiptools
-```
+see [Installing wiptools](https://etijskens.github.io/wiptools/installation/#installation).
 
 ### Create a skeleton for a new project `foo`
 

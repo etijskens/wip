@@ -2,15 +2,15 @@
 
 ## Prerequisites
 
-In order to make full use of wiptools, it is higly recommended to first create a github account for storing your work with `git` version controlled. If you do not already have a GitHub account, 
+In order to make full use of wiptools, it is higly recommended to first create a github account for storing your work with `git` version controlled. If you do not already have a GitHub account,
 
 * create one at [Signing up for a new GitHub account](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account), and 
 
-* create a (classic) personal access token following [these instructions](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic). This is a kind of password for accessing your github repositories. When creating a GitHub personal access token for use with wiptools, make sure that you check the scopes `repo` and `read:org`.
+* create a (classic) personal access token following [these instructions](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic). This is a kind of password for accessing your github repositories. When creating a GitHub personal access token for use with wiptools, make sure that you check the scopes `repo` and `read:org`. Store the access token in a file and remember its location.
 
 ## Installing on a workstation
 
-`Wiptools` is published on [PyPI](https://pypi.org/), and hence it can be installed with its dependencies as:
+`Wiptools` is Python CLI published on [PyPI](https://pypi.org/). To install, make sure that you have Python 3.9 or later and run:
 
 ```shell
 > pip install wiptools
@@ -56,7 +56,7 @@ To install: `python -m pip install mkdocs --upgrade [--user]`
   Needed for documentation generation.
   Highly recommended on workstations, discouraged on HPC clusters.
 
-Module numpy is missing in the current environment (minimal=v1.4).
+Module nanobind is missing in the current environment (minimal=v1.4).
 To install: `python -m pip install nanobind --upgrade [--user]`
   Needed to construct C++ binary extension modules.
 
@@ -85,7 +85,7 @@ Python 3.10.4
 ...
 ```
 
-will install wiptools in `~/.local/lib/python3.10/site-packages`. On VSC clusters, however, the home directory is in the `$VSC_HOME` file system, which is rather small (<10GB) and therefor not suited for local installations. It is therefor recommended change the default `--user` installation location by setting the `PYTHONUSERBASE` environment variable. If you are on a VSC cluster, _e.g._ Vaughan, `$VSC_DATA` is the prefered file system for this. Therfor, add the following lines to your `.bashrc` file:
+will install wiptools in `~/.local/lib/python3.10/site-packages`. On VSC clusters, however, the home directory is in the `$VSC_HOME` file system, which is rather small (<10GB) and therefor not suited for local installations. It is therefor recommended change the default `--user` installation location by setting the `PYTHONUSERBASE` environment variable. If you are on a VSC cluster, _e.g._ Vaughan, `$VSC_DATA` is the preferred file system for this. Therfor, add the following lines to your `.bashrc` file:
 
 ```shell
 export PYTHONUSERBASE=$VSC_DATA/.local/
