@@ -17,7 +17,7 @@ In order to make full use of wiptools, it is higly recommended to first create a
 ```
 
 !!! Tip
-    Consider installing in a virtual environment if you need to deal with differen Python versions. To learn about Python virtual environments, checkout [this primer](https://realpython.com/python-virtual-environments-a-primer/).
+    Consider installing in a virtual environment if you need to deal with different Python versions. To learn about Python virtual environments, checkout [this primer](https://realpython.com/python-virtual-environments-a-primer/).
 
 This installs the bare `wip`. Because `wip` relies on quite a bit of other tools, installing al its
 dependencies may waste quite a bit of resources, especially on clusters. For that reason the user
