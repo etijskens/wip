@@ -6,7 +6,7 @@
 Common tools between the CLIs
 """
 
-__version__ = "1.3.2"
+__version__ = "1.3.3-dev"
 
 import copy
 from pathlib import Path
