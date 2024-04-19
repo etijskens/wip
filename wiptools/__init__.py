@@ -34,6 +34,7 @@ def get_project_dir(p: Path = None, outer: bool = False) -> Path:
     Raises:
         ValueError: if the `p` is not inside a project directory.
     """
+
     p_ = Path.cwd() if p is None else Path(p)
     outer_project_dir = None
     if p_.is_file():
